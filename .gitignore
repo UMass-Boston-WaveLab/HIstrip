@@ -1,0 +1,14 @@
+# Ignore auto-generated TeX log files and PDFs #
+
+*.log
+*.aux
+*.gz
+*.bbl
+*.synctex
+*.blg
+*.m~
+*.asv
+*.dvi
+*.zip
+*.pdf
+*.gz(busy)
