@@ -13,7 +13,7 @@ for ii = 1:length(f)
     beta = omega*sqrt(mu0*eps0*eff);
     
     ABCDL = [1 0; 1/(j*omega*Lvia) 1];
-    ABCDCgaphalf = [1 1/(j*omega*2*Cs); 0 1];
+    ABCDCgaphalf = [1 1/(j*omega*2*Cs)+real(harringtonslotY(f(ii), h/2, w)); 0 1];
     ABCDCp1 = [1 0; j*omega*Cp1 1];
     ABCDCp2 = [1 0; j*omega*Cp2 1];
     ABCDline = [cos(beta*w/2) j*Z0*sin(beta*w/2); j*sin(beta*w/2)/Z0 cos(beta*w/2)];
