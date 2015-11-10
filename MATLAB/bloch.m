@@ -18,7 +18,11 @@ for ii = 1:size(ABCD,3)
     C = ABCD(2,1,ii);
     D = ABCD(2,2,ii);
     blochZ(ii) = -2*B/(A-D-sqrt((A+D)^2-4));
+    if real(blochZ(ii))<0
+        blochZ(ii)=-2*B/(A-D+sqrt((A+D)^2-4));
+    end
 end
 
+blochZ=blochZ.';
 
 

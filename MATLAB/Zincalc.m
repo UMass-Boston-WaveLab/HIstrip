@@ -1,4 +1,4 @@
-function [ Zin ] = Zin( Z0,ZL,arg )
+function [ Zin ] = Zincalc( Z0,ZL,arg )
 %UNTITLED2 Summary of this function goes here
 %   Detailed explanation goes here
 
