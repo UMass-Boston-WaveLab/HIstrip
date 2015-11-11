@@ -52,7 +52,7 @@ k = 2*pi./lambda;
 for ii = 1:length(freq)
     %vratio is the ratio of V1 and V2 that happens if you excite V1 and
     %leave V2 open.
-    [ABCD, gameig] = multicond_unitcell(a,w1, w2, h1, h2, via_rad, eps1, eps2, freq(ii)*1e6);
+    [ABCD] = multicond_unitcell(a,w1, w2, h1, h2, via_rad, eps1, eps2, freq(ii)*1e6);
     %make the parts of V normalized in the way described in Faria, 2004.
     %we want to find T0, W0, Tl, Wl that diagonalize the ABCD matrix into
     %modes as described there.
