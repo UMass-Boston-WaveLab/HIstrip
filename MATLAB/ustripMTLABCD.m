@@ -1,4 +1,4 @@
-function [ MTL ] = ustripMTLABCD( w1, h1, w2, h2, eps1, eps2, freq, a)
+function [ MTL ] = ustripMTLABCD( w1, h1, w2, h2, eps1, eps2, freq, len)
 %Makes 4x4 ABCD matrix of stacked microstrip MTL structure of length a.
 
 
@@ -32,8 +32,8 @@ gameig = [sqrt(gamsq(1,1)) 0; 0 sqrt(gamsq(2,2))];
 Zw = Gam\Z; %symmetric 
 Yw = Y/Gam; %symmetric
 
-MTL = [T*[cosh(gameig(1,1)*a/2) 0; 0 cosh(gameig(2,2)*a/2)]/T,...
-        (T*sinh(gameig*a/2)/T)*Zw; Yw*T*sinh(gameig*a/2)/T, ...
-        Yw*T*[cosh(gameig(1,1)*a/2) 0; 0 cosh(gameig(2,2)*a/2)]/T*Zw];
+MTL = [T*[cosh(gameig(1,1)*len/2) 0; 0 cosh(gameig(2,2)*len/2)]/T,...
+        (T*sinh(gameig*len/2)/T)*Zw; Yw*T*sinh(gameig*len/2)/T, ...
+        Yw*T*[cosh(gameig(1,1)*len/2) 0; 0 cosh(gameig(2,2)*len/2)]/T*Zw];
 
 end

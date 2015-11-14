@@ -6,20 +6,23 @@ function [ blochZ, gamma ] = bloch( ABCD, L )
 for ii = 1:size(ABCD,3)
     [V,D] = eig(ABCD(:,:,ii));
     temp = diag(D);
-    if any(imag(temp)~=0)
-        %choosing the right eigenvalue
-        index = find(imag(log(temp))<0);
-    else
+    if any(abs(temp~=1))
         [~, index] = min(abs(temp));
+    else
+        index = find(imag(log(temp))<0);
     end
-    gamma(ii) = -log(temp(index))/L;
+   
     A=ABCD(1,1,ii);
     B = ABCD(1,2,ii);
     C = ABCD(2,1,ii);
     D = ABCD(2,2,ii);
-    blochZ(ii) = -2*B/(A-D-sqrt((A+D)^2-4));
+    gamma(ii) = acosh((A+D)/2)/L;
+    if real(gamma(ii))>0
+        gamma(ii)=-gamma(ii);
+    end
+    blochZ(ii)=-B/(A-exp(-gamma(ii)*L));
     if real(blochZ(ii))<0
-        blochZ(ii)=-2*B/(A-D+sqrt((A+D)^2-4));
+        blochZ(ii)=-blochZ(ii);
     end
 end
 

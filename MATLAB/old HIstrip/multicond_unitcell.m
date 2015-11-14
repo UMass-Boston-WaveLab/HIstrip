@@ -2,14 +2,13 @@ function [ ABCD ] = multicond_unitcell( a, w1, w2, h1, h2, via_rad, eps1, eps2, 
 %MULTICOND_UNITCELL result is the 4x4 ABCD matrix of the HIstrip unit cell
 %using the "multiconductor TL" formulation
 gap = a-w2;
-omega = 2*pi*freq;
 
 
 %keep in mind that w/h for viaABCD is outside the range tested in Goldfarb
 %& Pucel's results - ours is more than 3, they only checked up to 2.2
 %d/h is also too small (0.0397 vs. their minimum of 0.2)
 
-Lmat = MTLviaABCD(h2, via_rad, omega);
+Lmat = MTLviaABCD(h2, via_rad, freq);
 
 %gap cap split in half because that's where the ref plane is
 [Cmat, Cpmat, Cptopmat] = MTLcapABCD(h1, h2, w1, w2, eps1, eps2, gap, freq);
