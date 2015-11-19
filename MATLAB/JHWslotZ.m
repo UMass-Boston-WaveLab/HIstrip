@@ -12,11 +12,11 @@ epsf=epseff(w,h,epsr);
 
 deltaL = microstripdeltaL(w, h, epsr);
 
-Zm = microstripZ0_pozar(epsr, w, h); %try a different value here?
+Zm = microstripZ0_pozar(epsr, w, h); %try a different expression here?
 
 weff = 120*pi*h/(Zm*sqrt(epsf));
 
-Gr = (1/Zm)*4*pi/3*(h*weff/lam^2)/sqrt(epsf);
+Gr = (1/Zm)*4*pi*(h*weff/lam^2)/(3*sqrt(epsf));
 
 betaf=beta0*sqrt(epsf);
 

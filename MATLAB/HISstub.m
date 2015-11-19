@@ -85,7 +85,7 @@ for ii = 1:length(f)
         postfix = eye(4);
     end
     
-    totalABCD=prefix*ABCD^ncells*postfix*ustripMTLABCD(w1,h_ant+h2,w2, h2, eps1, eps2, f(ii), deltaL);
+    totalABCD=prefix*ABCD^ncells*postfix*ustripMTLABCD(w1,h_ant+h2,w2, h2, eps1, eps2, f(ii), deltaL);  %deltaL was added later because I assume it should be there
     
     %termination impedance for lower layer Z(22)
     botABCD = HISlayerABCD(w2, g, h2, rad, eps2, f(ii));
@@ -99,7 +99,9 @@ for ii = 1:length(f)
     elseif botprefix<(w2+g)/2
         %TL section * half of pi network
         [Cg,Cp1,~]=microstripgapcap(eps2, g, h2, w2);
-        ZL = (-j/(2*pi*f(ii)*2*Cg)) + 1/(j*2*pi*f(ii)*Cp1 + 1/Zbloch(ii));
+        ZCg=-j/(2*pi*f(ii)*2*Cg);
+        ZCp=1/(j*2*pi*f(ii)*Cp1);
+        ZL = 1 / (1/(ZCg + Zbloch(ii)) + 1/ZCp); 
         Z0b=microstripZ0_pozar(w2, h2, eps2);
         epsf=epseff(w2,h2,eps2);
         Zbot(ii) = Zincalc(Z0b, ZL, (botprefix-g/2)*2*pi*f(ii)*sqrt(epsf)/(3e8)); 
