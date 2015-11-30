@@ -1,4 +1,4 @@
-function [ Zin ] = HISstub(f, w1, w2, h_ant, h2, rad, eps1,eps2, g, L, startpos)
+function [ Zin ] = HISstub(f, w1, w2, h_ant, h2, rad, eps1,eps2, g, L, startpos, Lsub, Wsub)
 %Uses multiconductor ABCD unit cell model to calculate input impedance of a
 %microstrip stub backed by a high-impedance surface (use two stubs to make
 %an antenna, and this way you can combine them in series for dipole-like
@@ -18,10 +18,11 @@ eps0=8.854e-12;
 
 %I'm going to use this to estimate the length correction that should be
 %applied because of the open end of the stub.  
-deltaL=microstripdeltaL(w1, h_ant, eps1);
-
+%deltaL=microstripdeltaL(w1, h_ant, eps1);
+deltaL=0;
 for ii = 1:length(f)
-    Zu(ii) = JHWslotZ(h_ant, w1, f(ii), eps1 );  %seriously compare options for Y here
+%    Zu(ii) = JHWslotZ(h_ant, w1, f(ii), eps1 );  %seriously compare options for Y here
+    Zu(ii) = 1./real(harringtonslotY(f(ii), h_ant, w1)); %probably need a different value for w1 - might be up to 3x w1 since h=w
     [ABCD] = multicond_unitcell(w2+g, w1, w2, h_ant+h2, h2, rad, eps1, eps2, f(ii));
     
     %number of whole unit cells
@@ -68,7 +69,7 @@ for ii = 1:length(f)
             %half the pi network plus electrical length
             
             [Cmat, Cpmat, Cptopmat] = MTLcapABCD(h_ant+h2, h2, w1, w2, eps1, eps2, g, f(ii));
-            short_MTL = ustripMTLABCD(w1, h_ant+h2,w2, h2, eps1, eps2, freq, postlen-g/2);
+            short_MTL = ustripMTLABCD(w1, h_ant+h2,w2, h2, eps1, eps2, f(ii), postlen-g/2);
             postfix = Cmat*Cpmat*Cptopmat*short_MTL;
         else
         	%half the pi network, electrical length, via inductance, 
@@ -88,32 +89,40 @@ for ii = 1:length(f)
     totalABCD=prefix*ABCD^ncells*postfix*ustripMTLABCD(w1,h_ant+h2,w2, h2, eps1, eps2, f(ii), deltaL);  %deltaL was added later because I assume it should be there
     
     %termination impedance for lower layer Z(22)
-    botABCD = HISlayerABCD(w2, g, h2, rad, eps2, f(ii));
-    [Zbloch(ii),~] =bloch(botABCD, w2+g);
+    [botABCD,ABCDL, ABCDgaphalf, ABCDline] = HISlayerABCD(w2, Wsub, g, h2, rad, eps2, f(ii));
+    
+    botn = floor((Lsub-L)/(w2+g))-1; %number of unit cells in just the substrate - don't count the last one
+    Zedge = 1./real(harringtonslotY(f(ii),h2, Wsub));
+    % last unit cell shouldn't have gap cap on RHS
+    ABCDt = (botABCD^botn)*ABCDgaphalf*ABCDline*ABCDL*ABCDline;
+    A=ABCDt(1,1);
+    B = ABCDt(1,2);
+    C=ABCDt(2,1);
+    D=ABCDt(2,2);
+    Zinb(ii) = (A*Zedge+B)/(C*Zedge+D);
+    
     Lvia=viaL(h2,rad);
     %Zb needs to have the stuff that happens between it and the start of a
     %unit cell, also
-    botprefix = (w2+g)-postlen;
+    Z0b=microstripZ0_pozar(w2, h2, eps2); %characteristic impedance of bottom "line" (row of patches)
+    epsf=epseff(w2,h2,eps2);
+    botprefix = (w2+g)-postlen-deltaL;
     if botprefix<g/2
-        Zbot(ii)=Zbloch(ii);
+        Zbot(ii)=Zinb(ii);
     elseif botprefix<(w2+g)/2
         %TL section * half of pi network
         [Cg,Cp1,~]=microstripgapcap(eps2, g, h2, w2);
         ZCg=-j/(2*pi*f(ii)*2*Cg);
         ZCp=1/(j*2*pi*f(ii)*Cp1);
-        ZL = 1 / (1/(ZCg + Zbloch(ii)) + 1/ZCp); 
-        Z0b=microstripZ0_pozar(w2, h2, eps2);
-        epsf=epseff(w2,h2,eps2);
+        ZL = 1 / (1/(ZCg + Zinb(ii)) + 1/ZCp); 
         Zbot(ii) = Zincalc(Z0b, ZL, (botprefix-g/2)*2*pi*f(ii)*sqrt(epsf)/(3e8)); 
     else
         %TL section * via * TL section * half of pi network
         %TL section * half of pi network
         [Cg,Cp1,~]=microstripgapcap(eps2, g, h2, w2);
-        ZCg=-j/(2*pi*f(ii)*2*Cg);
+        ZCg=1/(j*2*pi*f(ii)*2*Cg);
         ZCp=1/(j*2*pi*f(ii)*Cp1);
-        ZL1 = 1 / (1/(ZCg + Zbloch(ii)) + 1/ZCp); 
-        Z0b=microstripZ0_pozar(w2, h2, eps2);
-        epsf=epseff(w2,h2,eps2);
+        ZL1 = 1 / (1/(ZCg + Zinb(ii)) + 1/ZCp); 
         ZLvia=j*2*pi*f(ii)*Lvia;
         ZL2 = 1/( 1/ZLvia + 1/Zincalc(Z0b,ZL1,(w2/2)*2*pi*f(ii)*sqrt(epsf)/(3e8))); 
         Zbot(ii)=Zincalc(Z0b, ZL2, (botprefix-w2/2-g/2)*2*pi*f(ii)*sqrt(epsf)/(3e8));

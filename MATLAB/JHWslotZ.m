@@ -22,7 +22,7 @@ betaf=beta0*sqrt(epsf);
 
 Z=1/Gr;
 %include deltaL in MTL instead of single-conductor tline
-%Z = Zm*(1/Gr+j*Zm*tan(betaf*deltaL))/(Zm+j*(1/Gr)*tan(betaf*deltaL));
+Z = Zm*(1/Gr+j*Zm*tan(betaf*deltaL))/(Zm+j*(1/Gr)*tan(betaf*deltaL));
 
 end
 
