@@ -22,7 +22,7 @@ eps0=8.854e-12;
 deltaL=0;
 for ii = 1:length(f)
 %    Zu(ii) = JHWslotZ(h_ant, w1, f(ii), eps1 );  %seriously compare options for Y here
-    Zu(ii) = 1./real(harringtonslotY(f(ii), h_ant, w1)); %probably need a different value for w1 - might be up to 3x w1 since h=w
+    Zu(ii) = 1./real(harringtonslotY(f(ii), h_ant, w1)); %Find a good formula for effective width & height of equiv slot.
     [ABCD] = multicond_unitcell(w2+g, w1, w2, h_ant+h2, h2, rad, eps1, eps2, f(ii));
     
     %number of whole unit cells
@@ -89,12 +89,12 @@ for ii = 1:length(f)
     totalABCD=prefix*ABCD^ncells*postfix*ustripMTLABCD(w1,h_ant+h2,w2, h2, eps1, eps2, f(ii), deltaL);  %deltaL was added later because I assume it should be there
     
     %termination impedance for lower layer Z(22)
-    [botABCD,ABCDL, ABCDgaphalf, ABCDline] = HISlayerABCD(w2, Wsub, g, h2, rad, eps2, f(ii));
+    [botABCD,ABCDL, ABCDgaphalf1, ABCDgaphalf2, ABCDline] = HISlayerABCD(w2, g, h2, rad, eps2, f(ii));
     
     botn = floor((Lsub-L)/(w2+g))-1; %number of unit cells in just the substrate - don't count the last one
-    Zedge = 1./real(harringtonslotY(f(ii),h2, Wsub));
+    Zedge = 1./real(harringtonslotY(f(ii),h2, Wsub));  
     % last unit cell shouldn't have gap cap on RHS
-    ABCDt = (botABCD^botn)*ABCDgaphalf*ABCDline*ABCDL*ABCDline;
+    ABCDt = (botABCD^botn)*ABCDgaphalf1*ABCDline*ABCDL*ABCDline;
     A=ABCDt(1,1);
     B = ABCDt(1,2);
     C=ABCDt(2,1);
@@ -106,7 +106,7 @@ for ii = 1:length(f)
     %unit cell, also
     Z0b=microstripZ0_pozar(w2, h2, eps2); %characteristic impedance of bottom "line" (row of patches)
     epsf=epseff(w2,h2,eps2);
-    botprefix = (w2+g)-postlen-deltaL;
+    botprefix = Lsub-L-(botn+1)*(w2+g);
     if botprefix<g/2
         Zbot(ii)=Zinb(ii);
     elseif botprefix<(w2+g)/2
@@ -118,7 +118,6 @@ for ii = 1:length(f)
         Zbot(ii) = Zincalc(Z0b, ZL, (botprefix-g/2)*2*pi*f(ii)*sqrt(epsf)/(3e8)); 
     else
         %TL section * via * TL section * half of pi network
-        %TL section * half of pi network
         [Cg,Cp1,~]=microstripgapcap(eps2, g, h2, w2);
         ZCg=1/(j*2*pi*f(ii)*2*Cg);
         ZCp=1/(j*2*pi*f(ii)*Cp1);
@@ -128,10 +127,6 @@ for ii = 1:length(f)
         Zbot(ii)=Zincalc(Z0b, ZL2, (botprefix-w2/2-g/2)*2*pi*f(ii)*sqrt(epsf)/(3e8));
     end
     
-%   Just testing a simpler solution - it actually doesn't make a big
-%   difference if I just do this.
-%     Cpatch=eps2*w2^2/h2;
-%     Zbot(ii)=1/((j*2*pi*f(ii)*Cpatch)+1/(j*2*pi*f(ii)*Lvia));
     
     %assume Z11 is infinity.  Then, termination impedance is Z12+Z22 for
     %the upper layer and Z22 for the bottom layer
