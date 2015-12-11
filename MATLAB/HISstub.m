@@ -1,4 +1,4 @@
-function [ Zin ] = HISstub(f, w1, w2, h_ant, h2, rad, eps1,eps2, g, L, startpos, Lsub, Wsub)
+function [ Zin ] = HISstub(f, w1, w2, h_ant, h2, rad, eps1,eps2, g, L, startpos, Lsub, Wsub, viaflag)
 %Uses multiconductor ABCD unit cell model to calculate input impedance of a
 %microstrip stub backed by a high-impedance surface (use two stubs to make
 %an antenna, and this way you can combine them in series for dipole-like
@@ -22,8 +22,8 @@ eps0=8.854e-12;
 deltaL=0;
 for ii = 1:length(f)
 %    Zu(ii) = JHWslotZ(h_ant, w1, f(ii), eps1 );  %seriously compare options for Y here
-    Zu(ii) = 1./real(harringtonslotY(f(ii), h_ant, w1)); %Find a good formula for effective width & height of equiv slot.
-    [ABCD] = multicond_unitcell(w2+g, w1, w2, h_ant+h2, h2, rad, eps1, eps2, f(ii));
+    Zu(ii) = 1./real(harringtonslotY(f(ii), h_ant, 8*w1)); %Find a good formula for effective width & height of equiv slot.
+    [ABCD] = multicond_unitcell(w2+g, w1, w2, h_ant+h2, h2, rad, eps1, eps2, f(ii), viaflag);
     
     %number of whole unit cells
     ncells = floor((L-startpos)/(w2+g));
@@ -49,7 +49,11 @@ for ii = 1:length(f)
             [Cmat, Cpmat, Cptopmat] = MTLcapABCD(h_ant+h2, h2, w1, w2, eps1, eps2, g, f(ii));
             
             short_MTL2 = ustripMTLABCD(w1, h_ant+h2,w2, h2, eps1, eps2, freq, w2/2);
-            Lmat = MTLviaABCD(h2, rad, f(ii));
+            if viaflag
+                Lmat = MTLviaABCD(h2, rad, f(ii));
+            else 
+                Lmat=eye(4);
+            end
             short_MTL1 = ustripMTLABCD(w1, h_ant+h2,w2, h2, eps1, eps2, freq, startpos-w2/2-g/2);
             prefix = short_MTL1*Lmat*short_MTL2*Cptopmat*Cpmat*Cmat;
         end       
@@ -78,7 +82,11 @@ for ii = 1:length(f)
             [Cmat, Cpmat, Cptopmat] = MTLcapABCD(h_ant+h2, h2, w1, w2, eps1, eps2, g, f(ii));
             
             short_MTL2 = ustripMTLABCD(w1, h_ant+h2,w2, h2, eps1, eps2, f(ii), w2/2);
-            Lmat = MTLviaABCD(h2, rad, 2*pi*f(ii));
+            if viaflag
+                Lmat = MTLviaABCD(h2, rad, 2*pi*f(ii));
+            else
+                Lmat=eye(4);
+            end
             short_MTL1 = ustripMTLABCD(w1, h_ant+h2,w2, h2, eps1, eps2, f(ii), postlen-w2/2-g/2);
             postfix = Cmat*Cpmat*Cptopmat*short_MTL2*Lmat*short_MTL1;
         end       
@@ -89,7 +97,7 @@ for ii = 1:length(f)
     totalABCD=prefix*ABCD^ncells*postfix*ustripMTLABCD(w1,h_ant+h2,w2, h2, eps1, eps2, f(ii), deltaL);  %deltaL was added later because I assume it should be there
     
     %termination impedance for lower layer Z(22)
-    [botABCD,ABCDL, ABCDgaphalf1, ABCDgaphalf2, ABCDline] = HISlayerABCD(w2, g, h2, rad, eps2, f(ii));
+    [botABCD,ABCDL, ABCDgaphalf1, ABCDgaphalf2, ABCDline] = HISlayerABCD(w2, g, h2, rad, eps2, f(ii), viaflag);
     
     botn = floor((Lsub-L)/(w2+g))-1; %number of unit cells in just the substrate - don't count the last one
     Zedge = 1./real(harringtonslotY(f(ii),h2, Wsub));  
@@ -122,8 +130,12 @@ for ii = 1:length(f)
         ZCg=1/(j*2*pi*f(ii)*2*Cg);
         ZCp=1/(j*2*pi*f(ii)*Cp1);
         ZL1 = 1 / (1/(ZCg + Zinb(ii)) + 1/ZCp); 
+        if viaflag
         ZLvia=j*2*pi*f(ii)*Lvia;
         ZL2 = 1/( 1/ZLvia + 1/Zincalc(Z0b,ZL1,(w2/2)*2*pi*f(ii)*sqrt(epsf)/(3e8))); 
+        else
+            ZL2 = Zincalc(Z0b,ZL1,(w2/2)*2*pi*f(ii)*sqrt(epsf)/(3e8));
+        end
         Zbot(ii)=Zincalc(Z0b, ZL2, (botprefix-w2/2-g/2)*2*pi*f(ii)*sqrt(epsf)/(3e8));
     end
     
