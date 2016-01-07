@@ -21,8 +21,7 @@ eps0=8.854e-12;
 %deltaL=microstripdeltaL(w1, h_ant, eps1);
 deltaL=0;
 for ii = 1:length(f)
-%    Zu(ii) = JHWslotZ(h_ant, w1, f(ii), eps1 );  %seriously compare options for Y here
-    Zu(ii) = 1./real(harringtonslotY(f(ii), h_ant, 8*w1)); %Find a good formula for effective width & height of equiv slot.
+    Zu(ii) = JHWslotZ(h_ant, w1, f(ii), eps1 );  %seriously compare options for Y here
     [ABCD] = multicond_unitcell(w2+g, w1, w2, h_ant+h2, h2, rad, eps1, eps2, f(ii), viaflag);
     
     %number of whole unit cells
