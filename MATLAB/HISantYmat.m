@@ -32,16 +32,31 @@ Ys_sub = Gs2+j*Bs2;
 %Van de Capelle 1984
 Kg1 = 1; %check this because it's outside the range where their approximation was checked
 Gm_ant = Gs1*Kg1*Fg(k0*L_ant,k0*deltaL1);
+Ym_ant = Gm_ant;
 
 Kg2 = 1;
 Gm_sub = Gs2*Kg2*Fg(k0*L_sub, k0*deltaL2);
+Ym_sub = Gm_sub;
 
-%different-size slots have different mutual coupling 
+%different-size slots have different mutual coupling and can't be computed
+%from the Pues/Van de Capelle equation... but we can wildly estimate!
+%Wherever the Gm above used single-slot quantities, I've used a geometric
+%mean.
+
+Gm_near = sqrt(Gs1*Gs2)*Kg1*Fg(k0*(L_sub-L_ant)/2, k0*sqrt(deltaL1*deltaL2));
+Gm_far = sqrt(Gs1*Gs2)*Kg1*Fg(k0*((L_sub-L_ant)/2+L_ant), k0*sqrt(deltaL1*deltaL2));
+
+Ym_near = Gm_near;
+Ym_far = Gm_far;
 
 %% MATRIX CONSTRUCTION
-%could also use the Harrington formulation, which I don't think requires
-%equal-size slots
 
+Yii = [Ys_ant Ym_near; Ym_near Ys_sub];
+Yio = [Ym_ant Ym_far; Ym_far Ym_sub];
+Yoi = Yio;
+Yoo = Yii;
+
+Y = [Yii Yio; Yoi Yoo];
 
 
 end

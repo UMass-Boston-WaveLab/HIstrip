@@ -4,8 +4,8 @@ function [ Zin ] = seriesHISstub( f, w1, w2, h_ant, h2, rad, eps1,eps2, g, L1,L2
 %a dipole)
 
 
-Zin1 = HISstub(f, w1, w2, h_ant, h2, rad, eps1,eps2, g, L1,0);
-Zin2 = HISstub(f, w1, w2, h_ant, h2, rad, eps1,eps2, g, L2,0);
+Zin1 = HISstub(f, w1, w2, h_ant, h2, rad, eps1,eps2, g, L1,0, 4*0.14,8*0.14,1);
+Zin2 = HISstub(f, w1, w2, h_ant, h2, rad, eps1,eps2, g, L2,0, 4*0.14,8*0.14,1);
 
 for ii=1:length(f)
     Y=inv(Zin1(:,:,ii)+Zin2(:,:,ii));
