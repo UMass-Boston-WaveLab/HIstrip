@@ -18,8 +18,8 @@ eps0=8.854e-12;
 
 %I'm going to use this to estimate the length correction that should be
 %applied because of the open end of the stub.  
-%deltaL=microstripdeltaL(w1, h_ant, eps1);
-deltaL=0;
+deltaL=microstripdeltaL(w1, h_ant, eps1);
+%deltaL=0;
 for ii = 1:length(f)
     Zu(ii) = JHWslotZ(h_ant, w1, f(ii), eps1 );  %seriously compare options for Y here
     [ABCD] = multicond_unitcell(w2+g, w1, w2, h_ant+h2, h2, rad, eps1, eps2, f(ii), viaflag);
@@ -99,7 +99,8 @@ for ii = 1:length(f)
     [botABCD,ABCDL, ABCDgaphalf1, ABCDgaphalf2, ABCDline] = HISlayerABCD(w2, g, h2, rad, eps2, f(ii), viaflag);
     
     botn = floor((Lsub-L)/(w2+g))-1; %number of unit cells in just the substrate - don't count the last one
-    Zedge = 1./real(harringtonslotY(f(ii),h2, Wsub));  
+    % Zedge = 1./real(harringtonslotY(f(ii),h2, Wsub));  
+    Zedge=JHWslotZ(h2, w2, f(ii), eps2 );
     % last unit cell shouldn't have gap cap on RHS
     ABCDt = (botABCD^botn)*ABCDgaphalf1*ABCDline*ABCDL*ABCDline;
     A=ABCDt(1,1);
