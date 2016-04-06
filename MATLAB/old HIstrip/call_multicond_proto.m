@@ -82,6 +82,17 @@ switch antcase
         freq = 700:5:1500; %in MHz
         via_rad = 0.0015875;
         loadgap = 0;
+    case 8 %scaled to 6GHz
+        a = 0.14/20;
+        w1 = 0.01/20;
+        h2 = 0.003175;
+        h1= 0.02/20+h2;
+        eps1=2.2;
+        w2 = 0.12/20;
+        eps2=2.2;
+        freq = 2000:100:8000; %in MHz
+        via_rad = 0.0004;
+        loadgap = 0;
 end
 lambda = 3e8./(freq*1e6);
 k = 2*pi./lambda;
