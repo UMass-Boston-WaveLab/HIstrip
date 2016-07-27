@@ -26,7 +26,7 @@ magnetic_current = cross(-normal,electric_field_1);
 % -This is the correct version, however the Y-term goes away once it is
 % dotted with magnetic current in the final mutual admittance equation. 
 
-IntegrandEquation = diff(G,x_prime, x_prime) - (k^2)*magnetic_current*G; %Instead use this equation for simplicity purposes. 
+IntegrandEquation = diff(G,x_prime, x_prime) + (k^2)*magnetic_current*G; %Instead use this equation for simplicity purposes. 
 
 
 end
