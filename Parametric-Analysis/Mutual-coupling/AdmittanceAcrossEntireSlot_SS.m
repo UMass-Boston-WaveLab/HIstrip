@@ -74,10 +74,10 @@ for y = 2*dy:dy:y_sep+dy  %Seperation distance values. 2dy used b/c 1dy causes w
             H_field_1(1,index1) = -exp(-k*((x - x_prime)^2 + (y - y_prime)^2)^(1/2)*1i)/(4*pi*((x - x_prime)^2 + (y - y_prime)^2)^(3/2)) - (k*exp(-k*((x - x_prime)^2 + (y - y_prime)^2)^(1/2)*1i)*1i)/(4*pi*((x - x_prime)^2 + (y - y_prime)^2)) + (3*exp(-k*((x - x_prime)^2 + (y - y_prime)^2)^(1/2)*1i)*(x - x_prime)^2)/(4*pi*((x - x_prime)^2 + (y - y_prime)^2)^(5/2)) - (k^2*exp(-k*((x - x_prime)^2 + (y - y_prime)^2)^(1/2)*1i))/(4*pi*((x - x_prime)^2 + (y - y_prime)^2)^(1/2)) - (k^2*exp(-k*((x - x_prime)^2 + (y - y_prime)^2)^(1/2)*1i)*(x - x_prime)^2)/(4*pi*((x - x_prime)^2 + (y - y_prime)^2)^(3/2)) + (k*exp(-k*((x - x_prime)^2 + (y - y_prime)^2)^(1/2)*1i)*(x - x_prime)^2*3i)/(4*pi*((x - x_prime)^2 + (y - y_prime)^2)^2);
             index1 = index1 + 1;
         end
-        Temp_Matrix(1, T_index) = sum(sum(H_field_1*delta_x_prime)*(1/(omega*u_0*1j)));
+        Temp_Matrix(1, T_index) = sum(sum(H_field_1*delta_x_prime*delta_y_prime)*(1/(omega*u_0*1j)));
         T_index = T_index + 1;
     end
-    Admittance_WRT_distance(1,A_index) = sum(sum(Temp_Matrix*delta_x_prime)*(1/(V_1*V_2))); %Magnetic current from slot 1 would be dotted here as well, thus providing another negative sign
+    Admittance_WRT_distance(1,A_index) = sum(sum(Temp_Matrix*delta_x_prime*delta_y_prime)*(1/(V_1*V_2))); %Magnetic current from slot 1 would be dotted here as well, thus providing another negative sign
     A_index = A_index + 1;
 end
 
