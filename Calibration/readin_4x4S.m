@@ -6,7 +6,7 @@
 function [S11, S12, S21, S22, S] = readin_4x4S(filename)
 x = csvread(filename, 1, 1);
 [m,n] = size(x);
-y = zeros(4, 4, 36);
+y = zeros(4, 4, m);
 for ii = 1:m
     w = x(ii, :);
     z = reshape(w, 4, 4);
