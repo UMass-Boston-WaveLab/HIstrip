@@ -1,9 +1,9 @@
 % Function takes in rectangular S-parameters from HFSS in a .csv format
-% and converts them into a 4x4 matrix.
+% and converts them into a square matrix.
 % You need to strip the whitespace from the HFSS data first (use find and 
 % replace in Excel, find spaces and replace them with nothing.)
 
-function [S11, S12, S21, S22, S] = readin_4x4S(filename)
+function [S11, S12, S21, S22, S] = read_HFSS_S(filename)
 x = csvread(filename, 1, 1);
 [m,n] = size(x);
 y = zeros(4, 4, m);

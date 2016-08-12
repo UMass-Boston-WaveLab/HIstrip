@@ -24,7 +24,7 @@ Z = zeros(4,4,m);
 for ii = 1:m
     Z(:,:,ii) = X(:,:,ii)*TT(:,:,ii);
 end
-ZZ = rev_cascade(Z);
+ZZ = reverse_cascade(Z);
 
 % Calculates the known T-parameters of the thru standard using the
 % previously determined propagation constants, and permutates the matrix.
@@ -32,7 +32,7 @@ ZZ = rev_cascade(Z);
 N = zeros(4,4,m);
 for ii = 1:m
     for jj = 1:2
-        N(jj,jj,ii) = exp(-gamma(jj,jj,ii)*thrulength);
+        N(jj,jj,ii) = exp(-(gamma(jj,jj,ii))*thrulength);
     end
     for jj = 3:4
         N(jj,jj,ii) = exp(gamma(jj,jj,ii)*thrulength);
