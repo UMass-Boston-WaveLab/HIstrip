@@ -1,50 +1,43 @@
 % Calculates the partially known error boxes Ao and Bo from the measured
 % thru and line standards. 
 
-function[Ao,Bo] = Ao_and_Bo(Yo,thrufile,thrulength,gamma)
+ function[Ao,Bo] = Ao_and_Bo(sorted_evectors,tt,thrulength,sorted_prop2,...
+    sq_size,sub_size,depth)
 
-[k,l,m] = size(Yo);
-X = zeros(4,4,m);
-Ao = Yo;
+X = zeros(sq_size,sq_size,depth);
+Ao = sorted_evectors;
 
-for ii = 1:m
-    X(:,:,ii) = inv(Yo(:,:,ii));
+for ii = 1:depth
+    X(:,:,ii) = inv(sorted_evectors(:,:,ii));
 end
-
-% Reads in the measured thru 4x4 S-parameters and converts them to
-% T-parameters. This is probably redundant given other functions/code in
-% the calibration module.
-
-[TS11,TS12,TS21,TS22,TS] = readin_4x4S(thrufile);
-[~,~,~,~,TT] = S_to_T(TS11,TS12,TS21,TS22,TS);
 
 % Calculates the reverse cascaded product of inv(Ao) and M1.
 
-Z = zeros(4,4,m);
-for ii = 1:m
-    Z(:,:,ii) = X(:,:,ii)*TT(:,:,ii);
+Z = zeros(sq_size,sq_size,depth);
+for ii = 1:depth
+    Z(:,:,ii) = X(:,:,ii)*tt(:,:,ii);
 end
-ZZ = reverse_cascade(Z);
+YoM1 = reverse_cascade(Z);
 
 % Calculates the known T-parameters of the thru standard using the
 % previously determined propagation constants, and permutates the matrix.
 
-N = zeros(4,4,m);
-for ii = 1:m
-    for jj = 1:2
-        N(jj,jj,ii) = exp(-(gamma(jj,jj,ii))*thrulength);
+N = zeros(sq_size,sq_size,depth);
+for ii = 1:depth
+    for jj = 1:sub_size
+        N(jj,jj,ii) = exp(-1*(sorted_prop2(jj,jj,ii))*thrulength);
     end
-    for jj = 3:4
-        N(jj,jj,ii) = exp(gamma(jj,jj,ii)*thrulength);
+    for jj = sub_size+1:sq_size
+        N(jj,jj,ii) = exp(sorted_prop2(jj,jj,ii)*thrulength);
     end
 end
 NN = permutate(N);
 
 % Calculates Bo.
 
-Bo = zeros(4,4,m);
-for ii = 1:m
-    Bo(:,:,ii) = ZZ(:,:,ii)*NN(:,:,ii);
+Bo = zeros(sq_size,sq_size,depth);
+for ii = 1:depth
+    Bo(:,:,ii) = YoM1(:,:,ii)*NN(:,:,ii);
 end
 
 

@@ -2,34 +2,34 @@
 % generalized scattering parameter matrices. The end result is a 2x2 matrix
 % composed of smaller submatrices of size "elements".
 
-function [S11, S12, S21, S22, elements] = generalized_S(M,depth,dimension)
+function [S11, S12, S21, S22, sub_size] = generalized_S(M,depth,sq_size)
 
 % Reshapes the data from HFSS into a square matrix of size "dimension".
 
-S = zeros(dimension,dimension,depth);
+S = zeros(sq_size,sq_size,depth);
 for ii = 1:depth
     row = M(ii, :);
-    square = reshape(row, dimension, dimension);
+    square = reshape(row, sq_size, sq_size);
     S(:,:,ii) = square;
 end
 
 % Breaks up matrix S into 4 smaller square submatrices, each of size
 % "elements".
 
-if dimension > 2
-    elements = sqrt(dimension);
-    S11 = zeros(elements,elements,depth);
-    S12 = zeros(elements,elements,depth);
-    S21 = zeros(elements,elements,depth);
-    S22 = zeros(elements,elements,depth);
+if sq_size > 2
+    sub_size = (sq_size)/2;
+    S11 = zeros(sub_size,sub_size,depth);
+    S12 = zeros(sub_size,sub_size,depth);
+    S21 = zeros(sub_size,sub_size,depth);
+    S22 = zeros(sub_size,sub_size,depth);
     for ii = 1:depth
-        S11(:,:,ii) = S(1:elements,1:elements,ii);
-        S12(:,:,ii) = S(1:elements,elements+1:end,ii);
-        S21(:,:,ii) = S(elements+1:end,1:elements,ii);
-        S22(:,:,ii) = S(elements+1:end,elements+1:end,ii);
+        S11(:,:,ii) = S(1:sub_size,1:sub_size,ii);
+        S12(:,:,ii) = S(1:sub_size,sub_size+1:end,ii);
+        S21(:,:,ii) = S(sub_size+1:end,1:sub_size,ii);
+        S22(:,:,ii) = S(sub_size+1:end,sub_size+1:end,ii);
     end
 else 
-    elements = 1;
+    sub_size = 1;
     S11 = zeros(1,1,ii);
     S12 = zeros(1,1,ii);
     S21 = zeros(1,1,ii);
