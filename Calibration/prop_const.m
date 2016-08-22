@@ -2,22 +2,23 @@
 % thru and line standards. Also calculates eigenvalues and eigenvectors of
 % P and Q matrices. 
 
-function[propagation_constants, eigenvalues, eigenvectors] = prop_const(line,linelength, thru, thrulength, depth)
+function[propagation_constants, eigenvalues, eigenvectors] = ...
+    prop_const(line,linelength, thru, thrulength, depth)
 
 % Creates empty Q matrix and performs initial calculations.
 
 deltal = linelength - thrulength;
 [k,l,m] = size(line);
 Q = zeros(k,k, depth);
-for ii = 1:m
-    X(:,:,ii) = inv(thru(:,:,ii));
+for ii = 1:depth
+    invthru(:,:,ii) = inv(thru(:,:,ii));
 end
 
 % Calculates the propagation constants, eigenvalues, and eigenvectors to be
 % sorted.
 
 for ii = 1:depth
-    Q(:,:,ii) = line(:,:,ii)*X(:,:,ii);
+    Q(:,:,ii) = line(:,:,ii)*invthru(:,:,ii);
 end
 
 eigenvectors = zeros(k,k,depth);
