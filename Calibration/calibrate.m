@@ -71,10 +71,10 @@ function[calibrated_DUT] = calibrate(thrufile,reflect1file,reflect2file,...
 [L0,L10,L20,L12] = Lo(G10,G20,sub_size,depth);
 
 % Calculates the K0 matrix.
-[Ko] = Ko(G10,G20,L0,sq_size,sub_size,depth);
+[K0] = Ko(G10,G20,L0,sq_size,sub_size,depth);
 
 % Calculates the Nxo matrix.
-[Nxo] = Nxo(Ao,Bo,Ko,dutT,sq_size,depth);
+[Nxo] = Nxo(Ao,Bo,K0,dutT,sq_size,depth);
 
 
 
