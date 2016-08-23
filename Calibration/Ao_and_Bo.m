@@ -1,4 +1,4 @@
-% Calculates the partially known error boxes Ao and Bo from the measured
+% Calculates the error boxes Ao and Bo from the measured
 % thru and line standards. 
 
  function[Ao,Bo] = Ao_and_Bo(sorted_evectors,tt,thrulength,sorted_prop2,...
@@ -28,7 +28,7 @@ for ii = 1:depth
         N(jj,jj,ii) = exp(-1*(sorted_prop2(jj,jj,ii))*thrulength);
     end
     for jj = sub_size+1:sq_size
-        N(jj,jj,ii) = exp(sorted_prop2(jj,jj,ii)*thrulength);
+        N(jj,jj,ii) = exp(1*(sorted_prop2(jj,jj,ii))*thrulength);
     end
 end
 NN = permutate(N);

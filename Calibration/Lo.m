@@ -1,7 +1,7 @@
 % Calculates the L0 matrix using the previously determined G10 and G20
 % matrices. This function needs to be checked!
 
-function[Lo,L10,L20,L12] = Lo(G10,G20,sub_size,depth)
+function[L0,L10,L20,L12] = Lo(G10,G20,sub_size,depth)
 
 % The algorithm requires that L1 and L2 be the known positive or negative
 % roots of the ratio matrices. Every element of L1 and L2 should be
@@ -26,8 +26,9 @@ end
 
 % Only one of these values needs to be calculated. Both are being
 % calculated right now as a method of checking if the coding/data are
-% correct. As of now (8/16) they are not even close...both elements of L12
-% should be equal.
+% correct. Calculating deltal earlier with mm values for lengths and using
+% meters in the Ao/Bo function produces kind of close values. Bo matrix
+% looks more reasonable...unit error somewhere?
 
 L12 = zeros(1,2,depth);
 
@@ -38,11 +39,11 @@ end
 
 % Calculates the L0 matrix.
 
-Lo = zeros(sub_size,sub_size,depth);
+L0 = zeros(sub_size,sub_size,depth);
 
 for ii = 1:depth
-    Lo(1,1,ii) = L10(1,1,ii);
-    Lo(2,2,ii) = L12(1,1,ii)/L10(1,1,ii);
+    L0(1,1,ii) = L10(1,1,ii);
+    L0(2,2,ii) = L12(1,1,ii)/L10(1,1,ii);
 end
 
 

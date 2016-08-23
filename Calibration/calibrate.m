@@ -18,6 +18,7 @@ function[calibrated_DUT] = calibrate(thrufile,reflect1file,reflect2file,...
 [~,~,~,~,lt] = genS_to_genT(ls11,ls12,ls21,ls22,...
     ldepth, ls_sub_size);
 
+% Might not need T-parameters for reflect.
 % Reflect1 Data
 [reflect1S,reflect1_freq,r1depth,r1_sq_size] = readin_HFSS(reflect1file);
 [r1s11,r1s12,r1s21,r1s22,r1_sub_size] = generalized_S(reflect1S,r1depth,...
@@ -52,24 +53,25 @@ function[calibrated_DUT] = calibrate(thrufile,reflect1file,reflect2file,...
 % Calculates the propagation constants,eigenvalues, and eigenvectors needed
 % for the calibration, and then sorts them into the correct order.
 [propagation_constants, eigenvalues, eigenvectors] = ...
-    prop_const(lt,linelength, tt, thrulength, depth);
+    prop_const(lt,linelength, tt, thrulength, sq_size, depth);
     
 [sorted_prop2,sorted_evalues,sorted_evectors] = ...
-    ordering(eigenvalues, propagation_constants, eigenvectors);
+    ordering(eigenvalues, propagation_constants, eigenvectors,sq_size,...
+    depth);
     
 % Calculates the partially known error boxes Ao and Bo. 
 [Ao,Bo] = Ao_and_Bo(sorted_evectors,tt,thrulength,sorted_prop2,...
     sq_size,sub_size,depth);
 
-% Calculates G10 and G20 matrices.
-[G10,G20] = G10_and_G20(Ao,Bo,r1t,r2t,r1s11,r1s12,r1s21,r1s22,...
+% Calculates G10 and G20 matrices. 
+[G10,G20] = G10_and_G20(Ao,Bo,r1s11,r1s12,r1s21,r1s22,...
     r2s11,r2s12,r2s21,r2s22,sq_size,sub_size,depth);
 
 % Calculates the L0 matrix.
-[Lo] = Lo(G10,G20,sub_size,depth);
+[L0,L10,L20,L12] = Lo(G10,G20,sub_size,depth);
 
 % Calculates the K0 matrix.
-[Ko] = Ko(G10,G20,Lo,sq_size,sub_size,depth);
+[Ko] = Ko(G10,G20,L0,sq_size,sub_size,depth);
 
 % Calculates the Nxo matrix.
 [Nxo] = Nxo(Ao,Bo,Ko,dutT,sq_size,depth);

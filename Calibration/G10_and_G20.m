@@ -1,7 +1,7 @@
 % Calculates known G10 and G20 matrices from measured reflection matrices
 % and previously calculated Ao and Bo matrices. 
 
-function[G10,G20] = G10_and_G20(Ao,Bo,r1t,r2t,r1s11,r1s12,r1s21,r1s22,...
+function[G10,G20] = G10_and_G20(Ao,Bo,r1s11,r1s12,r1s21,r1s22,...
     r2s11,r2s12,r2s21,r2s22,sq_size,sub_size,depth)
 
 % Creates 2x2 submatrices of Ao and Bo and populates them with the
@@ -34,6 +34,7 @@ r1s = [r1s11 r1s12;r1s21 r1s22];
 r2s = [r2s11 r2s12;r2s21 r2s22];
 
 % Creates G10 and G20 matrices and populates them with correct values.
+% Matrices are close to singular, getting bad values.
 
 G10 = zeros(sub_size,sub_size,depth);
 G20 = zeros(sub_size,sub_size,depth);
