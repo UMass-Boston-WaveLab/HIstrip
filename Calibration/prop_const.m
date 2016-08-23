@@ -3,13 +3,12 @@
 % P and Q matrices. 
 
 function[propagation_constants, eigenvalues, eigenvectors] = ...
-    prop_const(line,linelength, thru, thrulength, depth)
+    prop_const(line,linelength, thru, thrulength, sq_size, depth)
 
 % Creates empty Q matrix and performs initial calculations.
 
 deltal = linelength - thrulength;
-[k,l,m] = size(line);
-Q = zeros(k,k, depth);
+Q = zeros(sq_size,sq_size, depth);
 for ii = 1:depth
     invthru(:,:,ii) = inv(thru(:,:,ii));
 end
@@ -21,14 +20,15 @@ for ii = 1:depth
     Q(:,:,ii) = line(:,:,ii)*invthru(:,:,ii);
 end
 
-eigenvectors = zeros(k,k,depth);
-eigenvalues = zeros(k,k,depth);
+eigenvectors = zeros(sq_size,sq_size,depth);
+eigenvalues = zeros(sq_size,sq_size,depth);
 for ii = 1:depth
     [eigenvectors(:,:,ii),eigenvalues(:,:,ii)] = eig(Q(:,:,ii));
 end
-propagation_constants = zeros(k,k,depth);
+
+propagation_constants = zeros(sq_size,sq_size,depth);
 for ii = 1:depth
-    for jj = 1:k
+    for jj = 1:sq_size
         propagation_constants(jj,jj,ii) = (1/deltal)*log(eigenvalues(jj,jj,ii));
     end
 end

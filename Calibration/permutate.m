@@ -3,11 +3,13 @@
 
 function [M_p] = permutate(M)
 [k,l,m] = size(M);
-I = eye(2);
-O = zeros(2,2);
-P = zeros(4,4,m);
+I = eye(k/2);
+empty = zeros(k/2,k/2);
+P = zeros(k,k,m);
+
+% This portion only works for 4x4 matrix, needs to be generalized.
 for ii = 1:m
-    P(:,:,ii) = [O I; I O];
+    P(:,:,ii) = [empty I; I empty];
 end
 for ii = 1:m
     M_p(:,:,ii) = P(:,:,ii)*M(:,:,ii)*P(:,:,ii);
