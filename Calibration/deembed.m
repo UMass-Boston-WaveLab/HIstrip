@@ -1,6 +1,6 @@
-% Calibration function. Adding functions to it as I go.
+% Utilize this program for the deembedded case.
 
-function[calibrated_DUT] = calibrate(thrufile,reflect1file,reflect2file,...
+function[calibrated_DUT] = deembed(thrufile,reflect1file,reflect2file,...
     linefile,dutfile,thrulength,linelength)
 
 % Reads in all the data and converts each measurement from S-parameters to
@@ -67,11 +67,11 @@ function[calibrated_DUT] = calibrate(thrufile,reflect1file,reflect2file,...
 [G10,G20] = G10_and_G20(Ao,Bo,r1s11,r1s12,r1s21,r1s22,...
     r2s11,r2s12,r2s21,r2s22,sq_size,sub_size,depth);
 
-% Calculates the L0 matrix.
+% Calculates the L matrices needed to de-embed.
 [L0,L10,L20,L12] = Lo(G10,G20,sub_size,depth);
 
-% Calculates the K0 matrix.
-[K0] = Ko(G10,G20,L0,sq_size,sub_size,depth);
+% Calculates the K0 matrix for de-embedding.
+[K0] = knought(Ao,L10,L20,sq_size,sub_size,depth);
 
 % Calculates the Nxo matrix.
 [NX0] = Nxo(Ao,Bo,K0,dutT,sq_size,depth);
