@@ -6,7 +6,7 @@
 % for Characterization of Differential Devices" by Wojnowsky et al for
 % the equations.
 
-function [S11, S12, S21, S22, S] = genT_to_genS(T11, T12, T21, T22, T,...
+function [S11, S12, S21, S22, S] = genT_to_genS(T11, T12, T21, T22, ...
     depth, sub_size)
 
 

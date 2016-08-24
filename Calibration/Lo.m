@@ -1,5 +1,5 @@
 % Calculates the L0 matrix using the previously determined G10 and G20
-% matrices. This function needs to be checked!
+% matrices. 
 
 function[L0,L10,L20,L12] = Lo(G10,G20,sub_size,depth)
 
@@ -26,9 +26,8 @@ end
 
 % Only one of these values needs to be calculated. Both are being
 % calculated right now as a method of checking if the coding/data are
-% correct. Calculating deltal earlier with mm values for lengths and using
-% meters in the Ao/Bo function produces kind of close values. Bo matrix
-% looks more reasonable...unit error somewhere?
+% correct. Fixing sign in Ao_and_Bo function fixed the problem. Still
+% getting some singular/badly scaled errors from G10_and_G20.
 
 L12 = zeros(1,2,depth);
 

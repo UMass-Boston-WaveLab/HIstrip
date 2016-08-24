@@ -21,14 +21,15 @@ YoM1 = reverse_cascade(Z);
 
 % Calculates the known T-parameters of the thru standard using the
 % previously determined propagation constants, and permutates the matrix.
+% Don't need a sign factor here, the gamma values already contain it.
 
 N = zeros(sq_size,sq_size,depth);
 for ii = 1:depth
     for jj = 1:sub_size
-        N(jj,jj,ii) = exp(-1*(sorted_prop2(jj,jj,ii))*thrulength);
+        N(jj,jj,ii) = exp(sorted_prop2(jj,jj,ii)*thrulength);
     end
     for jj = sub_size+1:sq_size
-        N(jj,jj,ii) = exp(1*(sorted_prop2(jj,jj,ii))*thrulength);
+        N(jj,jj,ii) = exp(sorted_prop2(jj,jj,ii)*thrulength);
     end
 end
 NN = permutate(N);
