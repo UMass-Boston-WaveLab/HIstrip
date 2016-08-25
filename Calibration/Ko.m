@@ -2,7 +2,7 @@
 % matrices are reciprocal, which was checked earlier in the sanitycheck
 % function.
 
-function[Ko] = Ko(G10,G20,Lo,sq_size,sub_size,depth)
+function[Ko,L21_root_hat] = Ko(G10,G20,Lo,sq_size,sub_size,depth)
 
 % Performs the calculations needed to populate the K10 matrix.
 
