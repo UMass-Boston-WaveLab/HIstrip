@@ -1,6 +1,6 @@
 % Generates S-parameters in dB for the uncalibrated and calibrated data.
 
-function[mag_dutS,mag_dut_cal_S] = S_to_db(thru_freq,dut_cal_S,dutS11,...
+function[mag_dutS,mag_dut_cal_S] = S_to_db(dut_cal_S,dutS11,...
     dutS12,dutS21,dutS22,sq_size,depth)
 
 % Calculates the S-parameters of the uncalibrated and calibrated DUT in dB.

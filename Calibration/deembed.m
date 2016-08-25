@@ -1,13 +1,14 @@
 % Utilize this program for the deembedded case.
 
-function[calibrated_DUT] = deembed(thrufile,reflect1file,reflect2file,...
-    linefile,dutfile,thrulength,linelength)
+function[mag_dutS,mag_dut_cal_S] = deembed(re_thru,im_thru,...
+    re_reflect1,im_reflect1,re_reflect2,im_reflect2,re_line,im_line,...
+    re_dut,im_dut,thrulength,linelength)
 
 % Reads in all the data and converts each measurement from S-parameters to
 % T-parameters.
 
 % Thru Data
-[thruS,thru_freq,tdepth,t_sq_size] = readin_HFSS(thrufile);
+[thruS,thru_freq,tdepth,t_sq_size] = readin_HFSS(r);
 [ts11,ts12,ts21,ts22,ts_sub_size] = generalized_S(thruS,tdepth,t_sq_size);
 [~,~,~,~,tt] = genS_to_genT(ts11, ts12, ts21, ts22, ...
     tdepth, ts_sub_size);
@@ -93,5 +94,5 @@ function[calibrated_DUT] = deembed(thrufile,reflect1file,reflect2file,...
 % Need to figure out the phase/sign ambiguities; function goes here.
 
 % Converts the uncalibrated and calibrated S-parameters to dB for graphing.
-[mag_dutS,mag_dut_cal_S] = S_to_db(thru_freq,dut_cal_S,dutS11,...
+[mag_dutS,mag_dut_cal_S] = S_to_db(dut_cal_S,dutS11,...
     dutS12,dutS21,dutS22,sq_size,depth);
