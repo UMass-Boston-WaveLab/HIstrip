@@ -4,18 +4,18 @@
  function[Ao,Bo] = Ao_and_Bo(sorted_evectors,tt,thrulength,sorted_prop2,...
     sq_size,sub_size,depth)
 
-X = zeros(sq_size,sq_size,depth);
+invAo = zeros(sq_size,sq_size,depth);
 Ao = sorted_evectors;
 
 for ii = 1:depth
-    X(:,:,ii) = inv(sorted_evectors(:,:,ii));
+    invAo(:,:,ii) = inv(sorted_evectors(:,:,ii));
 end
 
 % Calculates the reverse cascaded product of inv(Ao) and M1.
 
 Z = zeros(sq_size,sq_size,depth);
 for ii = 1:depth
-    Z(:,:,ii) = X(:,:,ii)*tt(:,:,ii);
+    Z(:,:,ii) = invAo(:,:,ii)*tt(:,:,ii);
 end
 YoM1 = reverse_cascade(Z);
 
