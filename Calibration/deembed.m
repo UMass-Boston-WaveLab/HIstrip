@@ -8,34 +8,36 @@ function[mag_dutS,mag_dut_cal_S] = deembed(re_thru,im_thru,...
 % T-parameters.
 
 % Thru Data
-[thruS,thru_freq,tdepth,t_sq_size] = readin_HFSS(r);
+[thruS,thru_freq,tdepth,t_sq_size] = readin_HFSS(re_thru,im_thru);
 [ts11,ts12,ts21,ts22,ts_sub_size] = generalized_S(thruS,tdepth,t_sq_size);
 [~,~,~,~,tt] = genS_to_genT(ts11, ts12, ts21, ts22, ...
     tdepth, ts_sub_size);
 
 % Line Data
-[lineS, line_freq,ldepth,l_sq_size] = readin_HFSS(linefile);
+[lineS, line_freq,ldepth,l_sq_size] = readin_HFSS(re_line,im_line);
 [ls11,ls12,ls21,ls22,ls_sub_size] = generalized_S(lineS,ldepth,l_sq_size);
 [~,~,~,~,lt] = genS_to_genT(ls11,ls12,ls21,ls22,...
     ldepth, ls_sub_size);
 
 % Might not need T-parameters for reflect.
 % Reflect1 Data
-[reflect1S,reflect1_freq,r1depth,r1_sq_size] = readin_HFSS(reflect1file);
+[reflect1S,reflect1_freq,r1depth,r1_sq_size] = readin_HFSS(re_reflect1,...
+    im_reflect1);
 [r1s11,r1s12,r1s21,r1s22,r1_sub_size] = generalized_S(reflect1S,r1depth,...
     r1_sq_size);
 % [~,~,~,~,r1t] = genS_to_genT(r1s11,r1s12,r1s21,r1s22,...
-    r1depth, r1_sub_size);
+%    r1depth, r1_sub_size);
 
 % Reflect2 Data
-[reflect2S,reflect2_freq,r2depth,r2_sq_size] = readin_HFSS(reflect2file);
+[reflect2S,reflect2_freq,r2depth,r2_sq_size] = readin_HFSS(re_reflect2,...
+    im_reflect2);
 [r2s11,r2s12,r2s21,r2s22,r2_sub_size] = generalized_S(reflect2S,r2depth,...
     r2_sq_size);
 % [~,~,~,~,r2t] = genS_to_genT(r2s11,r2s12,r2s21,r2s22,...
-    r2depth, r2_sub_size);
+%    r2depth, r2_sub_size);
 
 % DUT Data
-[dutS,dut_freq,dutdepth,dut_sq_size] = readin_HFSS(dutfile);
+[dutS,dut_freq,dutdepth,dut_sq_size] = readin_HFSS(re_dut,im_dut);
 [dutS11,dutS12,dutS21,dutS22,dut_sub_size] = generalized_S(dutS,...
     dutdepth,dut_sq_size);
 [~,~,~,~,dutT] = genS_to_genT(dutS11,dutS12,dutS21,...
