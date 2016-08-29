@@ -1,6 +1,6 @@
 % Calibration function. 
 
-function[mag_dutS,mag_dut_cal_S] = calibrate(re_thru,im_thru,...
+function[mag_dutS,mag_dut_cal_S,sorted_prop2,sorted_evalues] = calibrate(re_thru,im_thru,...
     re_reflect1,im_reflect1,re_reflect2,im_reflect2,re_line,im_line,...
     re_dut,im_dut,thrulength,linelength)
 
@@ -64,6 +64,11 @@ addpath('Data');
     ordering(eigenvalues, propagation_constants, eigenvectors,sq_size,...
     depth);
     
+% Trying this out, fixes the complex log issue.
+
+[corrected_prop] = logfix(sorted_prop2,sq_size,sub_size,depth,...
+    linelength,thrulength)
+
 % Calculates the partially known error boxes Ao and Bo. 
 [Ao,Bo] = Ao_and_Bo(sorted_evectors,tt,thrulength,sorted_prop2,...
     sq_size,sub_size,depth);
