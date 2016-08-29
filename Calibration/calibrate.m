@@ -1,4 +1,4 @@
-% Calibration function. Adding functions to it as I go.
+% Calibration function. 
 
 function[mag_dutS,mag_dut_cal_S] = calibrate(re_thru,im_thru,...
     re_reflect1,im_reflect1,re_reflect2,im_reflect2,re_line,im_line,...
@@ -6,6 +6,8 @@ function[mag_dutS,mag_dut_cal_S] = calibrate(re_thru,im_thru,...
 
 % Reads in all the data and converts each measurement from S-parameters to
 % T-parameters.
+
+addpath('Data');
 
 % Thru Data
 [thruS,thru_freq,tdepth,t_sq_size] = readin_HFSS(re_thru,im_thru);
