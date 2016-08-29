@@ -7,6 +7,8 @@ function[mag_dutS,mag_dut_cal_S] = deembed(re_thru,im_thru,...
 % Reads in all the data and converts each measurement from S-parameters to
 % T-parameters.
 
+addpath('Data');
+
 % Thru Data
 [thruS,thru_freq,tdepth,t_sq_size] = readin_HFSS(re_thru,im_thru);
 [ts11,ts12,ts21,ts22,ts_sub_size] = generalized_S(thruS,tdepth,t_sq_size);
@@ -98,3 +100,5 @@ function[mag_dutS,mag_dut_cal_S] = deembed(re_thru,im_thru,...
 % Converts the uncalibrated and calibrated S-parameters to dB for graphing.
 [mag_dutS,mag_dut_cal_S] = S_to_db(dut_cal_S,dutS11,...
     dutS12,dutS21,dutS22,sq_size,depth);
+
+graphs;

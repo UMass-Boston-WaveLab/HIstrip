@@ -2,7 +2,7 @@
 % matrices are reciprocal, which was checked earlier in the sanitycheck
 % function.
 
-function[Ko,L21_root_hat] = Ko(G10,G20,Lo,sq_size,sub_size,depth)
+function[K0,K10,L21_root_hat,G10_transpose] = Ko(G10,G20,L0,sq_size,sub_size,depth)
 
 % Performs the calculations needed to populate the K10 matrix.
 
@@ -19,18 +19,18 @@ G20_hat = zeros(sub_size,sub_size,depth);
 invL0 = zeros(sub_size,sub_size,depth);
 
 for ii = 1:depth
-    invL0(:,:,ii) = inv(Lo(:,:,ii));
+    invL0(:,:,ii) = inv(L0(:,:,ii));
 end
 
 for ii = 1:depth
-    G10_hat(:,:,ii) = Lo(:,:,ii)*G10_transpose(:,:,ii)*invL0(:,:,ii);
-    G20_hat(:,:,ii) = Lo(:,:,ii)*G20_transpose(:,:,ii)*invL0(:,:,ii);
+    G10_hat(:,:,ii) = L0(:,:,ii)*G10_transpose(:,:,ii)*invL0(:,:,ii);
+    G20_hat(:,:,ii) = L0(:,:,ii)*G20_transpose(:,:,ii)*invL0(:,:,ii);
 end
 
 L21_root_hat = zeros(1,1,depth);
 
 for ii = 1:depth
-    L21_root_hat(1,1,ii) = sqrt(G10(2,1,ii)/G10_hat(2,1,ii));
+    L21_root_hat(1,1,ii) = sqrt((G10(2,1,ii)/G10_hat(2,1,ii)));
 end
 
 K10 = zeros(sub_size,sub_size,depth);
@@ -42,11 +42,11 @@ end
 
 % Builds the Ko matrix from Lo and K10.
 
-Ko = zeros(sq_size,sq_size,depth);
+K0 = zeros(sq_size,sq_size,depth);
 
 for ii = 1:depth
-    Ko(1:sub_size,1:sub_size,ii) = K10(:,:,ii);
-    Ko(sub_size+1:sq_size,sub_size+1:sq_size,ii) = Lo(:,:,ii)*K10(:,:,ii);
+    K0(1:sub_size,1:sub_size,ii) = K10(:,:,ii);
+    K0(sub_size+1:sq_size,sub_size+1:sq_size,ii) = L0(:,:,ii)*K10(:,:,ii);
 end
 
 
