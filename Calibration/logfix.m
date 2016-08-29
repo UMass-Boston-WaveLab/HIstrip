@@ -1,4 +1,6 @@
-% Corrects the complex logarithm. Unfinished but it's a start.
+% Corrects the complex logarithm. Unfinished but it's a start. Check the deltal calculations
+% and implement changes to bwkd directed waves as well. Don't index with jj, just search
+% position one, then position two.
 
 function[corrected_prop] = logfix(sorted_prop2,sq_size,sub_size,depth,...
     linelength,thrulength)
