@@ -101,4 +101,4 @@ addpath('Data');
 [mag_dutS,mag_dut_cal_S] = S_to_db(dut_cal_S,dutS11,...
     dutS12,dutS21,dutS22,sq_size,depth);
 
-graphs;
+graphs_dB;
