@@ -9,6 +9,20 @@ function[mag_dutS,mag_dut_cal_S,sorted_prop2,sorted_evalues] = calibrate(re_thru
 
 addpath('Data');
 
+% Here for convenience, want access to all output variables.
+re_thru = 're_thru.csv';
+im_thru = 'im_thru.csv';
+re_line = 're_dut_test.csv';
+im_line = 'im_dut_test.csv';
+re_reflect1 = 're_reflect.csv';
+im_reflect1 = 'im_reflect.csv';
+re_reflect2 = re_reflect1;
+im_reflect2 = im_reflect1;
+re_dut = 're_dut.csv';
+im_dut = 'im_dut.csv';
+%re_dut = 're_dut_test.csv';
+%im_dut = 'im_dut_test.csv';
+
 % Thru Data
 [thruS,thru_freq,tdepth,t_sq_size] = readin_HFSS(re_thru,im_thru);
 [ts11,ts12,ts21,ts22,ts_sub_size] = generalized_S(thruS,tdepth,t_sq_size);
@@ -66,8 +80,10 @@ addpath('Data');
     
 % Trying this out, fixes the complex log issue.
 
-[corrected_prop] = logfix(sorted_prop2,sq_size,sub_size,depth,...
-    linelength,thrulength)
+%[corrected_prop] = logfix(sorted_prop2,sq_size,sub_size,depth,...
+%    linelength,thrulength);
+
+%sorted_prop2 = corrected_prop;
 
 % Calculates the partially known error boxes Ao and Bo. 
 [Ao,Bo] = Ao_and_Bo(sorted_evectors,tt,thrulength,sorted_prop2,...
