@@ -26,8 +26,7 @@ end
 
 % Only one of these values needs to be calculated. Both are being
 % calculated right now as a method of checking if the coding/data are
-% correct. Fixing sign in Ao_and_Bo function fixed the problem. Still
-% getting some singular/badly scaled errors from G10_and_G20.
+% correct.
 
 L12 = zeros(1,2,depth);
 
