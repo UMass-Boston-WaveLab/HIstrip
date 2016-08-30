@@ -1,6 +1,4 @@
-% Corrects the complex logarithm. Unfinished but it's a start. Check the deltal calculations
-% and implement changes to bwkd directed waves as well. Don't index with jj, just search
-% position one, then position two.
+% Corrects the complex logarithm. Has no effect on final dB results.
 
 function[corrected_prop] = logfix(sorted_prop2,sq_size,sub_size,depth,...
     linelength,thrulength)
@@ -13,10 +11,11 @@ for ii = 1:depth
     for jj = 1:sub_size
         if imag(sorted_prop2(jj,jj,ii)) > 0
             corrected_prop(jj,jj,ii) = corrected_prop(jj,jj,ii) - (j*2*pi);
+            corrected_prop(jj+sub_size,jj+sub_size,ii) = -1*...
+                corrected_prop(jj,jj,ii);
         end
     end
 end
 
 corrected_prop = corrected_prop/(linelength - thrulength);
 
-            
