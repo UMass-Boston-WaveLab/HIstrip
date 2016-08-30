@@ -1,4 +1,4 @@
-% Converts the calibrated data back to S-parameters.
+% Builds submatrices of T matrix to help with conversion back to S parameters.
 
 function[dut_cal_T11,dut_cal_T12,dut_cal_T21,dut_cal_T22] = ...
     conversion(Nxo,sq_size,sub_size,depth)

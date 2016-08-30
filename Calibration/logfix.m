@@ -19,4 +19,3 @@ end
 
 corrected_prop = corrected_prop/(linelength - thrulength);
 
-            
