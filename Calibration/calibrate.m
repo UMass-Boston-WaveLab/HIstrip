@@ -14,12 +14,12 @@ re_thru = 're_thru.csv';
 im_thru = 'im_thru.csv';
 re_line = 're_dut_test.csv';
 im_line = 'im_dut_test.csv';
-re_reflect1 = 're_reflect.csv';
-im_reflect1 = 'im_reflect.csv';
+re_reflect1 = 're_openload.csv';
+im_reflect1 = 'im_openload.csv';
 re_reflect2 = re_reflect1;
 im_reflect2 = im_reflect1;
-re_dut = 're_dut.csv';
-im_dut = 'im_dut.csv';
+re_dut = 're_longline.csv';
+im_dut = 'im_longline.csv';
 %re_dut = 're_dut_test.csv';
 %im_dut = 'im_dut_test.csv';
 
@@ -80,10 +80,10 @@ im_dut = 'im_dut.csv';
     
 % Trying this out, fixes the complex log issue.
 
-%[corrected_prop] = logfix(sorted_prop2,sq_size,sub_size,depth,...
-%    linelength,thrulength);
+[corrected_prop] = logfix(sorted_prop2,sq_size,sub_size,depth,...
+        linelength,thrulength);
 
-%sorted_prop2 = corrected_prop;
+sorted_prop2 = corrected_prop;
 
 % Calculates the partially known error boxes Ao and Bo. 
 [Ao,Bo] = Ao_and_Bo(sorted_evectors,tt,thrulength,sorted_prop2,...

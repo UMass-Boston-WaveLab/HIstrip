@@ -44,7 +44,7 @@ end
 plot(thru_freq,S11uncal,'-o',thru_freq,S21uncal,'-+',thru_freq,S31uncal,...
     '-x',thru_freq,S41uncal,'-s',thru_freq,S22uncal,'-d',...
     thru_freq,S42uncal,'-^');
-title('Uncalibrated Longer Line S-Parameter Magnitude')
+title('Uncalibrated HIStrip DUT S-Parameter Magnitude')
 xlabel('Freq (GHz)')
 ylabel('dB')
 legend('S11','S21','S31','S41','S22','S42','Location','southeast')
@@ -54,7 +54,7 @@ figure;
 plot(thru_freq,S11cal,'-o',thru_freq,S21cal,'-+',thru_freq,S31cal,...
     '-x',thru_freq,S41cal,'-s',thru_freq,S22cal,'-d',...
     thru_freq,S42cal,'-^');
-title('Calibrated Longer Line S-Parameter Magnitude')
+title('Calibrated with longer line as standard and the DUT')
 xlabel('Freq (GHz)')
 ylabel('dB')
 legend('S11','S21','S31','S41','S22','S42','Location','northeast')
