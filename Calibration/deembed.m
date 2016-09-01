@@ -9,6 +9,20 @@ function[mag_dutS,mag_dut_cal_S] = deembed(re_thru,im_thru,...
 
 addpath('Data');
 
+% Here for convenience, want access to all output variables.
+re_thru = 're_thru.csv';
+im_thru = 'im_thru.csv';
+re_line = 're_longline.csv';
+im_line = 'im_longline.csv';
+re_reflect1 = 're_openload.csv';
+im_reflect1 = 'im_openload.csv';
+re_reflect2 = re_reflect1;
+im_reflect2 = im_reflect1;
+%re_dut = 're_dut.csv';
+%im_dut = 'im_dut.csv';
+re_dut = 're_longline.csv';
+im_dut = 'im_longline.csv';
+
 % Thru Data
 [thruS,thru_freq,tdepth,t_sq_size] = readin_HFSS(re_thru,im_thru);
 [ts11,ts12,ts21,ts22,ts_sub_size] = generalized_S(thruS,tdepth,t_sq_size);
