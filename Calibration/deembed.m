@@ -10,18 +10,18 @@ function[mag_dutS,mag_dut_cal_S] = deembed(re_thru,im_thru,...
 addpath('Data');
 
 % Here for convenience, want access to all output variables.
-re_thru = 're_thru.csv';
-im_thru = 'im_thru.csv';
+re_thru = 're-newthru.csv';
+im_thru = 'im_newthru.csv';
 re_line = 're_longline.csv';
 im_line = 'im_longline.csv';
-re_reflect1 = 're_openload.csv';
-im_reflect1 = 'im_openload.csv';
+re_reflect1 = 're_newshort.csv';
+im_reflect1 = 'im_newshort.csv';
 re_reflect2 = re_reflect1;
 im_reflect2 = im_reflect1;
-%re_dut = 're_dut.csv';
-%im_dut = 'im_dut.csv';
-re_dut = 're_longline.csv';
-im_dut = 'im_longline.csv';
+re_dut = 're_dut.csv';
+im_dut = 'im_dut.csv';
+%re_dut = 're_longline.csv';
+%im_dut = 'im_longline.csv';
 
 % Thru Data
 [thruS,thru_freq,tdepth,t_sq_size] = readin_HFSS(re_thru,im_thru);
@@ -83,12 +83,12 @@ im_dut = 'im_longline.csv';
     sq_size,sub_size,depth);
 
 % Calculates G10 and G20 matrices. 
-% [G10,G20] = G10_and_G20(Ao,Bo,r1s11,r1s12,r1s21,r1s22,...
-%    r2s11,r2s12,r2s21,r2s22,sq_size,sub_size,depth);
+ [G10,G20] = G10_and_G20(Ao,Bo,r1s11,r1s12,r1s21,r1s22,...
+    r2s11,r2s12,r2s21,r2s22,sq_size,sub_size,depth);
 
 % Trying something with matrix inversion math.
-[G10,G20] = newG10_and_G20(Ao,Bo,r1s11,r1s12,r1s21,r1s22,...
-    r2s11,r2s12,r2s21,r2s22,sq_size,sub_size,depth);
+%[G10,G20] = newG10_and_G20(Ao,Bo,r1s11,r1s12,r1s21,r1s22,...
+%    r2s11,r2s12,r2s21,r2s22,sq_size,sub_size,depth);
 
 % Calculates the L matrices needed to de-embed.
 [L0,L10,L20,L12] = Lo(G10,G20,sub_size,depth);

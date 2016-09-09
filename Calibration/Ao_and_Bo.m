@@ -25,10 +25,7 @@ YoM1 = reverse_cascade(Z);
 
 N = zeros(sq_size,sq_size,depth);
 for ii = 1:depth
-    for jj = 1:sub_size
-        N(jj,jj,ii) = exp(sorted_prop2(jj,jj,ii)*thrulength);
-    end
-    for jj = sub_size+1:sq_size
+    for jj = 1:sq_size
         N(jj,jj,ii) = exp(sorted_prop2(jj,jj,ii)*thrulength);
     end
 end
