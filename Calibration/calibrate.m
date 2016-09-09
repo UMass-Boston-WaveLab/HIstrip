@@ -10,16 +10,16 @@ function[mag_dutS,mag_dut_cal_S,sorted_prop2,sorted_evalues] = calibrate(re_thru
 addpath('Data');
 
 % Here for convenience, want access to all output variables.
-re_thru = 're_thru.csv';
-im_thru = 'im_thru.csv';
-re_line = 're_dut_test.csv';
-im_line = 'im_dut_test.csv';
-re_reflect1 = 're_openload.csv';
-im_reflect1 = 'im_openload.csv';
+re_thru = 're-newthru.csv'; %length = 82.0853 mm
+im_thru = 'im_newthru.csv';
+re_line = 're_longline.csv'; %length = 220.378 mm + 19.04 for SMA
+im_line = 'im_longline.csv';
+re_reflect1 = 're_newshort.csv';
+im_reflect1 = 'im_newshort.csv';
 re_reflect2 = re_reflect1;
 im_reflect2 = im_reflect1;
-re_dut = 're_longline.csv';
-im_dut = 'im_longline.csv';
+re_dut = 're_dut.csv';
+im_dut = 'im_dut.csv';
 %re_dut = 're_dut_test.csv';
 %im_dut = 'im_dut_test.csv';
 
@@ -35,22 +35,17 @@ im_dut = 'im_longline.csv';
 [~,~,~,~,lt] = genS_to_genT(ls11,ls12,ls21,ls22,...
     ldepth, ls_sub_size);
 
-% Might not need T-parameters for reflect.
 % Reflect1 Data
 [reflect1S,reflect1_freq,r1depth,r1_sq_size] = readin_HFSS(re_reflect1,...
     im_reflect1);
 [r1s11,r1s12,r1s21,r1s22,r1_sub_size] = generalized_S(reflect1S,r1depth,...
     r1_sq_size);
-% [~,~,~,~,r1t] = genS_to_genT(r1s11,r1s12,r1s21,r1s22,...
-%    r1depth, r1_sub_size);
 
 % Reflect2 Data
 [reflect2S,reflect2_freq,r2depth,r2_sq_size] = readin_HFSS(re_reflect2,...
     im_reflect2);
 [r2s11,r2s12,r2s21,r2s22,r2_sub_size] = generalized_S(reflect2S,r2depth,...
     r2_sq_size);
-% [~,~,~,~,r2t] = genS_to_genT(r2s11,r2s12,r2s21,r2s22,...
-%    r2depth, r2_sub_size);
 
 % DUT Data
 [dutS,dut_freq,dutdepth,dut_sq_size] = readin_HFSS(re_dut,im_dut);
@@ -73,17 +68,17 @@ im_dut = 'im_longline.csv';
 % for the calibration, and then sorts them into the correct order.
 [propagation_constants, eigenvalues, eigenvectors] = ...
     prop_const(lt,linelength, tt, thrulength, sq_size, depth);
-    
+ 
 [sorted_prop2,sorted_evalues,sorted_evectors] = ...
     ordering(eigenvalues, propagation_constants, eigenvectors,sq_size,...
     depth);
     
 % Trying this out, fixes the complex log issue.
 
-[corrected_prop] = logfix(sorted_prop2,sq_size,sub_size,depth,...
-        linelength,thrulength);
+% [corrected_prop] = logfix(sorted_prop2,sq_size,sub_size,depth,...
+%        linelength,thrulength);
 
-sorted_prop2 = corrected_prop;
+%sorted_prop2 = corrected_prop;
 
 % Calculates the partially known error boxes Ao and Bo. 
 [Ao,Bo] = Ao_and_Bo(sorted_evectors,tt,thrulength,sorted_prop2,...
