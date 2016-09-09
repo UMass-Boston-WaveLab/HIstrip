@@ -2,7 +2,7 @@
 % thru and line standards. Also calculates eigenvalues and eigenvectors of
 % P and Q matrices. 
 
-function[propagation_constants, eigenvalues, eigenvectors] = ...
+function[propagation_constants, eigenvalues, eigenvectors,Q] = ...
     prop_const(line,linelength, thru, thrulength, sq_size, depth)
 
 % Creates empty Q matrix and performs initial calculations.
@@ -32,10 +32,3 @@ for ii = 1:depth
         propagation_constants(jj,jj,ii) = (1/deltal)*log(eigenvalues(jj,jj,ii));
     end
 end
-
-
-
-
-
-
-    
