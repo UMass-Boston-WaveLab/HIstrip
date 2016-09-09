@@ -14,17 +14,15 @@ S11 = zeros(sub_size,sub_size,depth);
 S12 = zeros(sub_size,sub_size,depth);
 S21 = zeros(sub_size,sub_size,depth);
 S22 = zeros(sub_size,sub_size,depth);
-X = zeros(sub_size,sub_size,depth);
 
 for ii = 1:depth
-    X(:,:,ii) = inv(T22(:,:,ii));
+    S21(:,:,ii) = inv(T22(:,:,ii));
 end
 
 for ii = 1:depth
-    S11(:,:,ii) = T12(:,:,ii)*X(:,:,ii);
-    S12(:,:,ii) = T11(:,:,ii) - T12(:,:,ii)*X(:,:,ii)*T21(:,:,ii);
-    S21 = X;
-    S22(:,:,ii) = -X(:,:,ii)*T21(:,:,ii);
+    S11(:,:,ii) = T12(:,:,ii)*S21(:,:,ii);
+    S12(:,:,ii) = T11(:,:,ii) - T12(:,:,ii)*S21(:,:,ii)*T21(:,:,ii);
+    S22(:,:,ii) = -S21(:,:,ii)*T21(:,:,ii);
 end
 
 S = [S11 S12; S21 S22];
