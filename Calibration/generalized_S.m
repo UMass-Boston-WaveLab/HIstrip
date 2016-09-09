@@ -30,10 +30,10 @@ if sq_size > 2
     end
 else 
     sub_size = 1;
-    S11 = zeros(1,1,ii);
-    S12 = zeros(1,1,ii);
-    S21 = zeros(1,1,ii);
-    S22 = zeros(1,1,ii);
+    S11 = zeros(1,1,depth);
+    S12 = zeros(1,1,depth);
+    S21 = zeros(1,1,depth);
+    S22 = zeros(1,1,depth);
     for ii = 1:depth
         S11(1,1,ii) = S(1,1,ii);
         S12(1,1,ii) = S(1,2,ii);
