@@ -25,11 +25,12 @@ Set Four - Shortest set.
 Thru                  newthru3        ShorterThru3        42.44338 mm
 Reflect1              newshort3       Shorterreflect3
 Reflect2              secondreflect3  secondaryreflect3
-Line                  newline3        set3line3 m         95.63299mm (1.25 wavelengths longer)
+Line                  newline3        set3line3           95.63299 mm (1.25 wavelengths longer)
+Line2                 newline31       set3line31          53.082 mm (0.25 wavelengths longer)
+
 
 Extra/Unaccounted for Standards
 
 Line                  Longline.csv  LineCalTest        250.0559 mm
 Reflect               open.csv      ?                  Pair unknown
-Line                  Dut_test.csv  Dut_cal_test       154.3148 mm  (moderately longer line standard; one and a quarter wavelength longer
-                                                                    than set two thru);
+Line                  Dut_test.csv  Dut_cal_test       154.3148 mm  
