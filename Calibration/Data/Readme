@@ -23,5 +23,5 @@ Extra/Unaccounted for Standards
 
 Line                  Longline.csv  LineCalTest        250.0559 mm
 Reflect               open.csv      ?                  Pair unknown
-Line                  Dut_test.csv  Dut_cal_test       154.3148 mm  (moderately longer line standard; quarter wavelength longer
+Line                  Dut_test.csv  Dut_cal_test       154.3148 mm  (moderately longer line standard; one and a quarter wavelength longer
                                                                     than set two thru);
