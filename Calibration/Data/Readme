@@ -1,1 +1,27 @@
-The data files here are HFSS simulation results. The numbers are the real and imaginary components of rectangular data in .csv format with all whitespace stripped. Don't use rectangle format from HFSS - it gives incorrect data.
+The data files here are from HFSS simulation results. The naming and multiple data sets for each standard can be confusing. The TRL standards are sorted below into sets, showing which standards are intended to be used together. In addition, each standard has its corresponding filename, HFSS file, and for thru and line standards, the length in mm. The length includes the connectors - to find the length without the connectors, subtract 19.04 mm from the given length.
+
+Set One - Initial standard development.
+  
+Thru                  Thru.csv      ThruBG             111.7632 mm    
+Reflect(short)        Reflect.csv   ReflectBG3    
+Reflect(open-load)    Openload.csv  ReflectBGresist
+Line                  Line.csv      LineBG             122.4011 mm
+
+Set Two - Shorter TRL standards.
+
+Thru                  Newthru.csv   ShorterThru        101.1253 mm
+Reflect               Newshort.csv  ShorterReflect      
+Line                  Newline.csv   Shorter_LongLine   239.418 mm
+
+Set Three - Even shorter TRL standards.
+
+Thru                  Newthru2.csv  ShorterThru2       84.9950 mm
+Reflect               Newshort2.csv ShorterReflect2
+Line                  Newline2.csv  Shorter_Longline2  223.288 mm
+
+Extra/Unaccounted for Standards
+
+Line                  Longline.csv  LineCalTest        250.0559 mm
+Reflect               open.csv      ?                  Pair unknown
+Line                  Dut_test.csv  Dut_cal_test       154.3148 mm  (moderately longer line standard; quarter wavelength longer
+                                                                    than set two thru);
