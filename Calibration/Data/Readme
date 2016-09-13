@@ -20,6 +20,13 @@ Reflect               Newshort2.csv ShorterReflect2
 Line                  Newline2.csv  Shorter_Longline2  223.288 mm (3.25 wavelengths longer)
 Line                  set3line2.csv Set3line2          138.154 mm (1.25 wavelengths longer)
 
+Set Four - Shortest set.
+
+Thru                  newthru3        ShorterThru3        42.44338 mm
+Reflect1              newshort3       Shorterreflect3
+Reflect2              secondreflect3  secondaryreflect3
+Line                  newline3        set3line3 m         95.63299mm (1.25 wavelengths longer)
+
 Extra/Unaccounted for Standards
 
 Line                  Longline.csv  LineCalTest        250.0559 mm
