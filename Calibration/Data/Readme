@@ -5,19 +5,20 @@ Set One - Initial standard development.
 Thru                  Thru.csv      ThruBG             111.7632 mm    
 Reflect(short)        Reflect.csv   ReflectBG3    
 Reflect(open-load)    Openload.csv  ReflectBGresist
-Line                  Line.csv      LineBG             122.4011 mm
+Line                  Line.csv      LineBG             122.4011 mm (0.25 wavelengths longer)
 
 Set Two - Shorter TRL standards.
 
 Thru                  Newthru.csv   ShorterThru        101.1253 mm
 Reflect               Newshort.csv  ShorterReflect      
-Line                  Newline.csv   Shorter_LongLine   239.418 mm
+Line                  Newline.csv   Shorter_LongLine   239.418 mm (3.25 wavelengths longer)
 
 Set Three - Even shorter TRL standards.
 
 Thru                  Newthru2.csv  ShorterThru2       84.9950 mm
 Reflect               Newshort2.csv ShorterReflect2
-Line                  Newline2.csv  Shorter_Longline2  223.288 mm
+Line                  Newline2.csv  Shorter_Longline2  223.288 mm (3.25 wavelengths longer)
+Line                  set3line2.csv Set3line2          138.154 mm (1.25 wavelengths longer)
 
 Extra/Unaccounted for Standards
 
