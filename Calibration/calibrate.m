@@ -47,7 +47,7 @@ im_dut = 'im_dut.csv';
 
 % DUT Data
 [dutS,dut_freq,dutdepth,dut_sq_size] = readin_HFSS(re_dut,im_dut);
-[dutS11,dutS12,dutS21,dutS22,DUTS] = generalized_S(dutS,...
+[dutS11,dutS12,dutS21,dutS22,~] = generalized_S(dutS,...
     dutdepth,dut_sq_size);
 [~,~,~,~,dutT] = genS_to_genT(dutS11,dutS12,dutS21,...
     dutS22,dutdepth,2);
@@ -101,4 +101,4 @@ im_dut = 'im_dut.csv';
 [mag_dutS,mag_dut_cal_S] = S_to_db(dut_cal_S,dutS11,...
     dutS12,dutS21,dutS22,4,depth);
 
-graphs_dB;
+modal_graphs;
