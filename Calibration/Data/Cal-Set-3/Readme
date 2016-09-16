@@ -1,1 +1,6 @@
 Data sets for Cal Set 3.
+
+Thru                  cs3thru .csv  ShorterThru2       84.9950 mm
+Reflect               cs3short.csv  ShorterReflect2
+Line                  cs3line1.csv  Set3line2          138.154 mm (1.25 wavelengths longer)
+Line                  cs3line2.csv  Shorter_Longline2  223.288 mm (3.25 wavelengths longer)
