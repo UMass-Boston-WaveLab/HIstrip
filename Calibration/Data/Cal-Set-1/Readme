@@ -1,1 +1,8 @@
 Data sets for TRL cal set 1.
+
+Set One - Initial standard development.
+  
+Thru                  Thru.csv      ThruBG             111.7632 mm    
+Reflect(short)        Reflect.csv   ReflectBG3    
+Reflect(open-load)    Openload.csv  ReflectBGresist
+Line                  Line.csv      LineBG             122.4011 mm (0.25 wavelengths longer)
