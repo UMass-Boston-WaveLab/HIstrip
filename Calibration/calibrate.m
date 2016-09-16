@@ -7,15 +7,15 @@ function[mag_dutS,mag_dut_cal_S,sorted_prop2,sorted_evalues] = calibrate(re_thru
 % Reads in all the data and converts each measurement from S-parameters to
 % T-parameters.
 
-addpath('Data');
+% Figure out new addpath command.
 
 % Here for convenience, want access to all output variables.
-re_thru = 're-newthru.csv'; %length = 82.0853 mm
-im_thru = 'im_newthru.csv';
-re_line = 're_longline.csv'; %length = 220.378 mm + 19.04 for SMA
-im_line = 'im_longline.csv';
-re_reflect1 = 're_newshort.csv';
-im_reflect1 = 'im_newshort.csv';
+re_thru = 're_cs4thru.csv'; %length = 82.0853 mm
+im_thru = 'im_cs4thru.csv';
+re_line = 're_cs4line1.csv'; %length = 220.378 mm + 19.04 for SMA
+im_line = 'im_cs4line1.csv';
+re_reflect1 = 're_cs4short.csv';
+im_reflect1 = 'im_cs4short.csv';
 re_reflect2 = re_reflect1;
 im_reflect2 = im_reflect1;
 re_dut = 're_dut.csv';
@@ -25,92 +25,80 @@ im_dut = 'im_dut.csv';
 
 % Thru Data
 [thruS,thru_freq,tdepth,t_sq_size] = readin_HFSS(re_thru,im_thru);
-[ts11,ts12,ts21,ts22,ts_sub_size] = generalized_S(thruS,tdepth,t_sq_size);
+[ts11,ts12,ts21,ts22,TS] = generalized_S(thruS,tdepth,t_sq_size);
 [~,~,~,~,tt] = genS_to_genT(ts11, ts12, ts21, ts22, ...
-    tdepth, ts_sub_size);
+    tdepth, 2);
 
 % Line Data
 [lineS, line_freq,ldepth,l_sq_size] = readin_HFSS(re_line,im_line);
-[ls11,ls12,ls21,ls22,ls_sub_size] = generalized_S(lineS,ldepth,l_sq_size);
+[ls11,ls12,ls21,ls22,LS] = generalized_S(lineS,ldepth,l_sq_size);
 [~,~,~,~,lt] = genS_to_genT(ls11,ls12,ls21,ls22,...
-    ldepth, ls_sub_size);
+    ldepth, 2);
 
 % Reflect1 Data
 [reflect1S,reflect1_freq,r1depth,r1_sq_size] = readin_HFSS(re_reflect1,...
     im_reflect1);
-[r1s11,r1s12,r1s21,r1s22,r1_sub_size] = generalized_S(reflect1S,r1depth,...
-    r1_sq_size);
+[~,~,~,~,R1S] = generalized_S(reflect1S,r1depth,r1_sq_size);
 
 % Reflect2 Data
 [reflect2S,reflect2_freq,r2depth,r2_sq_size] = readin_HFSS(re_reflect2,...
     im_reflect2);
-[r2s11,r2s12,r2s21,r2s22,r2_sub_size] = generalized_S(reflect2S,r2depth,...
-    r2_sq_size);
+[~,~,~,~,R2S] = generalized_S(reflect2S,r2depth,r2_sq_size);
 
 % DUT Data
 [dutS,dut_freq,dutdepth,dut_sq_size] = readin_HFSS(re_dut,im_dut);
-[dutS11,dutS12,dutS21,dutS22,dut_sub_size] = generalized_S(dutS,...
+[dutS11,dutS12,dutS21,dutS22,DUTS] = generalized_S(dutS,...
     dutdepth,dut_sq_size);
 [~,~,~,~,dutT] = genS_to_genT(dutS11,dutS12,dutS21,...
-    dutS22,dutdepth,dut_sub_size);
+    dutS22,dutdepth,2);
 
 % Checks to make sure that all of the data has the same number of frequency
 % points, and that the thru,line, and DUT matrices are all the same size,
 % and the reflect matrices are of identical size. Displays a message if
 % something has gone awry.
 
-[sq_size,sub_size,depth] = sanitycheck(thru_freq,line_freq,...
+[depth] = sanitycheck(thru_freq,line_freq,...
     reflect1_freq,reflect2_freq,dut_freq,tdepth,ldepth,r1depth,r2depth,...
     dutdepth,t_sq_size,l_sq_size,r1_sq_size,r2_sq_size,dut_sq_size,...
-    r1s12,r1s21,r2s12,r2s21);
+    R1S,R2S);
 
 % Calculates the propagation constants,eigenvalues, and eigenvectors needed
 % for the calibration, and then sorts them into the correct order.
+
 [propagation_constants, eigenvalues, eigenvectors] = ...
-    prop_const(lt,linelength, tt, thrulength, sq_size, depth);
+    prop_const(lt,linelength, tt, thrulength, depth);
  
-[sorted_prop2,sorted_evalues,sorted_evectors] = ...
-    ordering(eigenvalues, propagation_constants, eigenvectors,sq_size,...
-    depth);
+[sorted_prop2,sorted_evalues,Ao] = ...
+    ordering(eigenvalues, propagation_constants, eigenvectors, depth);
     
-% Trying this out, fixes the complex log issue.
-
-% [corrected_prop] = logfix(sorted_prop2,sq_size,sub_size,depth,...
-%        linelength,thrulength);
-
-%sorted_prop2 = corrected_prop;
-
 % Calculates the partially known error boxes Ao and Bo. 
-[Ao,Bo] = Ao_and_Bo(sorted_evectors,tt,thrulength,sorted_prop2,...
-    sq_size,sub_size,depth);
+[invAo,Bo] = Ao_and_Bo(Ao,tt,thrulength,sorted_prop2,depth);
 
 % Calculates G10 and G20 matrices. 
-[G10,G20] = G10_and_G20(Ao,Bo,r1s11,r1s12,r1s21,r1s22,...
-    r2s11,r2s12,r2s21,r2s22,sq_size,sub_size,depth);
+[G10,G20] = G10_and_G20(Ao,Bo,R1S,R2S,depth);
 
 % Calculates the L0 matrix.
-[L0,L10,L20,L12] = Lo(G10,G20,sub_size,depth);
+[L0,L10,L20,L12] = Lo(G10,G20,depth);
 
 % Calculates the K0 matrix.
-[K0] = Ko(G10,G20,L0,sq_size,sub_size,depth);
+[K0] = Ko(G10,G20,L0,depth);
 
 % Calculates the Nxo matrix.
-[NX0] = Nxo(Ao,Bo,K0,dutT,sq_size,depth);
+[NX0] = Nxo(Ao,Bo,K0,dutT,depth);
 
 % Generates submatrices of Nxo.
 [dut_cal_T11,dut_cal_T12,dut_cal_T21,dut_cal_T22] = ...
-    conversion(NX0,sq_size,sub_size,depth);
+    conversion(NX0,depth);
 
 % Returns (mostly) calibrated S-parameters of DUT. Sign ambiguities still
 % need to be corrected.
-
 [~,~,~,~,dut_cal_S] = genT_to_genS(dut_cal_T11,dut_cal_T12,dut_cal_T21,...
-    dut_cal_T22, depth, sub_size);
+    dut_cal_T22, depth, 2);
 
 % Need to figure out the phase/sign ambiguities; function goes here.
 
 % Converts the uncalibrated and calibrated S-parameters to dB for graphing.
 [mag_dutS,mag_dut_cal_S] = S_to_db(dut_cal_S,dutS11,...
-    dutS12,dutS21,dutS22,sq_size,depth);
+    dutS12,dutS21,dutS22,4,depth);
 
 graphs_dB;
