@@ -1,11 +1,12 @@
-% Calculates the NX0 matrix.
+% Calculates the NX0 matrix. Returning different values if we pass invAo to
+% it versus recalculating it in this function.
 
-function[Nxo] = Nxo(Ao,Bo,Ko,dutT,sq_size,depth)
+function[Nxo] = Nxo(Ao,Bo,Ko,dutT,depth)
 
 % Calculates the preliminary matrices to get Nxo.
 
-invAo = zeros(sq_size,sq_size,depth);
-invKo = zeros(sq_size,sq_size,depth);
+invAo = zeros(4,4,depth);
+invKo = zeros(4,4,depth);
 
 for ii = 1:depth
     invAo(:,:,ii) = inv(Ao(:,:,ii));
@@ -16,7 +17,7 @@ permBo = permutate(Bo);
 
 % Calculates the Nxo matrix. See eqn 53 in the multimode TRL paper.
 
-Nxo = zeros(sq_size,sq_size,depth);
+Nxo = zeros(4,4,depth);
 
 for ii = 1:depth
     Nxo(:,:,ii) = invKo(:,:,ii)*invAo(:,:,ii)*dutT(:,:,ii)*...

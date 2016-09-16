@@ -1,20 +1,18 @@
 % Correctly orders the propagation constants and their associated
-% eigenvalues and eigenvectors.
+% eigenvalues and eigenvectors. This needs to get cleaned up.
 
-function [sorted_prop2,sorted_evalues,sorted_evectors] = ...
-    ordering(eigenvalues, propagation_constants, eigenvectors,sq_size,...
-    depth)
+function [sorted_prop2,sorted_evalues,Ao] = ...
+    ordering(eigenvalues, propagation_constants, eigenvectors, depth)
 
-% Creates 1xsq_size matrices from the diagonal matrices of eigenvalues and
+% Creates 1xr matrices from the diagonal matrices of eigenvalues and
 % propagation constants. The Z matrix extracts the real components of the
-% propagation constants for easier sorting. This process is inefficient and
-% can be rewritten; however, I think it works. 
+% propagation constants for easier sorting. 
 
-X = zeros(1,sq_size,depth);
-Z = zeros(1,sq_size,depth);
-sorted_prop = zeros(1,sq_size,depth);
+X = zeros(1,4,depth);
+Z = zeros(1,4,depth);
+sorted_prop = zeros(1,4,depth);
 for ii = 1:depth
-    for jj = 1:sq_size
+    for jj = 1:4
         X(:,jj,ii) = eigenvalues(jj,jj,ii);
         Z(:,jj,ii) = real(propagation_constants(jj,jj,ii));
         sorted_prop(:,jj,ii) = propagation_constants(jj,jj,ii);
@@ -126,11 +124,9 @@ for ii = 1:depth
     end
 end
 
-sorted_prop2 = zeros(sq_size,sq_size,depth);
+sorted_prop2 = zeros(4,4,depth);
 for ii = 1:depth
     sorted_prop2(:,:,ii) = diag(sorted_prop(:,:,ii));
     sorted_evalues(:,:,ii) = diag(X(:,:,ii));
 end
-sorted_evectors = eigenvectors;
-
-        
+Ao = eigenvectors;
