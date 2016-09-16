@@ -6,6 +6,9 @@
 % for Characterization of Differential Devices" by Wojnowsky et al for
 % the equations.
 
+% sub_size variable is retained so this works with arbitrarily sized square
+% matrices.
+
 function [S11, S12, S21, S22, S] = genT_to_genS(T11, T12, T21, T22, ...
     depth, sub_size)
 
@@ -26,4 +29,4 @@ for ii = 1:depth
 end
 
 S = [S11 S12; S21 S22];
-end
+end 

@@ -3,10 +3,10 @@
 % frequency points. Returns general size parameters for other functions to
 % use.
 
-function[sq_size,sub_size,depth] = sanitycheck(thru_freq,line_freq,...
+function[depth] = sanitycheck(thru_freq,line_freq,...
     reflect1_freq,reflect2_freq,dut_freq,tdepth,ldepth,r1depth,r2depth,...
     dutdepth,t_sq_size,l_sq_size,r1_sq_size,r2_sq_size,dut_sq_size,...
-    r1s12,r1s21,r2s12,r2s21)
+    R1S,R2S)
 
 % Checks that the same frequency points are imported for each TRL standard
 % and the DUT.
@@ -54,17 +54,11 @@ end
 epsilon = 1e-5;
 
 for ii = 1:depth
-    
-    if r1s12(1,1,ii) - r1s21(1,1,ii) > epsilon
+    if R1S(1,2,ii) - R1S(2,1,ii) > epsilon
         disp('Reflect1 reciprocal error.');
     end
-    
-    if r2s12(1,1,ii) - r2s21(1,1,ii) > epsilon
+
+    if R2S(1,2,ii) - R2S(2,1,ii) > epsilon
         disp('Reflect2 reciprocal error.');
     end
 end
-
-    
-
-
-
