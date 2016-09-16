@@ -22,12 +22,11 @@ Line                  cs3line2.csv  Shorter_Longline2  223.288 mm (3.25 waveleng
 
 Set Four - Shortest set.
 
-Thru                  newthru3        ShorterThru3        42.44338 mm
-Reflect1              newshort3       Shorterreflect3
-Reflect2              secondreflect3  secondaryreflect3
-Line                  newline3        set3line3           95.63299 mm (1.25 wavelengths longer)
-Line2                 newline31       set3line31          53.082 mm (0.25 wavelengths longer)
-
+Thru                  cs4thru         ShorterThru3        42.44338 mm
+Reflect1              cs4short3       Shorterreflect3
+Reflect2              cs4modalreflect secondaryreflect3
+Line1                 cs4line1        set3line31          53.082 mm (0.25 wavelengths longer)
+Line2                 cs4line2        set3line3           95.63299 mm (1.25 wavelengths longer)
 
 Extra/Unaccounted for Standards
 
