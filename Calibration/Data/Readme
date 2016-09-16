@@ -9,9 +9,9 @@ Line                  cs1line.csv      LineBG             122.4011 mm (0.25 wave
 
 Set Two - Shorter TRL standards.
 
-Thru                  Newthru.csv   ShorterThru        101.1253 mm
-Reflect               Newshort.csv  ShorterReflect      
-Line                  Newline.csv   Shorter_LongLine   239.418 mm (3.25 wavelengths longer)
+Thru                  cs2thru.csv   ShorterThru        101.1253 mm
+Reflect               cs2short.csv  ShorterReflect      
+Line                  cs2line.csv   Shorter_LongLine   239.418 mm (3.25 wavelengths longer)
 
 Set Three - Even shorter TRL standards.
 
