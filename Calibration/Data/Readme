@@ -1,11 +1,11 @@
-The data files here are from HFSS simulation results. The naming and multiple data sets for each standard can be confusing. The TRL standards are sorted below into sets, showing which standards are intended to be used together. In addition, each standard has its corresponding filename, HFSS file, and for thru and line standards, the length in mm. The length includes the connectors - to find the length without the connectors, subtract 19.04 mm from the given length.
+The data files here are from HFSS simulation results. The TRL standards are sorted below into sets, showing which standards are intended to be used together. In addition, each standard has its corresponding filename, HFSS file, and for thru and line standards, the length in mm. The length includes the connectors - to find the length without the connectors, subtract 19.04 mm from the given length.
 
 Set One - Initial standard development.
   
-Thru                  Thru.csv      ThruBG             111.7632 mm    
-Reflect(short)        Reflect.csv   ReflectBG3    
-Reflect(open-load)    Openload.csv  ReflectBGresist
-Line                  Line.csv      LineBG             122.4011 mm (0.25 wavelengths longer)
+Thru                  cs1thru.csv      ThruBG             111.7632 mm    
+Reflect(short)        cs1short.csv     ReflectBG3    
+Reflect(open-load)    cs1openload.csv  ReflectBGresist
+Line                  cs1line.csv      LineBG             122.4011 mm (0.25 wavelengths longer)
 
 Set Two - Shorter TRL standards.
 
