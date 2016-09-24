@@ -1,7 +1,7 @@
 Data sets for Cal Set 4.
 
-Thru                  cs4thru         ShorterThru3        42.44338 mm
-Reflect1              cs4short3       Shorterreflect3
-Reflect2              cs4modalreflect secondaryreflect3
-Line1                 cs4line1        set3line31          53.082 mm (0.25 wavelengths longer)
-Line2                 cs4line2        set3line3           95.63299 mm (1.25 wavelengths longer)
+Thru                  cs4thru.csv      cs4thru            42.44338 mm
+Reflect1              cs4short.csv     cs4short
+Reflect2              cs4modalreflect  cs4modalreflect    (standard not up to par, dataset needs updating)
+Line1                 cs4line1         cs4line1           53.082 mm (0.25 wavelengths longer)
+Line2                 cs4line2         cs4line2           95.63299 mm (1.25 wavelengths longer)
