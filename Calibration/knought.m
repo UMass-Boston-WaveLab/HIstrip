@@ -1,28 +1,28 @@
 % Calculates the K0 matrix used to de-embed the DUT, using the reciprocal
 % error networks parameters from the algorithm.
 
-function[K0] = knought(Ao,L10,L20,sq_size,sub_size,depth)
+function[K0] = knought(Ao,L10,L20,depth)
 
 % Calculates the necessary submatrices of Ao.
-A011 = zeros(sub_size,sub_size,depth);
-A012 = zeros(sub_size,sub_size,depth);
-A021 = zeros(sub_size,sub_size,depth);
-A022 = zeros(sub_size,sub_size,depth);
+A011 = zeros(2,2,depth);
+A012 = zeros(2,2,depth);
+A021 = zeros(2,2,depth);
+A022 = zeros(2,2,depth);
 
 for ii = 1:depth
-A011(:,:,ii) = Ao(1:sub_size,1:sub_size,ii);
-A012(:,:,ii) = Ao(1:sub_size,sub_size+1:sq_size,ii);
-A021(:,:,ii) = Ao(sub_size+1:sq_size,1:sub_size,ii);
-A022(:,:,ii) = Ao(sub_size+1:sq_size,sub_size+1:sq_size,ii);
+A011(:,:,ii) = Ao(1:2,1:2,ii);
+A012(:,:,ii) = Ao(1:2,3:4,ii);
+A021(:,:,ii) = Ao(3:4,1:2,ii);
+A022(:,:,ii) = Ao(3:4,3:4,ii);
 end
 
-A022T = zeros(sub_size,sub_size,depth);
+A022T = zeros(2,2,depth);
 
 for ii = 1:depth
 A022T(:,:,ii) = transpose(A022(:,:,ii));
 end
 
-X = zeros(sub_size,sub_size,depth);
+X = zeros(2,2,depth);
 
 for ii = 1:depth
 X(:,:,ii) = inv(A022(:,:,ii));
@@ -31,7 +31,7 @@ end
 % K2L should be diagonal. This should be checked somehow when real data is
 % used.
 
-K2L = zeros(sub_size,sub_size,depth);
+K2L = zeros(2,2,depth);
 
 for ii = 1:depth
 K2L(:,:,ii) = inv(A022T(:,:,ii)*(A011(:,:,ii) - A012(:,:,ii)*...
@@ -58,7 +58,7 @@ for ii = 1:depth
     K20(1,1,ii) = sqrt(R2(1,1,ii)/L20(1,1,ii));
 end
 
-K0 = zeros(sq_size,sq_size,depth);
+K0 = zeros(4,4,depth);
 
 for ii = 1:depth
     K0(1,1,ii) = K10(1,1,ii);
@@ -66,4 +66,3 @@ for ii = 1:depth
     K0(3,3,ii) = L10(1,1,ii)*K10(1,1,ii);
     K0(4,4,ii) = L20(1,1,ii)*K20(1,1,ii);
 end
-
