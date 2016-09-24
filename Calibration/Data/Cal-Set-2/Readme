@@ -1,5 +1,5 @@
 Data sets for TRL Cal Set 2.
 
-Thru                  cs2thru.csv   ShorterThru        101.1253 mm
-Reflect               cs2short.csv  ShorterReflect      
-Line                  cs2line.csv   Shorter_LongLine   239.418 mm (3.25 wavelengths longer)
+Thru                  cs2thru.csv      cs2thru            101.1253 mm
+Reflect               cs2short.csv     cs2short      
+Line                  cs2line.csv      cs2line            239.418 mm (3.25 wavelengths longer)
