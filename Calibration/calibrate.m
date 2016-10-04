@@ -7,31 +7,30 @@ function[mag_dutS,mag_dut_cal_S,sorted_prop2,sorted_evalues] = calibrate(re_thru
 % Reads in all the data and converts each measurement from S-parameters to
 % T-parameters.
 
-% Figure out new addpath command.
+addpath 'Data';
+addpath 'Data/Cal-Set-4';
 
 % Here for convenience, want access to all output variables.
-re_thru = 're_cs4thru.csv'; %length = 82.0853 mm
+re_thru = 're_cs4thru.csv'; 
 im_thru = 'im_cs4thru.csv';
-re_line = 're_cs4line1.csv'; %length = 220.378 mm + 19.04 for SMA
+re_line = 're_cs4line1.csv'; 
 im_line = 'im_cs4line1.csv';
 re_reflect1 = 're_cs4short.csv';
 im_reflect1 = 'im_cs4short.csv';
 re_reflect2 = re_reflect1;
 im_reflect2 = im_reflect1;
-re_dut = 're_dut.csv';
-im_dut = 'im_dut.csv';
-%re_dut = 're_dut_test.csv';
-%im_dut = 'im_dut_test.csv';
+re_dut = 're_cs4line2.csv';
+im_dut = 'im_cs4line2.csv';
 
 % Thru Data
 [thruS,thru_freq,tdepth,t_sq_size] = readin_HFSS(re_thru,im_thru);
-[ts11,ts12,ts21,ts22,TS] = generalized_S(thruS,tdepth,t_sq_size);
+[ts11,ts12,ts21,ts22,~] = generalized_S(thruS,tdepth,t_sq_size);
 [~,~,~,~,tt] = genS_to_genT(ts11, ts12, ts21, ts22, ...
     tdepth, 2);
 
 % Line Data
 [lineS, line_freq,ldepth,l_sq_size] = readin_HFSS(re_line,im_line);
-[ls11,ls12,ls21,ls22,LS] = generalized_S(lineS,ldepth,l_sq_size);
+[ls11,ls12,ls21,ls22,~] = generalized_S(lineS,ldepth,l_sq_size);
 [~,~,~,~,lt] = genS_to_genT(ls11,ls12,ls21,ls22,...
     ldepth, 2);
 
@@ -47,7 +46,7 @@ im_dut = 'im_dut.csv';
 
 % DUT Data
 [dutS,dut_freq,dutdepth,dut_sq_size] = readin_HFSS(re_dut,im_dut);
-[dutS11,dutS12,dutS21,dutS22,DUTS] = generalized_S(dutS,...
+[dutS11,dutS12,dutS21,dutS22,~] = generalized_S(dutS,...
     dutdepth,dut_sq_size);
 [~,~,~,~,dutT] = genS_to_genT(dutS11,dutS12,dutS21,...
     dutS22,dutdepth,2);
@@ -72,7 +71,7 @@ im_dut = 'im_dut.csv';
     ordering(eigenvalues, propagation_constants, eigenvectors, depth);
     
 % Calculates the partially known error boxes Ao and Bo. 
-[invAo,Bo] = Ao_and_Bo(Ao,tt,thrulength,sorted_prop2,depth);
+[~,Bo] = Ao_and_Bo(Ao,tt,thrulength,sorted_prop2,depth);
 
 % Calculates G10 and G20 matrices. 
 [G10,G20] = G10_and_G20(Ao,Bo,R1S,R2S,depth);
@@ -101,4 +100,4 @@ im_dut = 'im_dut.csv';
 [mag_dutS,mag_dut_cal_S] = S_to_db(dut_cal_S,dutS11,...
     dutS12,dutS21,dutS22,4,depth);
 
-graphs_dB;
+modal_graphs;
