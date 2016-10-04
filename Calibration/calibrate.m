@@ -7,7 +7,8 @@ function[mag_dutS,mag_dut_cal_S,sorted_prop2,sorted_evalues] = calibrate(re_thru
 % Reads in all the data and converts each measurement from S-parameters to
 % T-parameters.
 
-% Figure out new addpath command.
+addpath 'Data';
+addpath 'Data/Cal-Set-4';
 
 % Here for convenience, want access to all output variables.
 re_thru = 're_cs4thru.csv'; 
@@ -18,8 +19,8 @@ re_reflect1 = 're_cs4short.csv';
 im_reflect1 = 'im_cs4short.csv';
 re_reflect2 = re_reflect1;
 im_reflect2 = im_reflect1;
-re_dut = 're_dut.csv';
-im_dut = 'im_dut.csv';
+re_dut = 're_cs4line2.csv';
+im_dut = 'im_cs4line2.csv';
 
 % Thru Data
 [thruS,thru_freq,tdepth,t_sq_size] = readin_HFSS(re_thru,im_thru);

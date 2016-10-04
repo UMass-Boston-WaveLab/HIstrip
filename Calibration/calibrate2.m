@@ -7,7 +7,8 @@ function[mag_dutS,mag_dut_cal_S,sorted_prop2,sorted_evalues] = calibrate2(re_thr
 % Reads in all the data and converts each measurement from S-parameters to
 % T-parameters.
 
-addpath('Data');
+addpath 'Data';
+addpath 'Data/Cal-Set-4';
 
 % Here for convenience, want access to all output variables.
 re_thru = 're_cs4thru.csv'; 
@@ -20,10 +21,8 @@ re_reflect2 = re_reflect1;
 im_reflect2 = im_reflect1;
 re_secondreflect = 're_cs4modalreflect.csv';
 im_secondreflect = 'im_cs4modalreflect.csv';
-re_dut = 're_dut.csv';
-im_dut = 'im_dut.csv';
-%re_dut = 're_dut_test.csv';
-%im_dut = 'im_dut_test.csv';
+re_dut = 're_cs3thru.csv';
+im_dut = 'im_cs3thru.csv';
 
 % Thru Data
 [thruS,thru_freq,tdepth,t_sq_size] = readin_HFSS(re_thru,im_thru);
@@ -40,12 +39,12 @@ im_dut = 'im_dut.csv';
 % Reflect1 Data
 [reflect1S,reflect1_freq,r1depth,r1_sq_size] = readin_HFSS(re_reflect1,...
     im_reflect1);
-[~,~,~,~,R1S] = generalized_S(reflect1S,r1depth,r1_sq_size);
+[r1s11,r1s12,r1s21,r1s22,R1S] = generalized_S(reflect1S,r1depth,r1_sq_size);
 
 % Reflect2 Data
 [reflect2S,reflect2_freq,r2depth,r2_sq_size] = readin_HFSS(re_reflect2,...
     im_reflect2);
-[~,~,~,~,R1S] = generalized_S(reflect2S,r2depth,r2_sq_size);
+[r2s11,r2s12,r2s21,r2s22,R2S] = generalized_S(reflect2S,r2depth,r2_sq_size);
 
 % Secondary Reflect Data
 [reflect2S,reflect2_freq,reflect2depth,reflect2_sq_size] = ...
@@ -113,7 +112,6 @@ im_dut = 'im_dut.csv';
 
 % Returns (mostly) calibrated S-parameters of DUT. Sign ambiguities still
 % need to be corrected.
-
 [~,~,~,~,dut_cal_S] = genT_to_genS(dut_cal_T11,dut_cal_T12,dut_cal_T21,...
     dut_cal_T22, depth, 2);
 
