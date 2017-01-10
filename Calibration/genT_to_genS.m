@@ -12,12 +12,13 @@
 function [S11, S12, S21, S22, S] = genT_to_genS(T11, T12, T21, T22, ...
     depth, sub_size)
 
-
+% Preallocating matrices.
 S11 = zeros(sub_size,sub_size,depth);
 S12 = zeros(sub_size,sub_size,depth);
 S21 = zeros(sub_size,sub_size,depth);
 S22 = zeros(sub_size,sub_size,depth);
 
+% Performing the T->S Parameter conversion.
 for ii = 1:depth
     S21(:,:,ii) = inv(T22(:,:,ii));
 end
