@@ -3,6 +3,8 @@
 
 function[invAo,Bo] = Bo(Ao,tt,thrulength,sorted_prop2,depth)
 
+% Preallocating and inverting Ao matrix.
+
 invAo = zeros(4,4,depth);
 for ii = 1:depth
     invAo(:,:,ii) = inv(Ao(:,:,ii));
