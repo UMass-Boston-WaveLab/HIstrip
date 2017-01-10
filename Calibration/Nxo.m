@@ -1,5 +1,4 @@
-% Calculates the NX0 matrix. Returning different values if we pass invAo to
-% it versus recalculating it in this function.
+% Calculates the NX0 matrix. 
 
 function[Nxo] = Nxo(Ao,Bo,Ko,dutT,depth)
 
@@ -15,7 +14,7 @@ end
 
 permBo = permutate(Bo);
 
-% Calculates the Nxo matrix. See eqn 53 in the multimode TRL paper.
+% Calculates the Nxo matrix. See eqn. 53 in the multimode TRL paper.
 
 Nxo = zeros(4,4,depth);
 

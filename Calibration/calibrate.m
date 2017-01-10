@@ -8,19 +8,22 @@ function[mag_dutS,mag_dut_cal_S,sorted_prop2,sorted_evalues] = calibrate(re_thru
 % T-parameters.
 
 addpath 'Data';
-addpath 'Data/Cal-Set-4';
+%addpath 'Data/Cal-Set-4-V2';
+addpath 'Data/Cal-Set-5';
+%addpath 'Data/Cal-Set-4';
+%addpath 'Data/Cal-Set-3';
 
 % Here for convenience, want access to all output variables.
-re_thru = 're_cs4thru.csv'; 
-im_thru = 'im_cs4thru.csv';
-re_line = 're_cs4line1.csv'; 
-im_line = 'im_cs4line1.csv';
-re_reflect1 = 're_cs4short.csv';
-im_reflect1 = 'im_cs4short.csv';
+re_thru = 're_cs5thruband1_groundV2.csv'; 
+im_thru = 'im_cs5thruband1_groundV2.csv';
+re_line = 're_cs5line1band1_groundV2.csv'; 
+im_line = 'im_cs5line1band1_groundV2.csv';
+re_reflect1 = 're_cs5openband1_groundV2.csv';
+im_reflect1 = 'im_cs5openband1_groundV2.csv';
 re_reflect2 = re_reflect1;
 im_reflect2 = im_reflect1;
-re_dut = 're_cs4line2.csv';
-im_dut = 'im_cs4line2.csv';
+re_dut = 're_dutTest.csv';
+im_dut = 'im_dutTest.csv';
 
 % Thru Data
 [thruS,thru_freq,tdepth,t_sq_size] = readin_HFSS(re_thru,im_thru);

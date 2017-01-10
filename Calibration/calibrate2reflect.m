@@ -9,6 +9,8 @@ function[mag_dutS,mag_dut_cal_S,sorted_prop2,sorted_evalues] = calibrate2(re_thr
 
 addpath 'Data';
 addpath 'Data/Cal-Set-4-V2';
+addpath 'Data/Cal-Set-5';
+
 
 % Here for convenience, want access to all output variables.
 re_thru = 're_cs5thruband1_groundV2.csv'; 
@@ -21,8 +23,8 @@ re_reflect2 = re_reflect1;
 im_reflect2 = im_reflect1;
 re_secondreflect = 're_cs5modalreflectband1_groundV2.csv';
 im_secondreflect = 'im_cs5modalreflectband1_groundV2.csv';
-re_dut = 're_cs5thruband1_groundV2.csv';
-im_dut = 'im_cs5thruband1_groundV2.csv';
+re_dut = 're_cs5line1band1_groundV2.csv';
+im_dut = 'im_cs5line1band1_groundV2.csv';
 
 % Thru Data
 [thruS,thru_freq,tdepth,t_sq_size] = readin_HFSS(re_thru,im_thru);
@@ -61,8 +63,28 @@ im_dut = 'im_cs5thruband1_groundV2.csv';
 [dutS,dut_freq,dutdepth,dut_sq_size] = readin_HFSS(re_dut,im_dut);
 [dutS11,dutS12,dutS21,dutS22,~] = generalized_S(dutS,...
     dutdepth,dut_sq_size);
-[~,~,~,~,dutT] = genS_to_genT(dutS11,dutS12,dutS21,...
-    dutS22,dutdepth,2);
+
+% For reflect, dutS is a 2x2 matrix, and each subcomponent is a singleton.
+% This calculates the T matrix for the 2x2 dut.
+T11 = dutS12 - (dutS11.*dutS22./dutS21);
+T12 = dutS11./dutS21;
+T21 = -1.*dutS22./dutS21;
+T22 = 1./dutS21;
+
+% The 4x4 S/T matrix for the reflect is [G 0; 0 G] where each subcomponent
+% is a 2x2 matrix. This populates the 4x4 T matrix for the reflect
+% standard.
+dutT = zeros(4,4,dutdepth);
+for ii = 1:dutdepth
+    dutT(1,1,ii) = T11(1,1,ii);
+    dutT(1,2,ii) = T12(1,1,ii);
+    dutT(2,1,ii) = T21(1,1,ii);
+    dutT(2,2,ii) = T22(1,1,ii);
+    dutT(3,3,ii) = T11(1,1,ii);
+    dutT(3,4,ii) = T12(1,1,ii);
+    dutT(4,3,ii) = T21(1,1,ii);
+    dutT(4,4,ii) = T22(1,1,ii);
+end
 
 % Checks to make sure that all of the data has the same number of frequency
 % points, and that the thru,line, and DUT matrices are all the same size,
@@ -117,8 +139,11 @@ im_dut = 'im_cs5thruband1_groundV2.csv';
 
 % Need to figure out the phase/sign ambiguities; function goes here.
 
+% Builds 2x2 zero matrix to plug in during the next step.
+zeroBlock = zeros(2,2,depth);
+
 % Converts the uncalibrated and calibrated S-parameters to dB for graphing.
-[mag_dutS,mag_dut_cal_S] = S_to_db(dut_cal_S,dutS11,...
-    dutS12,dutS21,dutS22,4,depth);
+[mag_dutS,mag_dut_cal_S] = S_to_db(dut_cal_S,R1S,zeroBlock,zeroBlock,...
+    R1S,4,depth);
 
 modal_graphs;

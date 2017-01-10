@@ -20,8 +20,8 @@ re_reflect1 = 're_cs4short.csv';
 im_reflect1 = 'im_cs4short.csv';
 re_reflect2 = re_reflect1;
 im_reflect2 = im_reflect1;
-re_dut = 're_cs3thru.csv';
-im_dut = 'im_cs3thru.csv';
+re_dut = 're_cs4line2.csv';
+im_dut = 'im_cs4line2.csv';
 
 % Thru Data
 [thruS,thru_freq,tdepth,t_sq_size] = readin_HFSS(re_thru,im_thru);
@@ -69,7 +69,7 @@ im_dut = 'im_cs3thru.csv';
     
 [sorted_prop2,sorted_evalues,Ao] = ...
     ordering(eigenvalues, propagation_constants, eigenvectors, depth);
-    
+
 % Calculates the partially known error boxes Ao and Bo. 
 [~,Bo] = Ao_and_Bo(Ao,tt,thrulength,sorted_prop2,depth);
 
