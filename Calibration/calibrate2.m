@@ -1,16 +1,17 @@
-% Calibration function. 
+% Calibration function. This version uses two reflect standards as
+% suggested in the multimodal TRL paper.
 
 function[mag_dutS,mag_dut_cal_S,sorted_prop2,sorted_evalues] = calibrate2(re_thru,im_thru,...
     re_reflect1,im_reflect1,re_reflect2,im_reflect2,re_line,im_line,...
     re_dut,im_dut,thrulength,linelength)
 
-% Reads in all the data and converts each measurement from S-parameters to
-% T-parameters.
+% Adds relative paths so Matlab can find data.
 
 addpath 'Data';
 addpath 'Data/Cal-Set-4-V2';
+addpath 'Data/Cal-Set-5';
 
-% Here for convenience, want access to all output variables.
+% Here for convenience, want access to all output variables. 
 re_thru = 're_cs5thruband1_groundV2.csv'; 
 im_thru = 'im_cs5thruband1_groundV2.csv';
 re_line = 're_cs5line1band1_groundV2.csv'; 
@@ -24,7 +25,10 @@ im_secondreflect = 'im_cs5modalreflectband1_groundV2.csv';
 re_dut = 're_cs5thruband1_groundV2.csv';
 im_dut = 'im_cs5thruband1_groundV2.csv';
 
-% Thru Data
+% Reading in all the data from HFSS and converting to generalized S
+% parameters (and T parameters for thru, line, DUT.)
+
+% Thru Data.
 [thruS,thru_freq,tdepth,t_sq_size] = readin_HFSS(re_thru,im_thru);
 [ts11,ts12,ts21,ts22,~] = generalized_S(thruS,tdepth,t_sq_size);
 [~,~,~,~,tt] = genS_to_genT(ts11, ts12, ts21, ts22, ...
@@ -46,7 +50,7 @@ im_dut = 'im_cs5thruband1_groundV2.csv';
     im_reflect2);
 [r2s11,r2s12,r2s21,r2s22,R2S] = generalized_S(reflect2S,r2depth,r2_sq_size);
 
-% Secondary Reflect Data
+% Secondary Reflect Data - This is the mode conversion reflect standard.
 [reflect2S,reflect2_freq,reflect2depth,reflect2_sq_size] = ...
     readin_HFSS(re_secondreflect,im_secondreflect);
 [rs2111,rs2112,rs2121,rs2122,r21_sub_size] = generalized_S(reflect2S,...
@@ -81,14 +85,7 @@ im_dut = 'im_cs5thruband1_groundV2.csv';
  
 [sorted_prop2,sorted_evalues,Ao] = ...
     ordering(eigenvalues, propagation_constants, eigenvectors, depth);
-    
-% Trying this out, fixes the complex log issue.
-
-% [corrected_prop] = logfix(sorted_prop2,sq_size,sub_size,depth,...
-%        linelength,thrulength);
-
-%sorted_prop2 = corrected_prop;
-
+   
 % Calculates the partially known error boxes Ao and Bo. 
 [~,Bo] = Ao_and_Bo(Ao,tt,thrulength,sorted_prop2,depth);
 
@@ -121,4 +118,5 @@ im_dut = 'im_cs5thruband1_groundV2.csv';
 [mag_dutS,mag_dut_cal_S] = S_to_db(dut_cal_S,dutS11,...
     dutS12,dutS21,dutS22,4,depth);
 
+% Plots the DUT modal S-Parameters.
 modal_graphs;
