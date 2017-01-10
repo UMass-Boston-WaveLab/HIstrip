@@ -1,11 +1,12 @@
-% Calibration function. 
+% Calibration function. Uses one reflect standard, and is designed to work
+% on the 2x2 reflect standard. Not the preferred approach - see
+% calibrate2reflect.m for the two reflect standard version.
 
 function[mag_dutS,mag_dut_cal_S,sorted_prop2,sorted_evalues] = calibrateReflect(re_thru,im_thru,...
     re_reflect1,im_reflect1,re_reflect2,im_reflect2,re_line,im_line,...
     re_dut,im_dut,thrulength,linelength)
 
-% Reads in all the data and converts each measurement from S-parameters to
-% T-parameters.
+% Stores relative paths so MATLAB can find the data.
 
 addpath 'Data';
 
@@ -25,6 +26,9 @@ re_reflect2 = re_reflect1;
 im_reflect2 = im_reflect1;
 re_dut = 're_cs5thruband1_groundV2.csv';
 im_dut = 'im_cs5thruband1_groundV2.csv';
+
+% Reading in all the data from HFSS and converting to generalized S
+% parameters (and T parameters for thru, line, DUT.)
 
 % Thru Data
 [thruS,thru_freq,tdepth,t_sq_size] = readin_HFSS(re_thru,im_thru);
@@ -127,4 +131,5 @@ zeroBlock = zeros(2,2,depth);
 [mag_dutS,mag_dut_cal_S] = S_to_db(dut_cal_S,R1S,zeroBlock,zeroBlock,...
     R1S, 4, depth);
 
+% Plots the DUT modal S-Parameters.
 modal_graphs;
