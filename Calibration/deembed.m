@@ -1,13 +1,14 @@
-% Utilize this program for the deembedded case.
+% Utilize this program for the deembedded case. Assumes an initial
+% first-tier calibration has been performed on the VNA up to the ends of
+% the coax lines. See section III.A in multimode TRL paper, "Reciprocal
+% Error Networks."
 
 function[mag_dutS,mag_dut_cal_S] = deembed(re_thru,im_thru,...
     re_reflect1,im_reflect1,re_reflect2,im_reflect2,re_line,im_line,...
     re_dut,im_dut,thrulength,linelength)
 
-% Reads in all the data and converts each measurement from S-parameters to
-% T-parameters.
+% Stores relative paths so MATLAB can find the data.
 
-% addpath('Data'); needs to be fixed.
 addpath 'Data';
 addpath 'Data/Cal-Set-4';
 
@@ -22,6 +23,9 @@ re_reflect2 = re_reflect1;
 im_reflect2 = im_reflect1;
 re_dut = 're_cs4line2.csv';
 im_dut = 'im_cs4line2.csv';
+
+% Reading in all the data from HFSS and converting to generalized S
+% parameters (and T parameters for thru, line, DUT.)
 
 % Thru Data
 [thruS,thru_freq,tdepth,t_sq_size] = readin_HFSS(re_thru,im_thru);
@@ -101,4 +105,5 @@ im_dut = 'im_cs4line2.csv';
 [mag_dutS,mag_dut_cal_S] = S_to_db(dut_cal_S,dutS11,...
     dutS12,dutS21,dutS22,4,depth);
 
+% Plots the DUT modal S-Parameters.
 modal_graphs;
