@@ -1,4 +1,4 @@
-function [Admittance] = AdmittanceAcrossEntireSlot_matrix(slot_2_x_dist, slot_1_x_dist, slot_1_y_dist, slot_2_y_dist, slot_seperation, frequency)
+function [Admittance] = AdmittanceAcrossEntireSlot_matrix_mod(slot_2_x_dist, slot_1_x_dist, slot_1_y_dist, slot_2_y_dist, slot_seperation, frequency)
 %Admittance from Magnetic Field due to aperture 2 (slot 2) across slot 1's
 %dimensions versus slot seperation with a max seperation provided by the
 %user. 
@@ -19,10 +19,10 @@ V_2 = 1;
 
 %% Slot Dimensions: 
 %Slot 2 dimensions in terms of inputs (in wavelengths)
-slot_2_length_x_f = (slot_2_x_dist)*lambda; slot_2_width_y_f = (slot_2_y_dist)*lambda; 
+slot_2_length_x_f = (slot_2_x_dist)*1; slot_2_width_y_f = (slot_2_y_dist)*1; 
 
 %Slot 1 dimensions in terms of inputs (in wavelengths)
-slot_1_length_x_f = (slot_1_x_dist)*lambda; slot_1_width_y_f = (slot_1_y_dist)*lambda; 
+slot_1_length_x_f = (slot_1_x_dist)*1; slot_1_width_y_f = (slot_1_y_dist)*1; 
 
 %% Interval in terms of wavelength.
 
@@ -32,8 +32,8 @@ dy_segments_max_slot2 = slot_2_width_y_f/2;
 dy = slot_1_width_y_f/floor(slot_1_width_y_f/dy_segments_max_slot1);
 dy_2 = slot_2_width_y_f/floor(slot_2_width_y_f/dy_segments_max_slot2);
 
-dx_max = (1/20)*lambda;
-dx_max_2 = (1/10)*lambda;
+dx_max = (1/20)*1;
+dx_max_2 = (1/5)*1;
 
 dx = slot_1_length_x_f/floor(slot_1_length_x_f/dx_max);
 dx_2 = slot_2_length_x_f/floor(slot_2_length_x_f/dx_max_2);
@@ -51,7 +51,7 @@ E_0_slot1 = V_1/slot_1_width_y_f;
 %% Admittance Function
 
 %Slot seperation in wavelengths.
-y_sep = (slot_seperation)*lambda;
+y_sep = (slot_seperation)*1;
 
 %Build matrix to store H-field values across all of slot 2's dimensions----
 %Each index will have H-field at one y-point distance,and one x-distances.
@@ -97,7 +97,7 @@ for y = y_sep:dy:y_sep+slot_1_width_y_f
             for x_prime = 0:dx_2:slot_2_length_x_f                
                H_field_at_2(Y_prime_i,X_prime_i) = - 2*E_0_slot2*sin((pi*x_prime)/slot_2_length_x_f)*(exp(-k*((x - x_prime)^2 + (y - y_prime)^2)^(1/2)*1i)/(4*pi*((x - x_prime)^2 + (y - y_prime)^2)^(3/2)) + (k*exp(-k*((x - x_prime)^2 + (y - y_prime)^2)^(1/2)*1i)*1i)/(4*pi*((x - x_prime)^2 + (y - y_prime)^2)) - (3*exp(-k*((x - x_prime)^2 + (y - y_prime)^2)^(1/2)*1i)*(2*x - 2*x_prime)^2)/(16*pi*((x - x_prime)^2 + (y - y_prime)^2)^(5/2)) + (k^2*exp(-k*((x - x_prime)^2 + (y - y_prime)^2)^(1/2)*1i)*(2*x - 2*x_prime)^2)/(16*pi*((x - x_prime)^2 + (y - y_prime)^2)^(3/2)) - (k*exp(-k*((x - x_prime)^2 + (y - y_prime)^2)^(1/2)*1i)*(2*x - 2*x_prime)^2*3i)/(16*pi*((x - x_prime)^2 + (y - y_prime)^2)^2)) + (E_0_slot2*k^2*exp(-k*((x - x_prime)^2 + (y - y_prime)^2)^(1/2)*1i)*sin((pi*x_prime)/slot_2_length_x_f))/(2*pi*((x - x_prime)^2 + (y - y_prime)^2)^(1/2));
                %H_field_at_2(Y_prime_i,X_prime_i) = - E_0_slot2*sin((pi*x_prime)/slot_2_length_x_f)*(exp(-k*((x - x_prime)^2 + (y - y_prime)^2)^(1/2)*1i)/(4*pi*((x - x_prime)^2 + (y - y_prime)^2)^(3/2)) + (k*exp(-k*((x - x_prime)^2 + (y - y_prime)^2)^(1/2)*1i)*1i)/(4*pi*((x - x_prime)^2 + (y - y_prime)^2)) - (3*exp(-k*((x - x_prime)^2 + (y - y_prime)^2)^(1/2)*1i)*(2*x - 2*x_prime)^2)/(16*pi*((x - x_prime)^2 + (y - y_prime)^2)^(5/2)) + (k^2*exp(-k*((x - x_prime)^2 + (y - y_prime)^2)^(1/2)*1i)*(2*x - 2*x_prime)^2)/(16*pi*((x - x_prime)^2 + (y - y_prime)^2)^(3/2)) - (k*exp(-k*((x - x_prime)^2 + (y - y_prime)^2)^(1/2)*1i)*(2*x - 2*x_prime)^2*3i)/(16*pi*((x - x_prime)^2 + (y - y_prime)^2)^2)) + (E_0_slot2*k^2*exp(-k*((x - x_prime)^2 + (y - y_prime)^2)^(1/2)*1i)*sin((pi*x_prime)/slot_2_length_x_f))/(4*pi*((x - x_prime)^2 + (y - y_prime)^2)^(1/2));
-                %H_field_at_2(Y_prime_i,X_prime_i) = - 2*E_0_slot2*(exp(-k*((x - x_prime)^2 + (y - y_prime)^2)^(1/2)*1i)/(4*pi*((x - x_prime)^2 + (y - y_prime)^2)^(3/2)) + (k*exp(-k*((x - x_prime)^2 + (y - y_prime)^2)^(1/2)*1i)*1i)/(4*pi*((x - x_prime)^2 + (y - y_prime)^2)) - (3*exp(-k*((x - x_prime)^2 + (y - y_prime)^2)^(1/2)*1i)*(2*x - 2*x_prime)^2)/(16*pi*((x - x_prime)^2 + (y - y_prime)^2)^(5/2)) + (k^2*exp(-k*((x - x_prime)^2 + (y - y_prime)^2)^(1/2)*1i)*(2*x - 2*x_prime)^2)/(16*pi*((x - x_prime)^2 + (y - y_prime)^2)^(3/2)) - (k*exp(-k*((x - x_prime)^2 + (y - y_prime)^2)^(1/2)*1i)*(2*x - 2*x_prime)^2*3i)/(16*pi*((x - x_prime)^2 + (y - y_prime)^2)^2)) + (2*E_0_slot2*k^2*exp(-k*((x - x_prime)^2 + (y - y_prime)^2)^(1/2)*1i))/(4*pi*((x - x_prime)^2 + (y - y_prime)^2)^(1/2));
+               %H_field_at_2(Y_prime_i,X_prime_i) = - 2*E_0_slot2*(exp(-k*((x - x_prime)^2 + (y - y_prime)^2)^(1/2)*1i)/(4*pi*((x - x_prime)^2 + (y - y_prime)^2)^(3/2)) + (k*exp(-k*((x - x_prime)^2 + (y - y_prime)^2)^(1/2)*1i)*1i)/(4*pi*((x - x_prime)^2 + (y - y_prime)^2)) - (3*exp(-k*((x - x_prime)^2 + (y - y_prime)^2)^(1/2)*1i)*(2*x - 2*x_prime)^2)/(16*pi*((x - x_prime)^2 + (y - y_prime)^2)^(5/2)) + (k^2*exp(-k*((x - x_prime)^2 + (y - y_prime)^2)^(1/2)*1i)*(2*x - 2*x_prime)^2)/(16*pi*((x - x_prime)^2 + (y - y_prime)^2)^(3/2)) - (k*exp(-k*((x - x_prime)^2 + (y - y_prime)^2)^(1/2)*1i)*(2*x - 2*x_prime)^2*3i)/(16*pi*((x - x_prime)^2 + (y - y_prime)^2)^2)) + (2*E_0_slot2*k^2*exp(-k*((x - x_prime)^2 + (y - y_prime)^2)^(1/2)*1i))/(4*pi*((x - x_prime)^2 + (y - y_prime)^2)^(1/2));
                 X_prime_i = X_prime_i + 1;
             end
             Y_prime_i = Y_prime_i + 1;            
