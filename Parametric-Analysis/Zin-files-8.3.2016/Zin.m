@@ -3,12 +3,13 @@ function [Z]  = Zin(f, w_ant, w2, h_ant, H_sub, rad, eps1,eps2, g, L_ant, startp
 
 %% Antenna/HIS geometries
 
-sf = .05;        %scale factor from 300Mhz to 6Ghz
+%sf = .05; %scale factor from 300Mhz to 6Ghz
+sf = 1; 
 w_ant = 0.01*sf; %depends on kind of antenna placed on top of HIS
 h_ant = 0.02*sf; %antenna height above substrate
 L_ant = .48*sf;  %based on length of dipole at 6ghz which is .48lamba
 
-H_sub = 0.04*sf; %ground to patch
+H_sub = 0.04*sf; %ground to patch distance
 L_sub = 1.12*sf;
 W_sub = 1.12*sf;
 w2 = .12*sf;     %patch width
@@ -17,7 +18,8 @@ g = 0.02*sf;     %patch spacing
 a =.14*sf;       %edge to edge patch length
 len =.14*sf;     %length of microstrip ((a) for MTL section) segment above patches 
 
-f = 6e9;
+%f = 2e9:250e6:10e9; %f vector sweep for 6ghz
+f = 3e9:100e6:6.5e9;
 omega = 2*pi*f;
 
 %% Constants
@@ -41,97 +43,87 @@ startpos = 0;
 
 %% Cascaded ABCD Matrix equations
 
-
-[Y] = HISantYmat_1(f, w_ant, w2, h_ant, H_sub, rad, eps1, eps2, g, L_ant, startpos, L_sub, W_sub, viaflag);
-[ABCDt] = HISlayerABCD(f, w_ant, w2, h_ant, H_sub, rad, eps1, eps2, g, L_ant, startpos, L_sub, W_sub, viaflag);
+for ii = 1:length(f)
+    
+Y(:,:,ii) = HISantYmat_SS(f(ii), w_ant, w2, h_ant, H_sub, rad, eps1, eps2, g, L_ant, startpos, L_sub, W_sub, viaflag);
+ABCDt(:,:,ii) = HISlayerABCD(f(ii), w_ant, w2, h_ant, H_sub, rad, eps1, eps2, g, L_ant, startpos, L_sub, W_sub, viaflag);
 
 % Components of 2x2 Transmission matrix through the HIS.
-A = ABCDt(1,1);
-B = ABCDt(1,2);
-C = ABCDt(2,1);
-D = ABCDt(2,2);
+A = ABCDt(1,1,ii);
+B = ABCDt(1,2,ii);
+C = ABCDt(2,1,ii);
+D = ABCDt(2,2,ii);
 
-% Coupled Addmittance Matricies 
-Pi = Yeq(Y, A, B, C, D);
-Qi = Yeq(Y, A, B, C, D);
-P = Y4toABCD4(Pi);
 
-%Q = Y4toABCD4(Qi);
-%Qii = inv(Q);
+% Coupled Addmittance Matricies P and Q - Right and Left respectivley 
 
-MTL_R = UnitCells_antR(f, w_ant, w2, h_ant, H_sub, rad, eps1, eps2, g, L_ant, startpos, L_sub, W_sub, viaflag);
-MTL_L = UnitCells_antL(f, w_ant, w2, h_ant, H_sub, rad, eps1, eps2, g, L_ant, startpos, L_sub, W_sub, viaflag);
-MTL_Li = inv(MTL_L);
-ABCDz = (MTL_R)*(P)*(MTL_Li);
-Zt = ABCD4toZ(ABCDz);
+Pi(:,:,ii) = Yeq(Y(ii), A, B, C, D);
+P(:,:,ii) = Y4toABCD4(Pi);
 
-%% Symbolic Zin solution
+Qi(:,:,ii) = Yeq(Y(ii), A, B, C, D);
+Q = Y4toABCD4(Qi);
+Qii(:,:,ii) = 1\Q;
 
-    % K = [V1b; V2b; Iin; I2b];
-    % Vi = [Vin; 0; 0; 0];
-    % ZIN = sym('Z',[4 4])
-    % ZIN1 = ZIN-E;
-    % ZINi = inv(ZIN1);
-    % Vi = (ZINi)*K
-    % K = ZINi*Vi
+
+%Cascade of 4x4 unit cells for left and right of source voltage. 
+MTL_R(:,:,ii) = UnitCells_antR(f(ii), w_ant, w2, h_ant, H_sub, rad, eps1, eps2, g, L_ant, startpos, L_sub, W_sub, viaflag);
+MTL_L(:,:,ii) = UnitCells_antL(f(ii), w_ant, w2, h_ant, H_sub, rad, eps1, eps2, g, L_ant, startpos, L_sub, W_sub, viaflag);
+MTL_Li(:,:,ii) = 1\(MTL_L(:,:,ii));
+
+
+%Total cascaded ABCD matrix
+%ABCDz(:,:,ii) = MTL_R(:,:,ii)*MTL_Li(:,:,ii)
+ABCDz(:,:,ii) = MTL_R(:,:,ii).*P(:,:,ii).*MTL_L(:,:,ii);
+
+%Convert total ABCD to Z matrix for solutions for the input impedance
+Zt(:,:,ii) = ABCD4toZ(ABCDz);
+
+
+
+%% Components of Z matrix
+
+    Z11 = Zt(1,1,ii);
+    Z12 = Zt(1,2,ii);
+    Z13 = Zt(1,3,ii);
+    Z14 = Zt(1,4,ii);
+
+    Z21 = Zt(2,1,ii);
+    Z22 = Zt(2,2,ii);
+    Z23 = Zt(2,3,ii);
+    Z24 = Zt(2,4,ii);
+
+    Z31 = Zt(3,1,ii);
+    Z32 = Zt(3,2,ii);
+    Z33 = Zt(3,3,ii);
+    Z34 = Zt(3,4,ii);
+
+    Z41 = Zt(4,1,ii);
+    Z42 = Zt(4,2,ii);
+    Z43 = Zt(4,3,ii);
+    Z44 = Zt(4,4,ii);
  
- 
-    % A = sym( 'A', [2 2]);
-    % B = sym( 'B', [2 2]);
-    % C = sym( 'C', [2 2]);
-    % D = sym( 'D', [2 2]);
-    % 
-    % ABCDv = [ A B; C D];
-    % G = inv(ABCDv)
-
-%% Solving for Zin with MTL matricies
     
-%     ABCDz2 = ABCDz - E;
-%     G2 = inv(ABCDz2);
-%     K = G2*Vi;
-%     F11 = K(1,1);
-%     F21 = K(2,1);
-%     F31 = K(3,1)/Vin;
-%     F41 = K(4,1);
-%     Z = 1/F31;
+%% Solution for Zin - dipole
 
-%% Find Z matrix From cascade of ABCD matricies (A different approach using Z matrix)
-%%Convert ABCDz to Z matrix
-    
+%Zd(ii,:,:) = Z11 - Z13 + Z31 - Z33 + (1-Z32-Z34)*((Z21+Z43-Z23-Z41)/(Z24+Z42-Z22-Z44))
+Zd(ii,:,:) = Z11 - Z13 + Z31 - Z33 + (Z21-Z23-Z41+Z43)/(Z42-Z44-Z22+Z24)-(Z32-Z34)*((Z21-Z23-Z41+Z43)/(Z42-Z44-Z22+Z24))
 
-    Z11 = Zt(1,1);
-    Z12 = Zt(1,2);
-    Z13 = Zt(1,3);
-    Z14 = Zt(1,4);
-    
-    Z21 = Zt(2,1);
-    Z22 = Zt(2,2);
-    Z23 = Zt(2,3);
-    Z24 = Zt(2,4);
+%% Solution for Zin - Patch
 
-    Z31 = Zt(3,1);
-    Z32 = Zt(3,2);
-    Z33 = Zt(3,3);
-    Z34 = Zt(3,4);
+                %%Patch Term Simplification    
+                %X = Y22 + Y24 + Y42 + Y44;
 
-    Z41 = Zt(4,1);
-    Z42 = Zt(4,2);
-    Z43 = Zt(4,3);
-    Z44 = Zt(4,4);
- 
-
-    
-%% Solution for Zin - Dipole    
-%Zd = (Z21-Z23-Z41+Z43/(Z42-Z44-Z22+Z24)) + Z11-Z13 -(Z32-Z34)*(Z21-Z23-Z41+Z43/(Z42-Z44-Z22+Z24))+ Z31-Z33;
+                % Solution for Zin - Probe
+                %Zp = X/(X*(Y21+Y23+Y31+Y33) - (Y12+Y14-Y32-Y34)*(Y21+Y23-Y43-Y41))
 
 
-Zd = Z11 - Z13 + Z31 - Z33 + (1-Z32-Z34)*((Z21+Z43-Z23-Z41)/(Z24+Z42-Z22-Z44))
+end 
 
-%% Patch
-    
-%%Patch Term Simplification    
-%X = Y22 + Y24 + Y42 + Y44;
 
-% Solution for Zin - Probe
-%Zp = X/(X*(Y21+Y23+Y31+Y33) - (Y12+Y14-Y32-Y34)*(Y21+Y23-Y43-Y41))
+%% Zin Geometric Parametric sweep
+
+    %still need to write this code.
+     
+
+
 end 
