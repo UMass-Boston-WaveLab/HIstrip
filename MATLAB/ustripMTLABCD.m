@@ -33,7 +33,7 @@ Zw = Gam\Z; %symmetric
 Yw = Y/Gam; %symmetric
 
 MTL = [T*[cosh(gameig(1,1)*len/2) 0; 0 cosh(gameig(2,2)*len/2)]/T,...
-        (T*sinh(gameig*len/2)/T)*Zw; Yw*T*sinh(gameig*len/2)/T, ...
-        Yw*T*[cosh(gameig(1,1)*len/2) 0; 0 cosh(gameig(2,2)*len/2)]/T*Zw];
+        (T*sinh(gameig*len/2)/T)/Yw; Yw*T*sinh(gameig*len/2)/T, ...
+        T*[cosh(gameig(1,1)*len/2) 0; 0 cosh(gameig(2,2)*len/2)]/T];
 
 end
