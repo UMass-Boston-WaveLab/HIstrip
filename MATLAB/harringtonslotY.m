@@ -8,8 +8,8 @@ eta = 377;
 lam = 3e8./f;
 k=2*pi./lam;
 
-Gpul = (pi./(lam*eta)).*(1-(k*h).^2/24);
-Bpul = (1./(lam*eta)).*(3.135-2*log(k*h));
+Gpul = (pi./(vpa(lam)*eta)).*(1-(vpa(k)*h).^2/24);
+Bpul = (1./(vpa(lam)*eta)).*(3.135-2*log(vpa(k)*h));
 
 Y = L*(Gpul+j*Bpul);
 

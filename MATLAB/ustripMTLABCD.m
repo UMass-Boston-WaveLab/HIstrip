@@ -17,23 +17,23 @@ cap = [C12, -C12; -C12, C2G+C12]; %Symmetric; see MTL book for where this comes 
 [~, C120, ~, ~] = microstrip(w1, h1-h2, 1); 
 [~, C2G0, ~, ~] = microstrip(w2, h2, 1);
 cap0 = [C120, -C120; -C120, C2G0+C120]; %symmetric
-ind = mu0*eps0*inv(cap0); %symmetric
+ind = mu0*eps0*inv(vpa(cap0)); %symmetric
 
-Z = (j*omega*ind); %symmetric
-Y = (j*omega*cap); %symmetric
-Gam = sqrtm(Z*Y);
+Z = (j*omega*vpa(ind)); %symmetric
+Y = (j*omega*vpa(cap)); %symmetric
+Gam = sqrtm(vpa(Z)*vpa(Y));
 
-[T,gamsq]=eig(Z*Y); %Z*Y not necessarily symmetric
+[T,gamsq]=eig(vpa(Z)*vpa(Y)); %Z*Y not necessarily symmetric
 %get gamma^2 because if you do the eigenvalues of sqrtm(Z*Y) you have a
 %root ambiguity
 
-gameig = [sqrt(gamsq(1,1)) 0; 0 sqrt(gamsq(2,2))];
+gameig = [sqrt(vpa(gamsq(1,1))) 0; 0 sqrt(vpa(gamsq(2,2)))];
 
-Zw = Gam\Z; %symmetric 
-Yw = Y/Gam; %symmetric
+Zw = vpa(Gam)\Z; %symmetric 
+Yw = Y/vpa(Gam); %symmetric
 
-MTL = [T*[cosh(gameig(1,1)*len/2) 0; 0 cosh(gameig(2,2)*len/2)]/T,...
-        (T*sinh(gameig*len/2)/T)/Yw; Yw*T*sinh(gameig*len/2)/T, ...
-        T*[cosh(gameig(1,1)*len/2) 0; 0 cosh(gameig(2,2)*len/2)]/T];
+MTL = [vpa(T)*[cosh(vpa(gameig(1,1))*len/2) 0; 0 cosh(vpa(gameig(2,2))*len/2)]/vpa(T),...
+        (vpa(T)*sinh(vpa(gameig)*len/2)/vpa(T))/vpa(Yw); vpa(Yw)*vpa(T)*sinh(vpa(gameig)*len/2)/vpa(T), ...
+        vpa(T)*[cosh(vpa(gameig(1,1))*len/2) 0; 0 cosh(vpa(gameig(2,2))*len/2)]/vpa(T)];
 
 end

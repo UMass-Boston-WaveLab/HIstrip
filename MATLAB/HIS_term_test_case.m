@@ -24,17 +24,16 @@ if feed==1 %probe feed
     YL = inv(Zleft);
     YR = inv(Zright);
     
-    Yin = YL(1,1)+YR(1,1)-(YL(1,2)+YR(1,2))*(YL(2,1)+YR(2,1))/(YL(2,2)+YR(2,2));
+    Y = YL+YR;
+    
+    Yin = Y(1,1)-Y(1,2)*Y(2,1)/Y(2,2);
     Zin =1/Yin;
     
 else %diff feed
-    %boundary conditions are that upper Vleft-Vright=V, upper Ileft=Iright,
+    %boundary conditions are that upper Vleft-Vright=V, upper Ileft=-Iright=I,
     %lower Vleft=Vright, lower Ileft = Iright
-    if Zleft==Zright
-        Zin = (Zleft(2,1)+Zright(2,1));
-    else
-        Zin = Zleft(1,1)+Zright(1,1)+(Zleft(1,2)+Zright(1,2))*(Zleft(2,1)+Zright(2,1))/(Zleft(2,2)+Zright(2,2));
-    end
+    Z = Zleft+Zright;
+    Zin = Z(1,1)-Z(1,2)*Z(2,1)/Z(2,2);
     
 end
 

@@ -14,7 +14,7 @@ else
 end
 
 %gap cap split in half because that's where the ref plane is
-[Cmat, Cpmat, Cptopmat] = MTLcapABCD(h1, h2, w1, w2, eps1, eps2, gap, freq);
+[Lprod, Rprod] = MTLcapABCD(h1, h2, w1, w2, eps1, eps2, gap, freq);
 % Cptopmat is a problematic capacitor
 % because the expression was for a gap in the "top" line but the gap is
 % actually in the "ground" which is physically much bigger (would it be
@@ -25,7 +25,7 @@ end
 %I am dealing with T and gameig properly here - see MTL book by Faria
 MTL = ustripMTLABCD(w1, h1,w2, h2, eps1, eps2, freq, w2/2);
 
-ABCD = Cmat*Cpmat*Cptopmat*MTL*Lmat*MTL*Cptopmat*Cpmat*Cmat;
+ABCD = Lprod*vpa(MTL)*Lmat*vpa(MTL)*Rprod;
 
 end
 

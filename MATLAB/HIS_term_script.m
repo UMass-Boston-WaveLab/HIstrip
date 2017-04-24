@@ -1,16 +1,16 @@
-f = (100:10:500)*1e6;
+f = (200:10:500)*1e6;
 a = 0.14;
-w1 = 0.05; % is this right?
+w1 = 0.01; % is this right?
 w2 = 0.12;
 h1 = 0.02;
 h2 = 0.04;
 via_rad = 0.005;
 eps1 = 1;
 eps2 = 2.2;
-feed = 1;
+feed = 0;
 
-%ZL = [0 1e6; 1e6 0]; %approx. short but layers not connected to each other
-ZL = [0 0; 0 0];
+ZL = [0 1e6; 1e6 0]; %approx. short but layers not connected to each other
+%ZL = [0 0; 0 0];
 
 Zin = zeros(size(f));
 
@@ -20,4 +20,5 @@ end
 
 figure; 
 plot(f*1e-6, real(Zin), f*1e-6, imag(Zin))
-
+legend({'R';'X'})
+grid on
