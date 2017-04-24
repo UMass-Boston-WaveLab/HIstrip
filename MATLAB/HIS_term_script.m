@@ -9,8 +9,8 @@ eps1 = 1;
 eps2 = 2.2;
 feed = 1;
 
-ZL = [0 1e6; 1e6 0];
-
+%ZL = [0 1e6; 1e6 0]; %approx. short but layers not connected to each other
+ZL = [0 0; 0 0];
 
 Zin = zeros(size(f));
 
