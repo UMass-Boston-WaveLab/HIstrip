@@ -30,9 +30,11 @@ if feed==1 %probe feed
 else %diff feed
     %boundary conditions are that upper Vleft-Vright=V, upper Ileft=Iright,
     %lower Vleft=Vright, lower Ileft = Iright
-    
-    Zin = Zleft(1,1)-Zright(1,1)+(Zleft(1,2)+Zright(1,2))*(Zleft(2,1)-Zright(2,1))/(Zleft(2,2)+Zright(2,2));
-    
+    if Zleft==Zright
+        Zin = (Zleft(2,1)+Zright(2,1));
+    else
+        Zin = Zleft(1,1)+Zright(1,1)+(Zleft(1,2)+Zright(1,2))*(Zleft(2,1)+Zright(2,1))/(Zleft(2,2)+Zright(2,2));
+    end
     
 end
 
