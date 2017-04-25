@@ -1,5 +1,6 @@
 %f = (2:0.25:7)*1e9;
 s=20; %scale factor
+n=4; % number of unit cells in model
 f = (100:10:700)*1e6*s;
 a = 0.14/s;
 w1 = 0.01/s; % is this right?
@@ -20,7 +21,7 @@ ZL = [0 0; 0 0];
 Zin = zeros(size(f));
 
 for ii = 1:length(f)
-    Zin(ii) = HIS_term_test_case(4, a, w1, w2, h1, h2, via_rad, eps1, eps2, f(ii), feed, ZL, ZL);
+    Zin(ii) = HIS_term_test_case(n, a, w1, w2, h1, h2, via_rad, eps1, eps2, f(ii), feed, ZL, ZL);
     if real(Zin(ii))<0
         sprintf('Check me\n')
     end
