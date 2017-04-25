@@ -9,19 +9,20 @@ h2 = 0.04/s;
 via_rad = 0.005/s;
 eps1 = 1;
 eps2 = 2.2;
-feed = 1;
+feed = 1; %1 for probe feed, 0 for diff
 
-ZL = [0 0; 0 0]; %approx. short but layers not connected to each other
-%ZL = [0 0; 0 0]; %sometimes I get negative R when I do this one
+
+ZL = [0 0; 0 0]; 
 
 %ZL = ones(2)*1e6;
+
 
 Zin = zeros(size(f));
 
 for ii = 1:length(f)
     Zin(ii) = HIS_term_test_case(4, a, w1, w2, h1, h2, via_rad, eps1, eps2, f(ii), feed, ZL, ZL);
     if real(Zin(ii))<0
-        sprintf('Check me\n');
+        sprintf('Check me\n')
     end
 end
 
