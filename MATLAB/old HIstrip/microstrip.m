@@ -1,7 +1,7 @@
 function [Zm, C, L, epseff] = microstrip(w,h,epsr)
 %from James/Hall/Wood "Microstrip Antenna Theory & Design" page 24
 c = 3e8;
-if w/h<1
+if (w/h)>=1
     Zm = 377/(pi*sqrt(2*(epsr+1))) * (log(8*h/w) + 1/32*(w/h)^2 - ...
         (epsr-1)/(2*(epsr+1)) * (log(pi/2)+log(4/pi)/epsr) );
 else
