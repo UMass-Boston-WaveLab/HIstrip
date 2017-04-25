@@ -1,6 +1,6 @@
 %f = (2:0.25:7)*1e9;
-s=1; %scale factor
-f = (100:10:500)*1e6*s;
+s=20; %scale factor
+f = (100:10:1000)*1e6*s;
 a = 0.14/s;
 w1 = 0.01/s; % is this right?
 w2 = 0.12/s;
@@ -9,7 +9,7 @@ h2 = 0.04/s;
 via_rad = 0.005/s;
 eps1 = 1;
 eps2 = 2.2;
-feed = 1; %1 for probe feed, 0 for diff
+feed = 0; %1 for probe feed, 0 for diff
 
 
 ZL = [0 0; 0 0]; 
