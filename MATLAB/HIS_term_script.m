@@ -1,6 +1,6 @@
 %f = (2:0.25:7)*1e9;
-f = (100:10:700)*1e6;
 s=1; %scale factor
+f = (100:10:500)*1e6*s;
 a = 0.14/s;
 w1 = 0.01/s; % is this right?
 w2 = 0.12/s;
@@ -11,7 +11,7 @@ eps1 = 1;
 eps2 = 2.2;
 feed = 1;
 
-ZL = [0 1e6; 1e6 0]; %approx. short but layers not connected to each other
+ZL = [0 0; 0 0]; %approx. short but layers not connected to each other
 %ZL = [0 0; 0 0]; %sometimes I get negative R when I do this one
 
 %ZL = ones(2)*1e6;

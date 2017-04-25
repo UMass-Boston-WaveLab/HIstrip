@@ -7,7 +7,8 @@ function [ Lprod, Rprod ] = MTLcapABCD( h1, h2, w1, w2, eps1, eps2, gap, freq)
         
         omega = 2*pi*freq;
         
-        a = 1/(j*vpa(omega)*Cgap*2+real(vpa(harringtonslotY(vpa(freq),gap,w2))));
+        a = 1/(j*vpa(omega)*Cgap*2+2*real(vpa(harringtonslotY(vpa(freq),gap,w2))));
+%        a = 1/(j*vpa(omega)*Cgap*2);
         b = j*omega*Cp;
         c = j*omega*Cptop;
 

@@ -12,14 +12,14 @@ omega = 2*pi*freq;
 [~, C12, L12, ~] = microstrip(w1, h1-h2, eps1); %I'm using microstrip per-unit-length capacitance values here
 [Z2, C2G, L2G, epseff2] = microstrip(w2, h2, eps2);
 
-cap = [1/(1/C12+1/C2G), -C12; -C12, C2G]; %Symmetric; see MTL book for where this comes from --changed c11 value on April 24 2017
+cap = [C12+1/(1/C12+1/C2G), -C12; -C12, C2G]; %Symmetric; see MTL book for where this comes from --changed c11 value on April 24 2017
 %I think it is more correct but will still be dominated by C12
 %why are the off diagonal terms negative?
 
 
 [~, C120, ~, ~] = microstrip(w1, h1-h2, 1); 
 [~, C2G0, ~, ~] = microstrip(w2, h2, 1);
-cap0 = [1/(1/C120+1/C2G0), -C120; -C120, C2G0]; %symmetric --changed c11 value on April 24 2017
+cap0 = [C120+1/(1/C120+1/C2G0), -C120; -C120, C2G0]; %symmetric --changed c11 value on April 24 2017
 ind = mu0*eps0*inv(vpa(cap0)); %symmetric
 
 Z = (j*omega*vpa(ind)); %symmetric
@@ -39,7 +39,7 @@ Yw = Y/vpa(Gam); %symmetric
 
 A = T*[cosh(vpa(gameig(1,1))*len) 0; 0 cosh(vpa(gameig(2,2))*len)]/T;
 
-MTL = [A, (vpa(T)*sinh(vpa(gameig)*len)/vpa(T))*Zw; 
+MTL = [A, (vpa(T)*sinh(vpa(gameig)*len)/vpa(T))/vpa(Yw); 
     Yw*vpa(T)*sinh(vpa(gameig)*len)/vpa(T), A];
 
 end
