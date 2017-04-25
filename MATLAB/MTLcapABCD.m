@@ -1,13 +1,13 @@
 function [ Lprod, Rprod ] = MTLcapABCD( h1, h2, w1, w2, eps1, eps2, gap, freq)
-%UNTITLED2 Summary of this function goes here
-%   Detailed explanation goes here
+%MTLcapABCD Makes ABCD matrix for pi-network of capacitors in MTL unit cell
 
         [Cgap,Cp] = microstripGapCap2(w2,h2,eps2,gap, freq);
         [~,Cptop] = microstripGapCap2(w1,h1-h2,eps1,gap, freq);
         
         omega = 2*pi*freq;
         
-        a = 1/(j*vpa(omega)*Cgap*2+2*real(vpa(harringtonslotY(vpa(freq),gap,w2))));
+        %the radiative loss term in here is pretty important
+        a = 1/(j*vpa(omega)*Cgap*2+real(vpa(harringtonslotY(vpa(freq),gap,w2))));
 %        a = 1/(j*vpa(omega)*Cgap*2);
         b = j*omega*Cp;
         c = j*omega*Cptop;
