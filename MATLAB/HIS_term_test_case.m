@@ -12,7 +12,13 @@ end
 
 unitcell = multicond_unitcell(a, w1, w2, h1, h2, via_rad, eps1, eps2, f, 1); %use vias (viaflag=1)
 
-MTLhalf=unitcell^(n/2);
+UC=unitcell^(n/2-1);
+
+MTL = ustripMTLABCD(w1, h1, w2, h2, eps1, eps2, f, w2/2);
+[Lprod, ~] = MTLcapABCD(h1, h2, w1, w2, eps1, eps2, (a-w2), f);
+Lmat = MTLviaABCD(h2, via_rad, f);
+
+MTLhalf=UC*Lprod*MTL*Lmat*MTL; %second unit cell is terminated so there's no gap capacitance there
 
 Zleft = terminate_ABCD4(MTLhalf, ZL_left);
 
