@@ -55,9 +55,6 @@ Zw = Gam\Z; %symmetric
 Yw = Y/Gam; %symmetric
 
 
-%L_via is too large (I know this because the band gap is too low, and
-%halving L_via fixes it)
-
 
 if test_line
     Cmat = eye(4);
@@ -87,7 +84,8 @@ else
     %is not diagonal as intended, the off-axis elements will be 1
     %I am dealing with T and gameig properly here - see MTL book by Faria
     MTL = [T*[cosh(gameig(1,1)*w2/2) 0; 0 cosh(gameig(2,2)*w2/2)]/T,...
-        (T*sinh(gameig*w2/2)/T)*Zw; Yw*T*sinh(gameig*w2/2)/T, ...
+        (T*sinh(gameig*w2/2)/T)*Zw; 
+        Yw*T*sinh(gameig*w2/2)/T, ...
         Yw*T*[cosh(gameig(1,1)*w2/2) 0; 0 cosh(gameig(2,2)*w2/2)]/T*Zw];
 end
 

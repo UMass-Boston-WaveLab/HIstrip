@@ -52,7 +52,7 @@ k = 2*pi./lambda;
 for ii = 1:length(freq)
     %vratio is the ratio of V1 and V2 that happens if you excite V1 and
     %leave V2 open.
-    [ABCD] = multicond_unitcell(a,w1, w2, h1, h2, via_rad, eps1, eps2, freq(ii)*1e6);
+    [ABCD] = multicond_unitcell(a,w1, w2, h1, h2, via_rad, eps1, eps2, freq(ii)*1e6, 1); %use vias
     %make the parts of V normalized in the way described in Faria, 2004.
     %we want to find T0, W0, Tl, Wl that diagonalize the ABCD matrix into
     %modes as described there.
@@ -99,7 +99,7 @@ end
 plot(k*a, freq, 'k')
 % xlim([-pi pi])
 title('Dispersion Diagram Derived from Circuit Model')
-legend({'\beta_1 a'; '\alpha_1 a'; '\beta_2 a'; '\alpha_2 a'; 'Light Line'})
+legend({'\alpha_1 a'; '\beta_1 a';  '\alpha_2 a'; '\beta_2 a';  'Light Line'})
 [hx, hy] = format_ticks(gca, {'$-\pi/2$', '$-\pi/4$','$0$', '$\pi/4$', '$\pi/2$', '$3\pi/4$', '$\pi$','$5\pi/4$','$3\pi/2$'},[],(-(pi/2):(pi/4):(1.5*pi)));
 xlim([-pi/2 1.5*pi])
 ylabel('Frequency [MHz]')

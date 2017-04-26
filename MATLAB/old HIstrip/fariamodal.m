@@ -20,6 +20,9 @@ function [zf, zb, Zterm0, gamma, ABCDmodal, T0, Tl] = fariamodal(ABCD, a)
         yf(jj) = (exp(gamma(jj)*a)-Ahat(jj,jj))/Bhat(jj,jj); 
         yb(jj)=(-exp(-gamma(jj)*a)+Ahat(jj,jj))/Bhat(jj,jj);
     end
+    if any(real(gamma)<0)
+        error('Gamma error');
+    end
     %Terminal 1 is used as an input port, and terminal 2 is left open (no current into terminal 2, any voltage is allowed).
     %So what you see at Port 1 (as connected in the model) is Z11
     zf = 1./yf;
