@@ -1,4 +1,4 @@
-function [ MTL ] = ustripMTLABCD( w1, h1, w2, h2, eps1, eps2, freq, len)
+function [ MTL ] = ustrip_PP_MTLABCD( w1, h1, w2, a, n_across, h2, eps1, eps2, freq, len)
 %Makes 4x4 ABCD matrix of stacked microstrip MTL structure of length len.
 
 
@@ -10,19 +10,29 @@ omega = 2*pi*freq;
 %Structure Using Multiconductor Transmission-Line Theory" for an
 %explanation of what's going on here
 [~, C12, L12, ~] = microstrip(w1, h1-h2, eps1); %I'm using microstrip per-unit-length capacitance values here
-[Z2, C2G, L2G, epseff2] = microstrip(w2, h2, eps2);
+
+%treat lower layer as parallel plate waveguide - good ol' epsilon*A/d
+if n_across>1
+    C2G=eps0*eps2*((n_across-1*a)+w2)/h2; %account for gaps
+else
+    C2G=eps0*eps2*w2/h2;
+end
 
 cap = [C12, -C12; -C12, C2G+C12];
-%Symmetric; see MTL book for where this comes from 
-% see Paul multiconductor lines book
+%cap = [C12+1/(1/C12+1/C2G), -C12; -C12, C2G]; %Symmetric; see MTL book for where this comes from 
+%--changed c11 value on April 24 2017 - see Paul multiconductor lines book
 %p. 164
 
 
 
 [~, C120, ~, ~] = microstrip(w1, h1-h2, 1); 
-[~, C2G0, ~, ~] = microstrip(w2, h2, 1);
+if n_across>1
+    C2G0=eps0*((n_across-1*a)+w2)/h2; %account for gaps
+else
+    C2G0=eps0*w2/h2;
+end
 cap0 = [C120, -C120; -C120, C2G0+C120];
-%symmetric 
+%cap0 = [C120+1/(1/C120+1/C2G0), -C120; -C120, C2G0]; %symmetric --changed c11 value on April 24 2017
 ind = mu0*eps0*inv(vpa(cap0)); %symmetric
 
 Z = (j*omega*vpa(ind)); %symmetric
