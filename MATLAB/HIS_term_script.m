@@ -8,7 +8,7 @@ w2 = 0.12/s;
 h2 = 0.04/s;
 h1 = 0.02/s+h2; %h1 is defined from the ground plane!!
 via_rad = 0.005/s;
-eps1 = 2.2;
+eps1 = 1;
 eps2 = 2.2;
 feed = 0; %1 for probe feed, 0 for diff
 
@@ -21,11 +21,10 @@ loadIndMat = [L1 0; 0 0]+L2*ones(2,2);
 
 ZL = zeros(2,2);
 
-
 Zin = zeros(size(f));
 
 for ii = 1:length(f)
-    ZL = j*2*pi*f(ii)*loadIndMat;
+    ZL = (j*2*pi*f(ii)*loadIndMat);
     
     Zin(ii) = HIS_term_test_case(n, a, w1, w2, h1, h2, via_rad, eps1, eps2, f(ii), feed, ZL, ZL);
     if real(Zin(ii))<0

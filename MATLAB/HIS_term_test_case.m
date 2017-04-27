@@ -14,7 +14,7 @@ unitcell = multicond_unitcell(a, w1, w2, h1, h2, via_rad, eps1, eps2, f, 1); %us
 
 UC=unitcell^(n/2-1);
 
-MTL = ustripMTLABCD(w1, h1, w2, h2, eps1, eps2, f, w2/2);
+MTL = ustripMTLABCD(w1, h1, w2, h2, eps1, eps2, f, a/2);
 [Lprod, ~] = MTLcapABCD(h1, h2, w1, w2, eps1, eps2, (a-w2), f);
 Lmat = MTLviaABCD(h2, via_rad, f);
 
