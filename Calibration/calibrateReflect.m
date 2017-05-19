@@ -4,28 +4,31 @@
 
 function[mag_dutS,mag_dut_cal_S,sorted_prop2,sorted_evalues] = calibrateReflect(re_thru,im_thru,...
     re_reflect1,im_reflect1,re_reflect2,im_reflect2,re_line,im_line,...
-    re_dut,im_dut,thrulength,linelength)
+    re_dut,im_dut,thrulength,linelength, testName)
 
 % Stores relative paths so MATLAB can find the data.
-
 addpath 'Data';
-
-%addpath 'Data/Cal-Set-4-V2';
-%addpath 'Data/Cal-Set-4';
-%addpath 'Data/Cal-Set-3';
 addpath 'Data/Cal-Set-5';
+
+% Set the name of the test for graphing function to access
+testName = 'Line';
 
 % Here for convenience, want access to all output variables.
 re_thru = 're_cs5thruband1_groundV2.csv'; 
 im_thru = 'im_cs5thruband1_groundV2.csv';
 re_line = 're_cs5line1band1_groundV2.csv'; 
 im_line = 'im_cs5line1band1_groundV2.csv';
-re_reflect1 = 're_cs5longopenband1_groundV2.csv';
-im_reflect1 = 'im_cs5longopenband1_groundV2.csv';
+re_reflect1 = 'cs5NewLoadOpen68Ohm_real_groundV2.csv';
+im_reflect1 = 'cs5NewLoadOpen68Ohm_im_groundV2.csv';
 re_reflect2 = re_reflect1;
 im_reflect2 = im_reflect1;
-re_dut = 're_cs5thruband1_groundV2.csv';
-im_dut = 'im_cs5thruband1_groundV2.csv';
+re_dut = 'cs5NewLoadOpen68Ohm_real_groundV2.csv';
+im_dut = 'cs5NewLoadOpen68Ohm_im_groundV2.csv';
+
+thrulength=11.558/1000;
+linelength=26.0055/1000;
+% Thrulength is 30.598/1000 with connectors; 11.558/1000 without
+% Linelength is 45.045/1000 with connectors; 26.0055/1000 without
 
 % Reading in all the data from HFSS and converting to generalized S
 % parameters (and T parameters for thru, line, DUT.)

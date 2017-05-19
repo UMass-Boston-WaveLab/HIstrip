@@ -55,39 +55,44 @@ for ii = 1:depth
     S34cal(1,ii) = mag_dut_cal_S(3,4,ii);
 end
 
-% Creates four graphs to display the modal S-parameters.
+% Creates one graph with four subplots to display the modal S-parameters.
 
 % Mode 1 S-parameters.
-plot(thru_freq,S11cal,'-o',thru_freq,S13cal,'-+',thru_freq,S31cal,...
+ax1 = subplot(2,2,1);
+plot(ax1, thru_freq,S11cal,'-o',thru_freq,S13cal,'-+',thru_freq,S31cal,...
     '-x',thru_freq,S33cal,'-s');
-title('Mode 1 S-Parameters')
-xlabel('Freq (GHz)')
-ylabel('dB')
-legend('S11','S12','S21','S22','Location','northeast')
-figure;
+title(ax1,strcat(testName, ' Standard Mode 1'))
+xlabel(ax1, 'Freq (GHz)')
+ylabel(ax1,'dB')
+legend(ax1, 'S11','S12','S21','S22','Location','northeast')
 
 % Mode 2 S-parameters
+subplot(2,2,2);
 plot(thru_freq,S22cal,'-o',thru_freq,S24cal,'-+',thru_freq,S42cal,...
     '-x',thru_freq,S44cal,'-s');
-title('Mode 2 S-Parameters')
+title(strcat(testName, ' Standard Mode 2'))
 xlabel('Freq (GHz)')
 ylabel('dB')
 legend('S11','S12','S21','S22','Location','northeast')
-figure;
 
 % Mode 1 to 2 S-paremeters.
+subplot(2,2,3);
 plot(thru_freq,S21cal,'-o',thru_freq,S23cal,'-+',thru_freq,S41cal,...
     '-x',thru_freq,S43cal,'-s');
-title('Mode 1 to Mode 2 S-Parameters')
+title(strcat(testName, ' Standard Mode 1 to Mode 2'))
 xlabel('Freq (GHz)')
 ylabel('dB')
 legend('S11','S12','S21','S22','Location','northeast')
-figure;
 
 % Mode 2 to 1 S-parameters.
+subplot(2,2,4);
 plot(thru_freq,S12cal,'-o',thru_freq,S14cal,'-+',thru_freq,S32cal,...
     '-x',thru_freq,S34cal,'-s');
-title('Mode 2 to Mode 1 S-Parameters')
+title(strcat(testName, ' Standard Mode 2 to Mode 1'))
 xlabel('Freq (GHz)')
 ylabel('dB')
 legend('S11','S12','S21','S22','Location','northeast')
+
+% Put a big title on the whole thing
+titleText = ['Calibrated Modal S-Parameters for ' testName ' Standard'];
+suptitle(titleText);
