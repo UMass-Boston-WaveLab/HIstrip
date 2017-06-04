@@ -9,21 +9,22 @@ function[mag_dutS,mag_dut_cal_S,sorted_prop2,sorted_evalues] = calibrateReflect(
 % Stores relative paths so MATLAB can find the data.
 addpath 'Data';
 addpath 'Data/Cal-Set-5';
+addpath 'Data/ConductorLosses';
+addpath 'Data/LinearTapers/Diamond';
 
 % Set the name of the test for graphing function to access
-testName = 'Line';
-
+testName = 'Reflect';
 % Here for convenience, want access to all output variables.
-re_thru = 're_cs5thruband1_groundV2.csv'; 
-im_thru = 'im_cs5thruband1_groundV2.csv';
-re_line = 're_cs5line1band1_groundV2.csv'; 
-im_line = 'im_cs5line1band1_groundV2.csv';
-re_reflect1 = 'cs5NewLoadOpen68Ohm_real_groundV2.csv';
-im_reflect1 = 'cs5NewLoadOpen68Ohm_im_groundV2.csv';
+re_thru = 'ThruExpTaperBand1GroundV2Real.csv'; 
+im_thru = 'ThruExpTaperBand1GroundV2Im.csv';
+re_line = 'LineExpTaperNotThruBand1GroundV2Real.csv'; 
+im_line = 'LineExpTaperNotThruBand1GroundV2Im.csv';
+re_reflect1 = 'ReflectExpTaperBand1GroundV2Real.csv';
+im_reflect1 = 'ReflectExpTaperBand1GroundV2Im.csv';
 re_reflect2 = re_reflect1;
 im_reflect2 = im_reflect1;
-re_dut = 'cs5NewLoadOpen68Ohm_real_groundV2.csv';
-im_dut = 'cs5NewLoadOpen68Ohm_im_groundV2.csv';
+re_dut = 'ReflectExpTaperBand1GroundV2Real.csv';
+im_dut = 'ReflectExpTaperBand1GroundV2Im.csv';
 
 thrulength=11.558/1000;
 linelength=26.0055/1000;
@@ -55,10 +56,18 @@ linelength=26.0055/1000;
     im_reflect2);
 [~,~,~,~,R2S] = generalized_S(reflect2S,r2depth,r2_sq_size);
 
-% DUT Data
-[dutS,dut_freq,dutdepth,dut_sq_size] = readin_HFSS(re_dut,im_dut);
-[dutS11,dutS12,dutS21,dutS22,~] = generalized_S(dutS,...
-    dutdepth,dut_sq_size);
+% DUT Data - convert the gammaIn first and put in individual matrices
+dutS = GammaIn(ts11, ts12, ts21, ts22, R1S);
+dutS11 = zeros(1,1,r2depth);
+dutS12 = zeros(1,1,r2depth);
+dutS21 = zeros(1,1,r2depth);
+dutS22 = zeros(1,1,r2depth);
+for ii = 1:r2depth
+    dutS11(1,1,ii) = dutS(1,1,ii);
+    dutS12(1,1,ii) = dutS(1,2,ii);
+    dutS21(1,1,ii) = dutS(2,1,ii);
+    dutS22(1,1,ii) = dutS(2,2,ii);
+end
 
 % For reflect, dutS is a 2x2 matrix, and each subcomponent is a singleton.
 % This calculates the T matrix for the 2x2 dut.
@@ -70,8 +79,8 @@ T22 = 1./dutS21;
 % The 4x4 S/T matrix for the reflect is [G 0; 0 G] where each subcomponent
 % is a 2x2 matrix. This populates the 4x4 T matrix for the reflect
 % standard.
-dutT = zeros(4,4,dutdepth);
-for ii = 1:dutdepth
+dutT = zeros(4,4,r2depth);
+for ii = 1:r2depth
     dutT(1,1,ii) = T11(1,1,ii);
     dutT(1,2,ii) = T12(1,1,ii);
     dutT(2,1,ii) = T21(1,1,ii);
@@ -87,9 +96,10 @@ end
 % and the reflect matrices are of identical size. Displays a message if
 % something has gone awry.
 
+% THIS TEST HERE NEEDS FIXIN' (dut parameters changed)
 [depth] = sanitycheck(thru_freq,line_freq,...
-    reflect1_freq,reflect2_freq,dut_freq,tdepth,ldepth,r1depth,r2depth,...
-    dutdepth,t_sq_size,l_sq_size,r1_sq_size,r2_sq_size,dut_sq_size,...
+    reflect1_freq,reflect2_freq,thru_freq,tdepth,ldepth,r1depth,r2depth,...
+    r2depth,t_sq_size,l_sq_size,r1_sq_size,r2_sq_size,2,...
     R1S,R2S);
 
 % Calculates the propagation constants,eigenvalues, and eigenvectors needed
