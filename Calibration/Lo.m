@@ -35,7 +35,6 @@ end
 % Calculates the L0 matrix.
 
 L0 = zeros(2,2,depth);
-
 for ii = 1:depth
     L0(1,1,ii) = L10(1,1,ii);
     L0(2,2,ii) = L12(1,1,ii)/L10(1,1,ii);
