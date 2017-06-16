@@ -1,4 +1,5 @@
 % Corrects the complex logarithm. Has no effect on final dB results.
+% 
 
 function[corrected_prop] = logfix(sorted_prop2,sq_size,sub_size,depth,...
     linelength,thrulength)
