@@ -1,5 +1,4 @@
-% Calibration function. This version uses two reflect standards as
-% suggested in the multimodal TRL paper.
+% Calibration function. This version uses two reflect standards.
 
 function[mag_dutS,mag_dut_cal_S,sorted_prop2,sorted_evalues] = calibrate2(re_thru,im_thru,...
     re_reflect1,im_reflect1,re_reflect2,im_reflect2,re_line,im_line,...
