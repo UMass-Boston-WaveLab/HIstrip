@@ -4,7 +4,7 @@
 function [sorted_prop2,sorted_evalues,Ao] = ...
     ordering(eigenvalues, propagation_constants, eigenvectors, depth)
 
-% Creates 1xr matrices from the diagonal matrices of eigenvalues and
+% Creates 1x4 matrices from the diagonal matrices of eigenvalues and
 % propagation constants. The Z matrix extracts the real components of the
 % propagation constants for easier sorting. 
 
