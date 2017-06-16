@@ -1,5 +1,5 @@
 % Calibration function. Designed to work on the 2x2 reflect standards. This
-% version uses two reflect standards during the calibration algorithm.
+% version uses two reflect standards during the calibration.
 
 function[mag_dutS,mag_dut_cal_S,sorted_prop2,sorted_evalues] = calibrate2(re_thru,im_thru,...
     re_reflect1,im_reflect1,re_reflect2,im_reflect2,re_line,im_line,...
