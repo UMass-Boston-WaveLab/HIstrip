@@ -1,5 +1,5 @@
 % Calibration function. Only uses one reflect standard throughout the
-% algorithm - not the preferred method.
+% algorithm. Makes no simplifying assumptions.
 
 function[mag_dutS,mag_dut_cal_S,sorted_prop2,sorted_evalues] = calibrate(re_thru,im_thru,...
     re_reflect1,im_reflect1,re_reflect2,im_reflect2,re_line,im_line,...
@@ -75,11 +75,20 @@ linelength=26.0055/1000;
 
 % Calculates the propagation constants,eigenvalues, and eigenvectors needed
 % for the calibration, and then sorts them into the correct order.
-[propagation_constants, eigenvalues, eigenvectors] = ...
+[propagation_constants, eigenvalues, eigenvectors, Q] = ...
     prop_const(lt,linelength, tt, thrulength, depth);
  
 [sorted_prop2,sorted_evalues,Ao] = ...
     ordering(eigenvalues, propagation_constants, eigenvectors, depth);
+
+%{
+% trying new sorting orders with Ao and prop constants
+[sorted_prop2, sorted_evalues, Ao] = ...
+    reorder(sorted_evalues, sorted_prop2, Ao, depth, 3); 
+%}
+    
+% Correct the angles in the sorted propagation constants matrix.
+sorted_prop2 = angleCorrect(sorted_prop2, depth);
     
 % Calculates the partially known error boxes Ao and Bo. 
 [~,Bo] = Ao_and_Bo(Ao,tt,thrulength,sorted_prop2,depth);
