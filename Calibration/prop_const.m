@@ -6,7 +6,6 @@ function[propagation_constants, eigenvalues, eigenvectors,Q] = ...
     prop_const(line,linelength, thru, thrulength, depth)
 
 % Creates empty Q matrix and performs initial calculations.
-
 deltal = linelength - thrulength;
 Q = zeros(4,4,depth);
 for ii = 1:depth
@@ -15,17 +14,18 @@ end
 
 % Calculates the propagation constants, eigenvalues, and eigenvectors to be
 % sorted.
-
 for ii = 1:depth
     Q(:,:,ii) = line(:,:,ii)*invthru(:,:,ii);
 end
 
+% Get the eigenvectors and eigenvalues
 eigenvectors = zeros(4,4,depth);
 eigenvalues = zeros(4,4,depth);
 for ii = 1:depth
     [eigenvectors(:,:,ii),eigenvalues(:,:,ii)] = eig(Q(:,:,ii));
 end
 
+% Calculate the propagation constants from the eigenvalues
 propagation_constants = zeros(4,4,depth);
 for ii = 1:depth
     for jj = 1:4
