@@ -1,6 +1,5 @@
 % Calibration function. Uses one reflect standard, and is designed to work
-% on the 2x2 reflect standard. Not the preferred approach - see
-% calibrate2reflect.m for the two reflect standard version.
+% on the 2x2 reflect standard. 
 
 function[mag_dutS,mag_dut_cal_S,sorted_prop2,sorted_evalues] = calibrateReflect(re_thru,im_thru,...
     re_reflect1,im_reflect1,re_reflect2,im_reflect2,re_line,im_line,...
@@ -11,20 +10,21 @@ addpath 'Data';
 addpath 'Data/Cal-Set-5';
 addpath 'Data/ConductorLosses';
 addpath 'Data/LinearTapers/Diamond';
+addpath 'Data/Exponential Tapers';
 
 % Set the name of the test for graphing function to access
 testName = 'Reflect';
 % Here for convenience, want access to all output variables.
-re_thru = 'ThruExpTaperBand1GroundV2Real.csv'; 
-im_thru = 'ThruExpTaperBand1GroundV2Im.csv';
-re_line = 'LineExpTaperNotThruBand1GroundV2Real.csv'; 
-im_line = 'LineExpTaperNotThruBand1GroundV2Im.csv';
-re_reflect1 = 'ReflectExpTaperBand1GroundV2Real.csv';
-im_reflect1 = 'ReflectExpTaperBand1GroundV2Im.csv';
+re_thru = 're_cs5thruband1_groundV2.csv'; 
+im_thru = 'im_cs5thruband1_groundV2.csv';
+re_line = 're_cs5line1band1_groundV2.csv'; 
+im_line = 'im_cs5line1band1_groundV2.csv';
+re_reflect1 = '50load+shortREAL.csv';
+im_reflect1 = '50load+shortIM.csv';
 re_reflect2 = re_reflect1;
 im_reflect2 = im_reflect1;
-re_dut = 'ReflectExpTaperBand1GroundV2Real.csv';
-im_dut = 'ReflectExpTaperBand1GroundV2Im.csv';
+re_dut = '50load+shortREAL.csv';
+im_dut = '50load+shortIM.csv';
 
 thrulength=11.558/1000;
 linelength=26.0055/1000;
@@ -110,7 +110,16 @@ end
  
 [sorted_prop2,sorted_evalues,Ao] = ...
     ordering(eigenvalues, propagation_constants, eigenvectors, depth);
+   
+%{
+% trying new sorting orders with Ao and prop constants
+[sorted_prop2, sorted_evalues, Ao] = ...
+    reorder(sorted_evalues, sorted_prop2, Ao, depth, 3);
+%}
     
+% Correct the angles in the sorted propagation constants matrix.
+sorted_prop2 = angleCorrect(sorted_prop2, depth);
+
 % Calculates the partially known error boxes Ao and Bo. 
 [~,Bo] = Ao_and_Bo(Ao,tt,thrulength,sorted_prop2,depth);
 
