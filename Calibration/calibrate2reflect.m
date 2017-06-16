@@ -1,6 +1,5 @@
 % Calibration function. Designed to work on the 2x2 reflect standards. This
-% version uses two reflect standards during the calibration algorithm, as
-% suggested by the multimodal TRL paper.
+% version uses two reflect standards during the calibration algorithm.
 
 function[mag_dutS,mag_dut_cal_S,sorted_prop2,sorted_evalues] = calibrate2(re_thru,im_thru,...
     re_reflect1,im_reflect1,re_reflect2,im_reflect2,re_line,im_line,...
@@ -12,7 +11,6 @@ addpath 'Data/Cal-Set-5';
 
 % Set the name of the test for graphing function to access
 testName = 'Line';
-
 % Here for convenience, want access to all output variables.
 re_thru = 're_cs5thruband1_groundV2.csv'; 
 im_thru = 'im_cs5thruband1_groundV2.csv';
@@ -27,6 +25,8 @@ im_secondreflect = '50load+openIM.csv';
 re_dut = '50load+shortREAL.csv';
 im_dut = '50load+shortIM.csv';
 
+thrulength = 11.558/1000;
+linelength = 26.0055/1000;
 % Thrulength is 30.598/1000 with connectors; 11.558/1000 without
 % Linelength is 45.045/1000 with connectors; 26.0055/1000 without
 
@@ -110,6 +110,9 @@ end
  
 [sorted_prop2,sorted_evalues,Ao] = ...
     ordering(eigenvalues, propagation_constants, eigenvectors, depth);
+
+% Correct the angles in the sorted propagation constants matrix.
+sorted_prop2 = angleCorrect(sorted_prop2, depth);
     
 % Calculates the partially known error boxes Ao and Bo. 
 [~,Bo] = Ao_and_Bo(Ao,tt,thrulength,sorted_prop2,depth);
