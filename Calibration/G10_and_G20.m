@@ -29,7 +29,7 @@ for ii = 1:depth
 end
 
 % Creates G10 and G20 matrices and populates them with correct values.
-
+% See equations 44 and 45.
 G10 = zeros(2,2,depth);
 G20 = zeros(2,2,depth);
 
