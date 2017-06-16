@@ -1,4 +1,5 @@
 % Trying something, resorting Ao and sorted_prop2.
+% Don't use - use reorder instead - has options for sorting.
 
 function[resortedAo,resortedprop] =  resort(sorted_evectors,sorted_prop2,...
     depth,sq_size);
