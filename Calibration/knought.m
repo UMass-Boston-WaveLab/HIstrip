@@ -37,10 +37,12 @@ for ii = 1:depth
 K2L(:,:,ii) = inv(A022T(:,:,ii)*(A011(:,:,ii) - A012(:,:,ii)*...
     X(:,:,ii)*A021(:,:,ii)));
 end
+%tested by plotting the off-diagonal terms.  They are on the order of
+%10^-14 -- I would say that counts as diagonal. (June 20, 2017 KCKP)
 
 % Calculates the k10 and k20 constants. Like the L10,L20 constants, these
 % are assumed to be the positive roots and a corrective sign factor is
-% applied later in the algorithm.
+% applied later in the algorithm.  ***EQUATION 87
 
 % get the r1 and r2 values - the right hand side of the equation above
 % (K2L)
