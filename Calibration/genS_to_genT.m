@@ -1,17 +1,15 @@
-% Function accepts ordinary and generalized S-parameter matrices and
-% returns ordinary and generalized T-parameter matrices.
+% Function accepts S-parameter matrices and returns T-parameter matrices.
+% See Equation 154 in the Appendix for the derivation.
 
-function [T11, T12, T21, T22, T] = genS_to_genT(S11, S12, S21, S22, ...
-    depth,sub_size)
+function [T] = genS_to_genT(S11, S12, S21, S22, depth)
 
-% Creates empty T-parameter submatrices to fill. Calculates invS21 to use
-% in the upcoming parameter conversion.
+% Creates empty T-parameter submatrices to fill. 
+T11 = zeros(2, 2, depth);
+T12 = zeros(2, 2, depth);
+T21 = zeros(2, 2, depth);
+T22 = zeros(2, 2, depth);
 
-T11 = zeros(sub_size, sub_size, depth);
-T12 = zeros(sub_size, sub_size, depth);
-T21 = zeros(sub_size, sub_size, depth);
-T22 = zeros(sub_size, sub_size, depth);
-
+% Calculates T22 first.
 for ii = 1:depth
     T22(:,:,ii) = inv(S21(:,:,ii));
 end
@@ -23,6 +21,5 @@ for ii = 1:depth
     T21(:,:,ii) = -T22(:,:,ii)*S22(:,:,ii);
 end
 
+% Return the T-parameter matrix.
 T = [T11 T12; T21 T22];
-
-end

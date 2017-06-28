@@ -1,7 +1,7 @@
 % Calculates the K0 matrix used to de-embed the DUT, using the reciprocal
 % error networks parameters from the algorithm.
 
-function[K0] = knought(Ao,L10,L20,depth)
+function[K0, K10, K20] = knought(Ao,L10,L20,depth)
 
 % Calculates the necessary submatrices of Ao.
 % Preallocates 2x2 matrices.
@@ -12,30 +12,30 @@ A022 = zeros(2,2,depth);
 
 % Populates the 2x2 matrices.
 for ii = 1:depth
-A011(:,:,ii) = Ao(1:2,1:2,ii);
-A012(:,:,ii) = Ao(1:2,3:4,ii);
-A021(:,:,ii) = Ao(3:4,1:2,ii);
-A022(:,:,ii) = Ao(3:4,3:4,ii);
+    A011(:,:,ii) = Ao(1:2,1:2,ii);
+    A012(:,:,ii) = Ao(1:2,3:4,ii);
+    A021(:,:,ii) = Ao(3:4,1:2,ii);
+    A022(:,:,ii) = Ao(3:4,3:4,ii);
 end
 
 % Preallocate and populate transpose of A022.
 A022T = zeros(2,2,depth);
 for ii = 1:depth
-A022T(:,:,ii) = transpose(A022(:,:,ii));
+    A022T(:,:,ii) = transpose(A022(:,:,ii));
 end
 
 % Preallocate and populate inverse of A022.
 X = zeros(2,2,depth);
 for ii = 1:depth
-X(:,:,ii) = inv(A022(:,:,ii));
+    X(:,:,ii) = inv(A022(:,:,ii));
 end
 
 % K2L should be diagonal. This should be checked somehow when real data is
 % used.
 K2L = zeros(2,2,depth);
 for ii = 1:depth
-K2L(:,:,ii) = inv(A022T(:,:,ii)*(A011(:,:,ii) - A012(:,:,ii)*...
-    X(:,:,ii)*A021(:,:,ii)));
+    K2L(:,:,ii) = inv(A022T(:,:,ii)*(A011(:,:,ii) - A012(:,:,ii)*...
+        X(:,:,ii)*A021(:,:,ii)));
 end
 
 % Calculates the k10 and k20 constants. Like the L10,L20 constants, these

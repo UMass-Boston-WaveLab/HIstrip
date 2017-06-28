@@ -2,6 +2,11 @@
 % into pure and mixed-modal matrices - mode 1, mode 2, mode 1 to 2, and
 % mode 2 to 1.
 
+% Script needs to get cleaned up - too easy to change variables elsewhere
+% and miss them here.
+% Needs to accept the variables so these errors get caught/fixed as we
+% update the code
+
 % Creates empty vectors to store results.
 % Mode 1.
 S11cal = zeros(1,depth);
@@ -28,7 +33,6 @@ S32cal = zeros(1,depth);
 S34cal = zeros(1,depth);
 
 % Fills empty vectors with calibrated results.
-
 for ii = 1:depth
     % Mode 1.
     S11cal(1,ii) = mag_dut_cal_S(1,1,ii);
@@ -56,6 +60,9 @@ for ii = 1:depth
 end
 
 % Creates one graph with four subplots to display the modal S-parameters.
+
+% assign thru_freq THIS NEEDS TO GET FIXED
+thru_freq = [3:0.1:3+(depth - 1)/10];
 
 % Mode 1 S-parameters.
 ax1 = subplot(2,2,1);

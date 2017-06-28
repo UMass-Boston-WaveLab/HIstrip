@@ -2,23 +2,12 @@
 % Maintains sq_size variable to allow for arbitrarily sized square
 % matrices.
 
-function[mag_dutS,mag_dut_cal_S] = S_to_db(dut_cal_S,dutS11,...
-    dutS12,dutS21,dutS22,sq_size,depth)
+function[mag_dutS,mag_dut_cal_S] = S_to_db(dut_cal_S, dutS, sq_size,depth)
 
-% Calculates the S-parameters of the uncalibrated and calibrated DUT in dB.
-
-dutS = [dutS11 dutS12;dutS21 dutS22];
-
+% preallocate matrices
 mag_dutS = zeros(sq_size,sq_size,depth);
-
-for ii = 1:depth
-    mag_dutS(:,:,ii) = abs(dutS(:,:,ii));
-    mag_dutS(:,:,ii) = 20*log10(mag_dutS(:,:,ii));
-end
-
 mag_dut_cal_S = zeros(sq_size,sq_size,depth);
 
-for ii = 1:depth
-    mag_dut_cal_S(:,:,ii) = abs(dut_cal_S(:,:,ii));
-    mag_dut_cal_S(:,:,ii) = 20*log10(mag_dut_cal_S(:,:,ii));
-end
+% convert the s-parameters to dB values
+mag_dutS = 20*log10(abs(dutS));
+mag_dut_cal_S = 20*log10(abs(dut_cal_S));

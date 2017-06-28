@@ -1,33 +1,29 @@
 % Calculates the error boxes Ao and Bo from the measured
 % thru and line standards. 
 
-function[invAo, Bo] = Bo(Ao,tt,thrulength,sorted_prop2,depth)
+function [Bo] = Bo(Ao, thruT, thruLength, sortedPropagationConstants, depth)
 
-% Preallocating and inverting Ao matrix.
-invAo = zeros(4,4,depth);
+% Calculates the reverse cascaded product of inv(Ao) and the measured thru
+% cascade matrix (see eqn 28 - 29).
+invAoM1 = zeros(4,4,depth);
 for ii = 1:depth
-    invAo(:,:,ii) = inv(Ao(:,:,ii));
+    invAoM1(:,:,ii) = Ao(:,:,ii) \ thruT(:,:,ii); % inv(Ao) * M1
 end
+invAoM1ReverseCascaded = reverse_cascade(invAoM1);
 
-% Calculates the reverse cascaded product of inv(Ao) and M1.
-Z = zeros(4,4,depth);
-for ii = 1:depth
-    Z(:,:,ii) = invAo(:,:,ii)*tt(:,:,ii);
-end
-YoM1 = reverse_cascade(Z);
-
-% Calculates the known T-parameters of the thru standard using the
+% Calculates the actual T-parameters of the thru standard using the
 % previously determined propagation constants, and permutates the matrix.
-N = zeros(4,4,depth);
+% See equations 5, 14, and 29 for the derivations.
+N1 = zeros(4,4,depth);
 for ii = 1:depth
     for jj = 1:4
-        N(jj,jj,ii) = exp(sorted_prop2(jj,jj,ii)*thrulength);
+        N1(jj,jj,ii) = exp(sortedPropagationConstants(jj,jj,ii)*thruLength);
     end
 end
-NN = permutate(N);
+N1Permutated = permutate(N1);
 
 % Calculates Bo.
 Bo = zeros(4,4,depth);
 for ii = 1:depth
-    Bo(:,:,ii) = YoM1(:,:,ii)*NN(:,:,ii);
+    Bo(:,:,ii) = invAoM1ReverseCascaded(:,:,ii)*N1Permutated(:,:,ii);
 end

@@ -19,15 +19,18 @@ S21 = zeros(sub_size,sub_size,depth);
 S22 = zeros(sub_size,sub_size,depth);
 
 % Performing the T->S Parameter conversion.
+% first find s21
 for ii = 1:depth
     S21(:,:,ii) = inv(T22(:,:,ii));
 end
 
+% use s21 = invt22 to finish calculations (see eqn 154)
 for ii = 1:depth
     S11(:,:,ii) = T12(:,:,ii)*S21(:,:,ii);
     S12(:,:,ii) = T11(:,:,ii) - T12(:,:,ii)*S21(:,:,ii)*T21(:,:,ii);
     S22(:,:,ii) = -S21(:,:,ii)*T21(:,:,ii);
 end
 
+% assign the submatrices to the generalized S parameter matrix
 S = [S11 S12; S21 S22];
 end 

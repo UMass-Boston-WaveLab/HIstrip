@@ -1,11 +1,13 @@
 % Calculates known G10 and G20 matrices from measured reflection matrices
-% and previously calculated Ao and Bo matrices. 
+% and previously calculated Ao and Bo matrices. Function is written to work
+% if two separately measured reflect standards (the same standard, but one 
+% measurement for each side of the VNA) are passed in.
+%
+% See Equations 37 - 45 for the derivation.
 
 function[G10,G20] = G10_and_G20(Ao,Bo,R1S,R2S,depth)
 
-% Creates 2x2 submatrices of Ao and Bo and populates them with the
-% correct values.
-
+% Preallocates 2x2 submatrices of Ao and Bo.
 A011 = zeros(2,2,depth);
 A012 = zeros(2,2,depth);
 A021 = zeros(2,2,depth);
@@ -16,6 +18,7 @@ B012 = zeros(2,2,depth);
 B021 = zeros(2,2,depth);
 B022 = zeros(2,2,depth);
 
+% Populates the submatrices with the correct values.
 for ii = 1:depth
     A011(:,:,ii) = Ao(1:2,1:2,ii);
     A012(:,:,ii) = Ao(1:2,3:4,ii);
@@ -29,7 +32,7 @@ for ii = 1:depth
 end
 
 % Creates G10 and G20 matrices and populates them with correct values.
-% See equations 44 and 45.
+% See equations 44 and 45. 
 G10 = zeros(2,2,depth);
 G20 = zeros(2,2,depth);
 

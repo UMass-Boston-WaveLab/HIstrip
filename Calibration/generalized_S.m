@@ -1,35 +1,34 @@
-% Function takes S-parameters read in from HFSS and converts them into
-% generalized scattering parameter matrices. The end result is a 2x2 matrix
-% composed of smaller submatrices each with size of sq_size/2.
+% Function takes unformatted S-parameters read in from HFSS and converts 
+% them into generalized scattering parameter matrices. Function produces an
+% overall S-parameter matrix and four generalized submatrices.
 
-function [S11, S12, S21, S22, S] = generalized_S(M,depth,sq_size)
+function [S11, S12, S21, S22, S] = generalized_S(complexData, ...
+    depth, sq_size)
 
 % Reshapes the data from HFSS into a square matrix of size "sq_size".
 % Retains the sq_size variable so this produces square S matrices of size 
 % 2n x 2n, n = 1,2,...,etc. Submatrices (S11,S12,etc) are of size n x n.
-
 S = zeros(sq_size,sq_size,depth);
 for ii = 1:depth
-    row = M(ii,:);
+    row = complexData(ii,:);
     square = reshape(row, sq_size, sq_size);
     S(:,:,ii) = square;
 end
 
 % Breaks up matrix S into 4 smaller square submatrices, each of size
-% "elements".
-
-if sq_size > 2
-    sub_size = sq_size/2;
-    S11 = zeros(sub_size,sub_size,depth);
-    S12 = zeros(sub_size,sub_size,depth);
-    S21 = zeros(sub_size,sub_size,depth);
-    S22 = zeros(sub_size,sub_size,depth);
+% "elements". For a 4x4 matrix, produces 2x2 submatrices.
+if sq_size == 4
+    S11 = zeros(2, 2, depth);
+    S12 = zeros(2, 2, depth);
+    S21 = zeros(2, 2, depth);
+    S22 = zeros(2, 2, depth);
     for ii = 1:depth
-        S11(:,:,ii) = S(1:sub_size,1:sub_size,ii);
-        S12(:,:,ii) = S(1:sub_size,sub_size+1:sq_size,ii);
-        S21(:,:,ii) = S(sub_size+1:sq_size,1:sub_size,ii);
-        S22(:,:,ii) = S(sub_size+1:sq_size,sub_size+1:sq_size,ii);
+        S11(:,:,ii) = S(1:2,1:2,ii);
+        S12(:,:,ii) = S(1:2,3:4,ii);
+        S21(:,:,ii) = S(3:4,1:2,ii);
+        S22(:,:,ii) = S(3:4,3:4,ii);
     end
+    % For a 2x2 matrix, produces 1x1 submatrices.
 else 
     S11 = zeros(1,1,depth);
     S12 = zeros(1,1,depth);

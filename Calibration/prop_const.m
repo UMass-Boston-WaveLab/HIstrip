@@ -1,34 +1,34 @@
 % Calculates the propagation constants for the propagating modes on the
 % thru and line standards. Also calculates eigenvalues and eigenvectors of
 % P and Q matrices. 
+%
+% See Equations 3-14 for the derivation.
 
-function[propagation_constants, eigenvalues, eigenvectors,Q] = ...
-    prop_const(line,linelength, thru, thrulength, depth)
+function[propagationConstants, eigenvalues, eigenvectors,Q] = ...
+    prop_const(lineT,lineLength, thruT, thruLength, depth)
 
-% Creates empty Q matrix and performs initial calculations.
-deltal = linelength - thrulength;
-Q = zeros(4,4,depth);
+% Calculates the deltal term (eqn 11).
+deltal = lineLength - thruLength; 
+
+% Preallocate space for the Q matrix.
+Q = zeros(4, 4, depth);
+
+% Calculate the Q matrix (eqn 10).
 for ii = 1:depth
-    invthru(:,:,ii) = inv(thru(:,:,ii));
+    Q(:,:,ii) = lineT(:,:,ii) / thruT(:,:,ii); % lineT * inv(thruT)
 end
 
-% Calculates the propagation constants, eigenvalues, and eigenvectors to be
-% sorted.
-for ii = 1:depth
-    Q(:,:,ii) = line(:,:,ii)*invthru(:,:,ii);
-end
-
-% Get the eigenvectors and eigenvalues
+% Get the eigenvectors and eigenvalues of Q (eqn 12, 13).
 eigenvectors = zeros(4,4,depth);
 eigenvalues = zeros(4,4,depth);
 for ii = 1:depth
     [eigenvectors(:,:,ii),eigenvalues(:,:,ii)] = eig(Q(:,:,ii));
 end
 
-% Calculate the propagation constants from the eigenvalues
-propagation_constants = zeros(4,4,depth);
+% Calculate the propagation constants from the eigenvalues (eqn 14).
+propagationConstants = zeros(4,4,depth);
 for ii = 1:depth
     for jj = 1:4
-        propagation_constants(jj,jj,ii) = (1/deltal)*log(eigenvalues(jj,jj,ii));
+        propagationConstants(jj,jj,ii) = (1/deltal)*log(eigenvalues(jj,jj,ii));
     end
 end

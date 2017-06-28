@@ -4,9 +4,12 @@
 %
 % This function corrects the angles of the propagation constants. Vectors 
 % not lying in the first or third quadrants must be corrected. Forward
-% travelling waves (III) are corrected by subtracting 2pi from their 
-% imaginary component. Backward travelling waves (I) are corrected by
-% adding 2pi to their imaginary component.
+% travelling waves (belong in quadrant III) are corrected by subtracting 
+% 2*pi*j from their imaginary component. Backward travelling waves 
+% (belong in quadrant I) are corrected by adding 2*pi*j to their 
+% imaginary component.
+%
+% See Equation 125 and the discussion in section VI.A.
 
 function[sortedProp] = angleCorrect(sortedProp, depth)
 
@@ -19,12 +22,12 @@ for ii = 1:depth
     for jj = 1:4
         if real(sortedProp(jj, jj, ii)) < 0 ...
                 && imag(sortedProp(jj, jj, ii)) > 0
-            sortedProp(jj, jj, ii) = sortedProp(jj, jj, ii) - 2*pi*i;
+            sortedProp(jj, jj, ii) = sortedProp(jj, jj, ii) - 2*pi*1i;
             continue;
         end
         if real(sortedProp(jj, jj, ii)) > 0  ...
                 && imag(sortedProp(jj, jj, ii)) < 0
-            sortedProp(jj, jj, ii) = sortedProp(jj, jj, ii) + 2*pi*i;
+            sortedProp(jj, jj, ii) = sortedProp(jj, jj, ii) + 2*pi*1i;
         end
     end
 end

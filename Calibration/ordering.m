@@ -1,5 +1,12 @@
 % Correctly orders the propagation constants and their associated
-% eigenvalues and eigenvectors. This needs to get cleaned up.
+% eigenvalues and eigenvectors. This function can be cleaned up, but is 
+% currently working correctly (17 Jun 2017).
+%
+% See section II.B for a discussion on sorting order and its importance.
+% See Equations 15 - 27 for the derivation of the Ao matrix.
+
+% Ao is the correctly sorted eigenvector matrix; other names should be
+% self-explanatory.
 
 function [sorted_prop2,sorted_evalues,Ao] = ...
     ordering(eigenvalues, propagation_constants, eigenvectors, depth)

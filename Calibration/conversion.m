@@ -4,11 +4,13 @@
 function[dut_cal_T11,dut_cal_T12,dut_cal_T21,dut_cal_T22] = ...
     conversion(Nxo,depth)
 
+% preallocate matrices to store submatrices of Nxo
 dut_cal_T11 = zeros(2,2,depth);
 dut_cal_T12 = zeros(2,2,depth);
 dut_cal_T21 = zeros(2,2,depth);
 dut_cal_T22 = zeros(2,2,depth);
 
+% populate the submatrices
 for ii = 1:depth
     dut_cal_T11(:,:,ii) = Nxo(1:2,1:2,ii);
     dut_cal_T12(:,:,ii) = Nxo(1:2,3:4,ii);

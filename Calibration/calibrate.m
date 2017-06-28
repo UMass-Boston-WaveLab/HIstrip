@@ -35,33 +35,26 @@ linelength=26.0055/1000;
 % parameters (and T parameters for thru, line, DUT.)
 
 % Thru Data
-[thruS,thru_freq,tdepth,t_sq_size] = readin_HFSS(re_thru,im_thru);
-[ts11,ts12,ts21,ts22,~] = generalized_S(thruS,tdepth,t_sq_size);
-[~,~,~,~,tt] = genS_to_genT(ts11, ts12, ts21, ts22, ...
-    tdepth, 2);
+[thruS,thru_freq, tdepth] = readin_HFSS(re_thru,im_thru);
+[ts11,ts12,ts21,ts22,~] = generalized_S(thruS,tdepth,4);
+tt = genS_to_genT(ts11, ts12, ts21, ts22, tdepth);
 
 % Line Data
-[lineS, line_freq,ldepth,l_sq_size] = readin_HFSS(re_line,im_line);
-[ls11,ls12,ls21,ls22,~] = generalized_S(lineS,ldepth,l_sq_size);
-[~,~,~,~,lt] = genS_to_genT(ls11,ls12,ls21,ls22,...
-    ldepth, 2);
+[lineS, line_freq,ldepth] = readin_HFSS(re_line,im_line);
+[ls11,ls12,ls21,ls22,~] = generalized_S(lineS,ldepth,4);
+lt = genS_to_genT(ls11,ls12,ls21,ls22,ldepth);
 
 % Reflect1 Data
-[reflect1S,reflect1_freq,r1depth,r1_sq_size] = readin_HFSS(re_reflect1,...
+[reflect1S,reflect1_freq,r1depth] = readin_HFSS(re_reflect1,...
     im_reflect1);
-[~,~,~,~,R1S] = generalized_S(reflect1S,r1depth,r1_sq_size);
-
-% Reflect2 Data
-[reflect2S,reflect2_freq,r2depth,r2_sq_size] = readin_HFSS(re_reflect2,...
-    im_reflect2);
-[~,~,~,~,R2S] = generalized_S(reflect2S,r2depth,r2_sq_size);
+R1S = generalized_S(reflect1S,r1depth,2);
 
 % DUT Data
-[dutS,dut_freq,dutdepth,dut_sq_size] = readin_HFSS(re_dut,im_dut);
+[dutS,dut_freq,dutdepth] = readin_HFSS(re_dut,im_dut);
 [dutS11,dutS12,dutS21,dutS22,~] = generalized_S(dutS,...
-    dutdepth,dut_sq_size);
-[~,~,~,~,dutT] = genS_to_genT(dutS11,dutS12,dutS21,...
-    dutS22,dutdepth,2);
+    dutdepth,4);
+dutT = genS_to_genT(dutS11,dutS12,dutS21,...
+    dutS22,dutdepth);
 
 % Checks to make sure that all of the data has the same number of frequency
 % points, and that the thru,line, and DUT matrices are all the same size,
@@ -91,7 +84,7 @@ linelength=26.0055/1000;
 sorted_prop2 = angleCorrect(sorted_prop2, depth);
     
 % Calculates the partially known error boxes Ao and Bo. 
-[~,Bo] = Ao_and_Bo(Ao,tt,thrulength,sorted_prop2,depth);
+Bo = Ao_and_Bo(Ao,tt,thrulength,sorted_prop2,depth);
 
 % Calculates G10 and G20 matrices. 
 [G10,G20] = G10_and_G20(Ao,Bo,R1S,R2S,depth);
