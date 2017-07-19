@@ -60,46 +60,83 @@ for ii = 1:depth
 end
 
 % Creates one graph with four subplots to display the modal S-parameters.
-
-% assign thru_freq THIS NEEDS TO GET FIXED
+figure;
+% assign thru_freq and end_freq from depth variable
 thru_freq = [3:0.1:3+(depth - 1)/10];
+end_freq = 3 + (depth - 1) / 10;
+% set the font size larger
+% set(gca, 'Fontsize', 30);
+
 
 % Mode 1 S-parameters.
 ax1 = subplot(2,2,1);
+% plot the correct parameters
 plot(ax1, thru_freq,S11cal,'-o',thru_freq,S13cal,'-+',thru_freq,S31cal,...
     '-x',thru_freq,S33cal,'-s');
-title(ax1,strcat(testName, ' Standard Mode 1'))
+% title the subplot
+title(ax1,strcat(testName, ' Mode 1'))
+% label and set the x-axis
 xlabel(ax1, 'Freq (GHz)')
-ylabel(ax1,'dB')
-legend(ax1, 'S11','S12','S21','S22','Location','northeast')
+xlim( [3 end_freq]);
+% label and set the y-axis
+ylabel(ax1,'dB');
+ylim([-30 10]);
+% create the legend
+legend(ax1, 'S11','S12','S21','S22','Location','northeast');
+% increase font size
+set(ax1, 'Fontsize', 16);
 
 % Mode 2 S-parameters
-subplot(2,2,2);
+ax2 = subplot(2,2,2);
 plot(thru_freq,S22cal,'-o',thru_freq,S24cal,'-+',thru_freq,S42cal,...
     '-x',thru_freq,S44cal,'-s');
-title(strcat(testName, ' Standard Mode 2'))
-xlabel('Freq (GHz)')
-ylabel('dB')
-legend('S11','S12','S21','S22','Location','northeast')
+title(strcat(testName, ' Mode 2'))
+% label and set the x-axis
+xlabel('Freq (GHz)');
+xlim([3 end_freq]);
+% label and set the y-axis
+ylabel('dB');
+ylim( [-30 10]);
+% create legend
+legend('S11','S12','S21','S22','Location','northeast');
+% increase font size
+set(ax2, 'Fontsize', 16);
+
+
 
 % Mode 1 to 2 S-paremeters.
-subplot(2,2,3);
+ax3 = subplot(2,2,3);
 plot(thru_freq,S21cal,'-o',thru_freq,S23cal,'-+',thru_freq,S41cal,...
     '-x',thru_freq,S43cal,'-s');
-title(strcat(testName, ' Standard Mode 1 to Mode 2'))
-xlabel('Freq (GHz)')
-ylabel('dB')
-legend('S11','S12','S21','S22','Location','northeast')
+title(strcat(testName, ' Mode 1 to Mode 2'))
+% label and set the x-axis
+xlabel('Freq (GHz)');
+xlim( [ 3 end_freq]);
+% label and set the y-axis
+ylabel('dB');
+ylim( [-30 10]);
+% create legend
+legend('S11','S12','S21','S22','Location','northeast');
+% increase font size
+set(ax3, 'Fontsize', 16);
 
 % Mode 2 to 1 S-parameters.
-subplot(2,2,4);
+ax4 = subplot(2,2,4);
 plot(thru_freq,S12cal,'-o',thru_freq,S14cal,'-+',thru_freq,S32cal,...
     '-x',thru_freq,S34cal,'-s');
-title(strcat(testName, ' Standard Mode 2 to Mode 1'))
-xlabel('Freq (GHz)')
-ylabel('dB')
-legend('S11','S12','S21','S22','Location','northeast')
+title(strcat(testName, ' Mode 2 to Mode 1'))
+% label and set the x-axis
+xlabel('Freq (GHz)');
+xlim( [ 3 end_freq]);
+% label and set the y-axis
+ylabel('dB');
+ylim( [-30 10]);
+% create legend
+legend('S11','S12','S21','S22','Location','northeast');
+% increase font size
+set(ax4, 'Fontsize', 16);
 
+% Commented out for now - producing presentation plots
 % Put a big title on the whole thing
-titleText = ['Calibrated Modal S-Parameters for ' testName ' Standard'];
-suptitle(titleText);
+% titleText = ['Calibrated Modal S-Parameters for ' testName ''];
+% suptitle(titleText);
