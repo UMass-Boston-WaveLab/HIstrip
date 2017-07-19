@@ -1,8 +1,8 @@
 % Multimode calibration function. This version works for a 4x4
 % DUT. After initial processing of data, the program will prompt the user
 % to select which algorithm to run: no simplifying assumptions, reciprocal
-% error networks, identical error networks, or reciprocal and identical
-% error networks.
+% error networks, identical and reciprocal error networks, or calibrate the
+% reflect assuming reciprocal error networks.
 %
 % Input:
 %   Real and imaginary parts of raw S-parameters from thru, line, reflect,
@@ -23,29 +23,30 @@ function[mag_dut_cal_S] = calibrate4x4DUT(realThru, imagThru, ...
 
 % Stores relative paths so MATLAB can find the data. Each subset of the
 % Data folder points to a different set of calibration standards.
-addpath 'Data';
-addpath 'Data/Cal-Set-5';
-addpath 'Data/ConductorLosses';
-addpath 'Data/LinearTapers/Diamond';
-addpath 'Data/Exponential Tapers';
+%addpath 'Data';
+%addpath 'Data/Cal-Set-5';
+%addpath 'Data/shorter cs5';
+%addpath 'Data/ConductorLosses';
+%addpath 'Data/LinearTapers/Diamond';
+%addpath 'Data/Exponential Tapers';
+%addpath 'Data/full range';
+%addpath 'Data/band2';
+addpath 'Data/DUT FIX';
 
 % HERE RIGHT NOW FOR TESTING/TROUBLESHOOTING
 % Set the name of the test for graphing function to access
-testName = 'Line';
+testName = 'DUT';
 % Here for convenience, want access to all output variables.
-realThru = 'realThruBand1GroundV2.csv';
-imagThru = 'imThruBand1GroundV2.csv';
-realLine = 'realShortLine.csv';
-imagLine = 'imShortLine.csv';
-realReflect = 'realOpenOpenBand1GroundV2.csv';
-imagReflect = 'imOpenOpenBand1GroundV2.csv';
-realDUT = 'realShortLine.csv';
-imagDUT = 'imShortLine.csv';
-thruLength=11.558/1000;
-lineLength=20.2265/1000;
-% lineLength=26.0055/1000;
-% shorter line has length 20.2265/1000;
-
+realThru = 'thruReal.csv';
+imagThru = 'thruImag.csv';
+realLine = 'lineReal.csv';
+imagLine = 'lineImag.csv';
+realReflect = 'dutReal.csv';
+imagReflect = 'dutImag.csv';
+realDUT = 'thruReal.csv';
+imagDUT = 'thruImag.csv';
+thruLength=8.6685/1000;
+lineLength=17.337/1000;
 
 % Processes all of the raw data from the experiment into correctly
 % formatted 4x4 matrices.
@@ -65,7 +66,7 @@ dutS = rawDataToScatteringParameters(realDUT, imagDUT, 4);
 dutT = rawDataToTransmissionParameters(realDUT, imagDUT);
 
 % Validate the sizes of the processed raw data.
-[depth] = validateSizes(thruT, lineT, dutT, reflectS);
+depth = validateSizes(thruT, lineT, dutT, reflectS);
 
 % Calculates the propagation constants,eigenvalues, and eigenvectors needed
 % for the calibration.
@@ -136,7 +137,7 @@ switch response
     % identical and reciprocal networks    
     case 3 
         % Calculates the L0 matrix - uses identical error network assumption
-        [L0, ~, ~, ~] = identicalErrorNetworksLo(Ao, Bo, depth);
+        [L0, L2, L3, L4] = identicalErrorNetworksLo(Ao, Bo, depth);
         
         % Get the elements from L0 to use in knought function
         L10 = zeros(1,1,depth);
@@ -149,7 +150,7 @@ switch response
         [K0] = knought(Ao,L10,L20,depth);
         
     % calibrate the reflect standard
-    % assumes no simplifying assumptions, just outputs the reflect and then
+    % assumes reciprocal error networks, just outputs the reflect and then
     % keeps chugging for now
     case 4
         % Calculates the L0 matrix.
@@ -160,7 +161,7 @@ switch response
         
         % Calculates the de-embedded G (reflect) matrix
         G = calibrateReflectStandard(K10, K20, L10, L20, G10, depth);
-        
+    % base case for invalid input   
     otherwise
         error('Invalid menu option, program exiting');
 end
@@ -168,7 +169,7 @@ end
 % Finish the calibration procedure
 
 % Calculates the Nxo matrix.
-[NX0] = Nxo(Ao,Bo,K0,dutT,depth);
+NX0 = Nxo(Ao,Bo,K0,dutT,depth);
 
 % Generates submatrices of Nxo.
 [dut_cal_T11,dut_cal_T12,dut_cal_T21,dut_cal_T22] = ...
