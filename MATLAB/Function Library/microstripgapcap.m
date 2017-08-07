@@ -1,9 +1,6 @@
 function [ Cs, Cp1, Cp2 ] = microstripgapcap( epsr,g, h2, w1, varargin)
 
-w1 = 0.12;%m patch width
-g = 0.02; %m gap width between patches
-h2 = 0.04; %m substrate height
-epsr = 2.2;
+
 if ~isempty(varargin)%what is this?
     w2=varargin{1};
 else

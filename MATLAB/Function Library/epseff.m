@@ -1,9 +1,7 @@
 function [eff ] = epseff( w,h2,epsr )
 %EPSEFF calculates effective dielectric constant using expression due to
 %Hammerstad and Jensen.
-epsr = 2.2;
-h2 = 0.04; %substrate height 
-w = 0.12; %patch width
+
 u=w/h2;
 
 a=1+(1/49)*log((u^4+(u/52)^2)/(u^4+0.432))+(1/18.7)*log(1+(u/18.1)^3);

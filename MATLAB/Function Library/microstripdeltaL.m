@@ -2,9 +2,7 @@ function [ deltaL ] = microstripdeltaL( w,h2,epsr)
 %DELTAL computes effective length correction at open end of microstrip line
 %using the expression from Kirschning, Jansen, and Koster.
 
-epsr = 2.2;
-h2 = 0.04; %m patch height above ground plane
-w = 0.12; %m patch width
+
 eff = epseff(w,h2,epsr);
 
 zeta1 = 0.434907*(eff^0.81 + 0.26*(w/h2)^0.8544 + 0.236)/(eff^0.81-0.189*(w/h2)^0.8544+0.87);

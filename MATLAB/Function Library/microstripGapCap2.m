@@ -1,10 +1,7 @@
 function [ Cs, Cp ] = microstripGapCap2( w,h,eps2,g, f )
 %MICROSTRIPGAPCAP2 Uses Hammerstad's fits of Koster & Jansen's data
 
-h = 0.002; % height above ground plane
-w = 0.006; % patch width
-g = 0.001; %patch spacing
-eps2 = 2.2;
+
 lambda = 3e8/f;
 omega = 2*pi*f;
 u = w/h;
