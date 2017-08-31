@@ -1,4 +1,4 @@
-function [Z]  = Zin(f, w_ant, w2, h_ant, H_sub, rad, eps1,eps2, g, L_ant, startpos, L_sub, W_sub, viaflag)
+function [Z]  = Zin(f, w_ant, w2, h_ant, h_sub, rad, eps1,eps2, g, L_ant, startpos, L_sub, w_sub, viaflag)
 %% Uses a dipole or probe fed relationship to enforce boundary conditions on
 
 omega = 2*pi*f;
@@ -23,9 +23,8 @@ E = eye(4);
 
 for ii = 1:length(f)
     
-Y(:,:,ii) = HISantYmat_SS(f(ii), w_ant, w2, h_ant, H_sub, rad, eps1, eps2, g, L_ant, startpos, L_sub, W_sub, viaflag);
-ABCDt(:,:,ii) = HISlayerABCD(f(ii), w_ant, w2, h_ant, H_sub, rad, eps1, eps2, g, L_ant, startpos, L_sub, W_sub, viaflag);
-
+Y(:,:,ii) = HISantYmat_SS(w_ant, h_ant, L_ant, eps1, w_sub, h_sub, L_sub, eps2, f(ii));
+ABCDt(:,:,ii) = HISlayerABCD(w2, g, h_sub, rad, eps2, f(ii), viaflag, eps1, mu0, eps0, L_sub, w_ant);
 % Components of 2x2 Transmission matrix through the HIS.
 A = ABCDt(1,1,ii);
 B = ABCDt(1,2,ii);
@@ -44,8 +43,8 @@ Qii(:,:,ii) = 1\Q;
 
 
 %Cascade of 4x4 unit cells for left and right of source voltage. 
-MTL_R(:,:,ii) = UnitCells_antR(f(ii), w_ant, w2, h_ant, H_sub, rad, eps1, eps2, g, L_ant, startpos, L_sub, W_sub, viaflag);
-MTL_L(:,:,ii) = UnitCells_antL(f(ii), w_ant, w2, h_ant, H_sub, rad, eps1, eps2, g, L_ant, startpos, L_sub, W_sub, viaflag);
+MTL_R(:,:,ii) = UnitCells_antR(f(ii), w_ant, w2, h_ant, h_sub, rad, eps1, eps2, g, L_ant, startpos, L_sub, w_sub, viaflag);
+MTL_L(:,:,ii) = UnitCells_antL(f(ii), w_ant, w2, h_ant, h_sub, rad, eps1, eps2, g, L_ant, startpos, L_sub, w_sub, viaflag);
 MTL_Li(:,:,ii) = 1\(MTL_L(:,:,ii));
 
 
