@@ -1,17 +1,17 @@
-function [ABCDL, ABCDgaphalf1, ABCDgaphalf2, ABCDline, ABCDt] = HISlayerABCD(w2, g, H_sub, rad, eps2, f, viaflag, epsr, mu0, eps0, L_sub, w_ant)
+function [ABCDL, ABCDgaphalf1, ABCDgaphalf2, ABCDline, ABCDt] = HISlayerABCD(w2, g, h_sub, rad, eps2, f, viaflag, eps1, mu0, eps0, L_sub, w_ant)
 %HISlayerABCD outputs a 2 x 2 x length(f) array of ABCD matrix vs.
 %frequency.  Assumes the whole width of the substrate is involved in TEM
 %mode.
 
 
-Lvia = viaL(H_sub, rad);
+Lvia = viaL(h_sub, rad);
 L_ant = w_ant;
 
 %Z0= sqrt(mu0/eps0)*h/(wsub*sqrt(epsr)); %characteristic Z for parallel plate WG TEM mode
-Z0 = microstripZ0_pozar(w2,H_sub,epsr);
+Z0 = microstripZ0_pozar(w2,h_sub,eps1);
 
-[Cs,Cp1,Cp2] = microstripgapcap(epsr,g, H_sub, w2);
-eff = epseff(w2,H_sub,epsr);
+[Cs,Cp1,Cp2] = microstripgapcap(eps1,g, h_sub, w2);
+eff = epseff(w2,h_sub,eps1);
 
 for ii = 1:length(f)
     omega = 2*pi*f(ii);
