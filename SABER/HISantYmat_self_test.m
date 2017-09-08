@@ -1,4 +1,4 @@
-function [ Ys_ant,Ys_sub ] = HISantYmat_self(w_ant, h_ant, L_ant,eps1, w_sub, h_sub, L_sub,eps2, freq)
+% function [ Ys_ant,Ys_sub ] = HISantYmat_self(w_ant, h_ant, L_ant,eps1, w_sub, h_sub, L_sub,eps2, freq)
 %HISANTYMAT computes 4x4 mutual admittance matrix of equivalent radiating 
 % slots at ends of antenna and edges of substrate.
 %   Assumes antenna is centered on substrate so dist between same-side ant
@@ -8,15 +8,15 @@ function [ Ys_ant,Ys_sub ] = HISantYmat_self(w_ant, h_ant, L_ant,eps1, w_sub, h_
 %   equal-size slots, which these are not)
 
 %% 
-% w_ant = .01;
-% h_ant = .02;
-% L_ant = .48; 
-% w_sub = 1.12;
-% h_sub = 0.04;
-% L_sub = 1.12;
-% eps1 = 1;
-% eps2 = 2.2;
-% freq = 300e6;
+w_ant = .01;
+h_ant = .02;
+L_ant = .48; 
+w_sub = 1.12;
+h_sub = 0.04;
+L_sub = 1.12;
+eps1 = 1;
+eps2 = 2.2;
+freq = 300e6;
 
 k0 = 2*pi*freq/(3e8);
 w = k0*w_ant;
@@ -32,7 +32,7 @@ Kb = 1 - E;
 deltaL1 = microstripdeltaL(w_ant,h_ant,eps1);
 deltaL2 = microstripdeltaL(w_sub, h_sub, eps2);
 
-k0=2*pi*freq/(3e8);
+% k0=2*pi*freq/(3e8);
 beta1 = 2*pi*freq*sqrt(eps1)/(3e8);
 beta2 = 2*pi*freq*sqrt(eps2)/(3e8);
 
@@ -94,4 +94,4 @@ Ys_sub = Gs2+j*Bs2;
 % 
 % function [Fb] = Fb(l, s)
 % Fb = (pi/2)*(besselY(0,l)+s^2*besselY(2,l)/(24-s^2))/(log(s/2)+0.577216-3/2+(s^2/12)/(24-s^2));
-end
+% end

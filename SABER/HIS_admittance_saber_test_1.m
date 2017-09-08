@@ -1,5 +1,5 @@
-% function [Y_matrix,Ys_ant,Ys_sub,Y_12, Y_13, Y_14, Y_23, Y_24, Y_34] = HIS_admittance_saber_test(sep_12, sep_13, sep_14, sep_23, sep_24, sep_34, slot_1_x, slot_2_x, slot_3_x, slot_4_x, frequency)
-
+clc
+clear all;
 %% inputs
 % No.1 and 4 for antenna slots and 2,3 for HIS slots
 % arrangmet 1234
@@ -26,7 +26,7 @@ slot_4_x=4;
 % Y_23 = AdmittanceAcrossEntireSlot_matrix_saber(slot_2_x, slot_3_x, sep_23, frequency)
 % Y_24 = AdmittanceAcrossEntireSlot_matrix_saber(slot_2_x, slot_4_x, sep_24, frequency)
 % Y_34 = AdmittanceAcrossEntireSlot_matrix_saber(slot_3_x, slot_4_x, sep_34, frequency)
- [Y_12, Y_13, Y_14, Y_23, Y_24, Y_34] = HIS_admittance_saber(sep_12, sep_13, sep_14, sep_23, sep_24, sep_34, slot_1_x, slot_2_x, slot_3_x, slot_4_x, frequency);
+%  [Y_12, Y_13, Y_14, Y_23, Y_24, Y_34] = HIS_admittance_saber(sep_12, sep_13, sep_14, sep_23, sep_24, sep_34, slot_1_x, slot_2_x, slot_3_x, slot_4_x, frequency);
 
 
 %% 
@@ -79,15 +79,12 @@ Kb = 1 - E;
 % Ys_ant = Gs1+j*Bs1;
 % Ys_sub = Gs2+j*Bs2;
 
-[ Ys_ant,Ys_sub ] = HISantYmat_self(w_ant, h_ant, L_ant,eps1, w_sub, h_sub, L_sub,eps2, freq);
+% [ Ys_ant,Ys_sub ] = HISantYmat_self(w_ant, h_ant, L_ant,eps1, w_sub, h_sub, L_sub,eps2, freq);
 %
 %% 
 
 %% MATRIX CONSTRUCTION
 
-Y_matrix = [Ys_sub Y_12 Y_13 Y_14;
-    Y_12 Ys_ant Y_23 Y_24;
-    Y_13 Y_23 Ys_ant Y_34;
-    Y_14 Y_24 Y_34 Ys_sub];
+[Y_matrix,Ys_ant,Ys_sub,Y_12, Y_13, Y_14, Y_23, Y_24, Y_34] = HIS_admittance_saber_main(sep_12, sep_13, sep_14, sep_23, sep_24, sep_34, slot_1_x, slot_2_x, slot_3_x, slot_4_x, frequency,w_ant, h_ant, L_ant,eps1, w_sub, h_sub, L_sub,eps2, freq);
 
 % end

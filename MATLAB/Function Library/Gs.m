@@ -2,8 +2,8 @@ function [G] = Gs(w, s)
 
 %% equation for self conductunace found in Pues and Vandecapel eq (11)
 
-w = k0*w_ant;
-s = k0*h_ant;
+% w = k0*w_ant;
+% s = k0*h_ant;
 
 
 
