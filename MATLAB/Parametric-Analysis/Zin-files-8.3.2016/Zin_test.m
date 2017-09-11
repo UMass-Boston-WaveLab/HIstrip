@@ -1,6 +1,7 @@
 % function [Z]  = Zin(f, w_ant, w2, h_ant, h_sub, rad, eps1,eps2, g, L_ant, startpos, L_sub, w_sub, viaflag)
 %% Uses a dipole or probe fed relationship to enforce boundary conditions on
-
+clc
+clear all;
 %% 
 sf = 1; 
 w_ant = 0.01*sf; %depends on kind of antenna placed on top of HIS
