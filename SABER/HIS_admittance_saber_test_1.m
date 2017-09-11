@@ -3,6 +3,7 @@ clear all;
 %% inputs
 % No.1 and 4 for antenna slots and 2,3 for HIS slots
 % arrangmet 1234
+% Hi
 s=20; %scale factor
 n=4; % number of unit cells in model
 % frequency = (100:2.5:400)*1e6*s;

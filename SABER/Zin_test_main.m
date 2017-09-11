@@ -1,6 +1,8 @@
 % function [Z]  = Zin_test(f, w_ant, w2, h_ant, H_sub, rad, eps1,eps2, g, L_ant, startpos, L_sub, W_sub, viaflag)
 %% Uses a dipole or probe fed relationship to enforce boundary conditions on
-
+% Script to test Zin in new version?
+% Please check, there is error in 
+% P(:,:,ii) = Y4toABCD4(Pi);
 %% Antenna/HIS geometries
 clc
 clear all;
