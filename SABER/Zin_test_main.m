@@ -1,8 +1,6 @@
 % function [Z]  = Zin_test(f, w_ant, w2, h_ant, H_sub, rad, eps1,eps2, g, L_ant, startpos, L_sub, W_sub, viaflag)
 %% Uses a dipole or probe fed relationship to enforce boundary conditions on
-% Script to test Zin in new version?
-% Please check, there is error in 
-% P(:,:,ii) = Y4toABCD4(Pi);
+
 %% Antenna/HIS geometries
 clc
 clear all;
@@ -47,17 +45,31 @@ startpos = 0;
    % I1b = sym ('I1b');
    % I2b = sym ('I2b');
 
-%% Cascaded ABCD Matrix equations
-sep_12=4;
-sep_13=4.5;
-sep_14=8.5;
-sep_23=.5;
-sep_24=4.5;
-sep_34=4;
+% %% Cascaded ABCD Matrix equations
+% sep_12=4;
+% sep_13=4.5;
+% sep_14=8.5;
+% sep_23=.5;
+% sep_24=4.5;
+% sep_34=4;
+% slot_1_x=4;
+% slot_2_x=.5;
+% slot_3_x=.5;
+% slot_4_x=4;
+%% 
+
+sep_12=0.5;
+sep_13=1;
+sep_14=1.5;
+sep_23=0.5;
+sep_24=1;
+sep_34=0.5;
 slot_1_x=4;
 slot_2_x=.5;
 slot_3_x=.5;
 slot_4_x=4;
+%% 
+
 
 
 
