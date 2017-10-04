@@ -1,4 +1,4 @@
-function [Admittance] = AdmittanceAcrossEntireSlot_matrix_mod(slot_2_x_dist, slot_1_x_dist, slot_1_y_dist, slot_2_y_dist, slot_seperation, frequency)
+function [Admittance] = AdmittanceAcrossEntireSlot_matrix_mod(slot_2_x_dist, slot_1_x_dist, slot_1_y_dist, slot_2_y_dist, slot_separation, frequency)
 %Admittance from Magnetic Field due to aperture 2 (slot 2) across slot 1's
 %dimensions versus slot seperation with a max seperation provided by the
 %user. 
@@ -56,11 +56,12 @@ E_0_slot1 = V_1/slot_1_y_dist;
 %% Admittance Function
 
 %Slot seperation in wavelengths.
-y_sep = (slot_seperation)/lambda;
+y_sep = (slot_separation)/lambda;
 
 %Build matrix to store H-field values across all of slot 2's dimensions----
 %Each index will have H-field at one y-point distance,and one x-distances.
-XX_2 = length(dx_2:dx_2:slot_2_length_x_f); YY_2 = length(dy_2:dy_2:slot_2_width_y_f);
+XX_2 = length(dx_2:dx_2:slot_2_length_x_f); 
+YY_2 = length(dy_2:dy_2:slot_2_width_y_f);
 H_field_at_2 = zeros(YY_2,XX_2);
 
 %Delta x and y (increments) for the primed space
@@ -69,7 +70,8 @@ delta_y_prime = dy_2;
 
 %Matrix to hold H-field values at one y distance. Each index will hold
 %admittance values at different seperation distances (intervals of dy)
-XX_1 = length(dx:dx:slot_1_length_x_f); YY_1 = length(dy:dy:slot_1_width_y_f);
+XX_1 = length(dx:dx:slot_1_length_x_f); 
+YY_1 = length(dy:dy:slot_1_width_y_f);
 Temp_Matrix = zeros(YY_1, XX_1);
 
 %Formula/For-Loops/Evaluation of equation provided by Balanis--------------
