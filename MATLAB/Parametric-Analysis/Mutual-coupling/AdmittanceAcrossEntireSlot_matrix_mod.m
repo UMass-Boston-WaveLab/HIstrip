@@ -21,10 +21,12 @@ V_2 = 1;
 
 %% Slot Dimensions: 
 %Slot 2 dimensions in terms of inputs (in wavelengths)
-slot_2_length_x_f = (slot_2_x_dist)/lambda; slot_2_width_y_f = (slot_2_y_dist)/lambda; 
+slot_2_length_x_f = (slot_2_x_dist)/lambda; 
+slot_2_width_y_f = (slot_2_y_dist)/lambda; 
 
 %Slot 1 dimensions in terms of inputs (in wavelengths)
-slot_1_length_x_f = (slot_1_x_dist)/lambda; slot_1_width_y_f = (slot_1_y_dist)/lambda; 
+slot_1_length_x_f = (slot_1_x_dist)/lambda; 
+slot_1_width_y_f = (slot_1_y_dist)/lambda; 
 
 %% Interval in terms of wavelength.
 
