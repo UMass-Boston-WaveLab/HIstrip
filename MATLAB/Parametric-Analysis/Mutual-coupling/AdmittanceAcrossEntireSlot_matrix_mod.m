@@ -13,7 +13,7 @@ function [Admittance] = AdmittanceAcrossEntireSlot_matrix_mod(slot_2_x_dist, slo
 lambda = 3E8/frequency;
 u_0 =  (1.25663706E-6);
 omega = 2*pi*frequency;
-k = 2*pi/lambda;
+k = 2*pi;
 
 %Inital Voltages at slot 1 and slot 2
 V_1 = 1;
