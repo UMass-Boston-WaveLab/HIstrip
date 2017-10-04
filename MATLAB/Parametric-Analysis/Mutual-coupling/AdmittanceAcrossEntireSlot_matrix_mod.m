@@ -36,11 +36,12 @@ dy_segments_max_slot2 = slot_2_width_y_f/2;
 dy = slot_1_width_y_f/floor(slot_1_width_y_f/dy_segments_max_slot1);
 dy_2 = slot_2_width_y_f/floor(slot_2_width_y_f/dy_segments_max_slot2);
 
-dx_max = (1/20)/lambda;
-dx_max_2 = (1/20)/lambda;
+dx_dist = (1/20)*lambda;
+Ndx1 = ceil(slot_1_x_dist/dx_dist);
+Ndx2 = ceil(slot_2_x_dist/dx_dist);
 
-dx = slot_1_length_x_f/20;%floor(slot_1_length_x_f/dx_max);
-dx_2 = slot_2_length_x_f/20;%floor(slot_2_length_x_f/dx_max_2);
+dx = slot_1_length_x_f/Ndx1;%floor(slot_1_length_x_f/dx_max);
+dx_2 = slot_2_length_x_f/Ndx2;%floor(slot_2_length_x_f/dx_max_2);
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
 
 %% Magnetic Current Stuff. Rearrange for different electric field disbrutions. Or use HfieldIntegrandEquation function
