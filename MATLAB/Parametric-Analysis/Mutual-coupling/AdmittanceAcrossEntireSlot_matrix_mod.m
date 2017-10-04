@@ -44,8 +44,8 @@ dx_2 = slot_2_length_x_f/20;%floor(slot_2_length_x_f/dx_max_2);
 %% Magnetic Current Stuff. Rearrange for different electric field disbrutions. Or use HfieldIntegrandEquation function
 %normal = [0,0,1]; **This was changed from Voltage/dy instead of what we
 %have now. 
-E_0_slot2 = V_2/slot_2_width_y_f;
-E_0_slot1 = V_1/slot_1_width_y_f;
+E_0_slot2 = V_2/slot_2_y_dist;
+E_0_slot1 = V_1/slot_1_y_dist;
 % electric_field_2 = [0,E_0_slot2*sin(pi*x_prime/(slot_2_length_x_f)),0];
 % electric_field_1 = [0, E_0_slot1*sin(pi*x/(slot_1_length_x_f)),0];
 %magnetic_current = 2*cross(-normal,electric_field_1)
