@@ -1,0 +1,126 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\title{Circuit Model for HIstrip Antenna Including Equivalent Slot Mutual Coupling - Darpa Update}
+
+\begin{document}
+\maketitle
+
+Previously we presented a circuit model which accounted for the mutual coupling between the equivalent radiating slots of the combined antenna high-impedance surface (HIS) structure. The effect of that coupling is to connect what would otherwise be two complicatedly loaded stubs. Currently we're breaking down our circuit model into simpler test cases to troubleshoot. This requires creating equivalent simulation variations to validate our model against. We've validated the portion of the HIS shielded by the antenna by adding a lumped resistance at the edges of the antenna HIS structure to neglect the complexity added by the coupling between the subsequent edges of the antenna and HIS. Looking forward, we're working to validate the coupling matrix that connects the edges of the antenna and the substrate. 
+
+\begin{center}
+\centerline{\includegraphics[width=1.2\linewidth]{"17128 Histrip1"}}
+\end{center}
+
+
+
+
+\begin{equation}
+	\begin{bmatrix}I_{1R} \\ I_{2p}\\I_{1L}\\I_{2q}\end{bmatrix} = \mathbf{Y} \begin{bmatrix}V_{up} \\ V_{2p}\\V_{uq}\\V_{2q}\end{bmatrix}
+\end{equation}
+
+To solve this circuit and to wholly reflect the transmission line structure we turn the first representation inside-out. 
+\begin{center}
+	\centerline{\includegraphics[width=1.25\linewidth]{17128Histrip2}}
+\end{center}
+
+
+where $V_{up}$ and $V_{uq}$ denote the voltages between the upper and middle conductors at reference planes p and q defined at the right (p) and left (q) antenna edges (across the equivalent slots, not from upper conductor to ground). We then define a new matrix Y’ which accounts for the difference in voltage definition:
+
+We define a new matrix $\mathbf{Y'}$ which accounts for the difference in voltage definition:
+\begin{equation}
+	\begin{bmatrix}I_{1R}\\ I_{2p}\\I_{1L}\\I_{2q}\end{bmatrix} = \mathbf{Y} \begin{bmatrix}V_{1R}-V_{2p} \\ V_{2p}\\V_{1L}-V_{2q}\\V_{2q}\end{bmatrix} = \mathbf{Y'}\begin{bmatrix}V_{1R} \\ V_{2p}\\V_{1L}\\V_{2q}\end{bmatrix}
+\end{equation}
+\begin{equation}
+	\mathbf{Y'}=\mathbf{Y}\begin{bmatrix}1 & -1 & 0 & 0\\ 0 & 1 & 0 & 0 \\ 0 & 0 & 1 & -1\\ 0 & 0 & 0& 1\end{bmatrix}
+\end{equation}
+
+Now we deal with the effect of transformation through the substrate on the lower slots. 
+
+\begin{center}
+\centerline{\includegraphics[width=0.7\linewidth]{17128HiStrip3}}
+\end{center}
+
+
+
+
+\begin{equation}
+	\begin{bmatrix}V_{2R}\\I_{2R}\end{bmatrix} = \begin{bmatrix}A & -B\\C&-D\end{bmatrix}\begin{bmatrix}V_{2p}\\I_{2p}\end{bmatrix}
+\end{equation}
+
+For reciprocal networks:
+\begin{equation}
+\begin{bmatrix}V_{2R}\\I_{2R}\end{bmatrix} = \begin{bmatrix}A & -B\\C&-D\end{bmatrix}\begin{bmatrix}V_{2p}\\I_{2p}\end{bmatrix} \implies \begin{bmatrix}V_{2p}\\I_{2p}\end{bmatrix} = \begin{bmatrix}-D & B\\-C&A\end{bmatrix}\begin{bmatrix}V_{2R}\\I_{2R}\end{bmatrix} 
+\end{equation}
+
+Similarly:
+
+
+\begin{equation}
+	\begin{bmatrix}V_{2q}\\I_{2q}\end{bmatrix} = \begin{bmatrix}A & -B\\C&-D\end{bmatrix}\begin{bmatrix}V_{2L}\\I_{2L}\end{bmatrix}
+\end{equation}
+
+Distributing and setting transformed currents equal to voltages,
+
+\begin{multline}
+	\left(\begin{bmatrix}1 & 0&0&0\\0&A&0&0\\0&0&1&0\\0&0&0&-D\end{bmatrix} -\mathbf{Y'}\begin{bmatrix}0 & 0&0&0\\0&-B&0&0\\0&0&0&0\\0&0&0&B\end{bmatrix}\right)\begin{bmatrix}I_{1R}\\ I_{2R}\\I_{1L}\\I_{2L}\end{bmatrix} =\\
+	\left(\mathbf{Y'}\begin{bmatrix}1 & 0&0&0\\0&-D&0&0\\0&0&1&0\\0&0&0&A\end{bmatrix} +\begin{bmatrix}0 & 0&0&0\\0&C&0&0\\0&0&0&0\\0&0&0&-C\end{bmatrix}\right)\begin{bmatrix}V_{1R}\\ V_{2R}\\V_{1L}\\V_{2L}\end{bmatrix}
+\end{multline}
+
+The transformed slot admittance matrix $\mathbf{Y_{eq}}$, applied at the $R$ and $L$ reference planes at the right and left edges of the antenna, is
+\begin{multline}
+	\mathbf{Y_{eq}}=\left(\begin{bmatrix}1 & 0&0&0\\0&A&0&0\\0&0&1&0\\0&0&0&-D\end{bmatrix} -\mathbf{Y'}\begin{bmatrix}0 & 0&0&0\\0&-B&0&0\\0&0&0&0\\0&0&0&B\end{bmatrix}\right)^{-1}\times\\ \left(\mathbf{Y'}\begin{bmatrix}1 & 0&0&0\\0&-D&0&0\\0&0&1&0\\0&0&0&A\end{bmatrix} +\begin{bmatrix}0 & 0&0&0\\0&C&0&0\\0&0&0&0\\0&0&0&-C\end{bmatrix}\right)
+\end{multline}
+
+\begin{equation}
+	\begin{bmatrix}I_{1R}\\I_{2R}\\I_{1L}\\I_{2L}\end{bmatrix}={Y_{eq}}\begin{bmatrix}V_{1R}\\V_{2R}\\V_{1L}\\V_{2L}\end{bmatrix}
+\end{equation}
+
+To assemble the equivalent circuit matrix representation, we convert the preceding transformed slot admittance matrix $\mathbf{Y_{eq}}$ into a 2n-ABCD matrix, Where A, B, C and D are 2x2 submatricies of Y found by, 
+\begin{equation}
+A = \frac{-Y_{22}}{Y_{21}},
+ B = \frac{-1}{Y_{21}},
+ C = \frac{Y_{det}}{Y_{21}},
+ D = \frac{-Y_{11}}{Y_{21}}
+\end{equation} 
+
+\begin{equation}
+\begin{bmatrix}V_{1R}\\V_{2R}\\I_{1R}\\I_{2R}\end{bmatrix} = \begin{bmatrix}A&B\\C&D\end{bmatrix} \begin{bmatrix}V_{1L}\\V_{2L}\\I_{1L}\\I_{2L}\end{bmatrix} \implies \begin{bmatrix}V_{1R}\\V_{2R}\\I_{1R}\\I_{2R}\end{bmatrix} = M_{s} \begin{bmatrix}V_{1L}\\V_{2L}\\I_{1L}\\I_{2L}\end{bmatrix}
+\end{equation}
+Finally, we can relate the voltages and currents at either side of the feed point by: 
+\begin{equation}
+	\begin{bmatrix}V_{1a}\\V_{2a}\\I_{1a}\\I_{2a}\end{bmatrix} = \mathbf{M_{antR} M_S M_{antL}} \begin{bmatrix}V_{1b}\\V_{2b}\\I_{1b}\\I_{2b}\end{bmatrix}
+\end{equation}
+
+
+
+This representation goes “off” the right edge of the antenna, couples through the slots, then comes back via the left edge of the antenna. To solve this we assert boundary conditions that describe how our antenna is being fed -  a probe feed and differential feed, for patch and dipole like feeding respectively. For a probe feed to the upper conductor, we enforce the following boundary conditions:
+
+\begin{eqnarray}
+	V_{1a} &=& V_{in}\\
+	V_{1b} &=& V_{in}\\
+	V_{2a}&=&V_{2b}\\
+	I_{1a} + I_{in} &= &I_{1b}\\
+	I_{2a} &=& I_{2b}
+\end{eqnarray}
+
+And for dipole like feeding:
+
+\begin{eqnarray}
+	V_{1a} &=& V_{1b}+V_{in}\\
+	V_{2a}&=&V_{2b}\\
+	I_{1a} &= &I_{in}\\
+	I_{1b} &=& I_{in}\\
+	I_{2a} &=& -I_{2b}
+\end{eqnarray}
+
+To solve this, we convert the total 2n-ABCD matrix into an impedance matrix $\mathbf{Z}$, then enforce all these boundary conditions and remember the change in current direction for an impedance matrix. Zin for a probe fed patch antenna. 
+
+\begin{equation}
+	\frac{V_{in}}{I_{in}} = Z_{11}-Z_{13}+Z_{31}-Z_{33}-(1-Z_{32}-Z_{34})\frac{Z_{21}-Z_{23}-Z_{41}+Z_{43}}{Z_{42}-Z_{44}-Z_{22}+Z_{24}}
+
+\end{equation}
+
+
+
+\end{document}
