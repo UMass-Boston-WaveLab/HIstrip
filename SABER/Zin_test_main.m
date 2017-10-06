@@ -91,9 +91,9 @@ D = ABCDt(2,2,ii);
 % Coupled Addmittance Matricies P and Q - Right and Left respectivley 
 
 Pi(:,:,ii) = Yeq_saber(Y(:,:,ii), A, B, C, D);
-P(:,:,ii) = Y4toABCD4(Pi);
+P= Y4toABCD4(Pi);
 
-Qi(:,:,ii) = Yeq(Y(ii), A, B, C, D);
+Qi(:,:,ii) = Yeq(Y(:,:,ii), A, B, C, D);
 Q = Y4toABCD4(Qi);
 
 Qii(:,:,ii) = 1\Q;

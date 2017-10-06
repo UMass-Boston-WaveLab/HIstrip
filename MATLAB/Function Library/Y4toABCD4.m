@@ -1,4 +1,4 @@
-function [ ABCD ] = Y4toABCD4( Y)
+function [ ABCD ] = Y4toABCD4(Y)
 % Converts a 4x4 Y matrix into an ABCD4 matrix.  Y matrix must be in this
 % form (i means input, o means output):
 %  [Ii; Io] = [Yii Yio; Yoi Yoo][Vi; Vo]
@@ -12,6 +12,6 @@ A=Yoi\Yoo;
 B=inv(Yoi);
 C=Yio-Yii*(Yoi\Yoo);
 D=Yii/Yoi;
-
+ABCD=[A B;C D];
 end
 
