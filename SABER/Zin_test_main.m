@@ -8,15 +8,19 @@ clear all;
 %sf = .05; %scale factor from 300Mhz to 6Ghz,,, ==Lamda
 sf = 1; 
 w_ant = 0.01*sf; %depends on kind of antenna placed on top of HIS
+w1=w_ant;
 h_ant = 0.02*sf; %antenna height above substrate
+h2=h_ant;
 L_ant = .48*sf;  %based on length of dipole at 6ghz which is .48lamba
 
 H_sub = 0.04*sf; %ground to patch distance
+h1=H_sub;
 L_sub = 1.12*sf;
 W_sub = 1.12*sf;
 w2 = .12*sf;     %patch width
 rad = .005*sf;   %via radius
 g = 0.02*sf;     %patch spacing
+gap=g;
 a =.14*sf;       %edge to edge patch length
 len =.14*sf;     %length of microstrip ((a) for MTL section) segment above patches 
 freq = 300e6;
