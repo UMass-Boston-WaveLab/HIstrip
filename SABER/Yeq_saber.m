@@ -17,7 +17,7 @@ Yi = (YiAD - Yp*YiB);
 Yix = 1\(Yi);
 
 % % Voltage current addmitance relations
-YvAD = [1 -1 0 0; -D 1 0 0; 0 0 1 -1; 0 0 0 -D];
+YvAD = [1 -1 0 0; -D 0 0 0; 0 0 1 -1; 0 0 0 -D];
 YvC = [0 0 0 0; 0 C 0 0; 0 0 0 0; 0 0 0 C];
 Yv = Yp*YvAD + YvC;
  

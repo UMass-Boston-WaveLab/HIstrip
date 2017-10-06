@@ -7,7 +7,19 @@ clear all;
 s=20; %scale factor
 n=4; % number of unit cells in model
 % frequency = (100:2.5:400)*1e6*s;
-frequency = 100*1e6*s;
+frequency = 300*1e6*s;
+
+
+% sep_12=0.5;
+% sep_13=1;
+% sep_14=1.5;
+% sep_23=0.5;
+% sep_24=1;
+% sep_34=0.5;
+% slot_1_x=4;
+% slot_2_x=.5;
+% slot_3_x=.5;
+% slot_4_x=4;
 
 sep_12=4;
 sep_13=4.5;
