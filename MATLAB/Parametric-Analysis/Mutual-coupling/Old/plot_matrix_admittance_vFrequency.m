@@ -1,4 +1,24 @@
-function plot_matrix_admittance_vFrequency(slot_2_x_dist, slot_1_x_dist, slot_1_y_dist, slot_2_y_dist, slot_seperation, frequency_i, frequency_f) 
+% function plot_matrix_admittance_vFrequency(slot_2_x_dist, slot_1_x_dist, slot_1_y_dist, slot_2_y_dist, slot_seperation, frequency_i, frequency_f) 
+
+
+slot_2_x_dist=0.5;
+slot_1_x_dist=.5;
+slot_1_y_dist=0.01;
+slot_2_y_dist=0.01;
+slot_seperation=.3;
+frequency_i=1e8;
+frequency_f=6e8;
+
+
+
+
+
+
+
+
+
+
+
 
 c = 3E8;
 df = 50E6;
@@ -20,7 +40,7 @@ Imaginary_matrix = zeros(1, length(Admittance_WRT_frequency));
 index = 1;
 r = 1; 
 for frequency_int = frequency_i:df:frequency_f
-    Admittance_WRT_frequency(1,index) = AdmittanceAcrossEntireSlot_matrix_mod(slot_2_x_dist/(c/frequency_int), slot_1_x_dist/(c/frequency_int), slot_1_y_dist/(c/frequency_int), slot_2_y_dist/(c/frequency_int), slot_seperation/(c/frequency_int), frequency_int);
+    Admittance_WRT_frequency(1,index) = AdmittanceAcrossEntireSlot_matrix_mod(slot_2_x_dist, slot_1_x_dist, slot_1_y_dist, slot_2_y_dist, slot_seperation, frequency_int);
     %Admittance_WRT_frequency(1,index) = AdmittanceAcrossEntireSlot_matrix(slot_2_x_dist/(c/frequency_int), slot_1_x_dist/(c/frequency_int), slot_1_y_dist/(c/frequency_int), slot_2_y_dist/(c/frequency_int), slot_seperation/(c/frequency_int), frequency_int);
     Real_matrix(1,r) = real(Admittance_WRT_frequency(1, index));
     Imaginary_matrix(1,r) = imag(Admittance_WRT_frequency(1, index));
@@ -48,4 +68,4 @@ legend('Imaginary')
 title(' Admittance(Imag) vs Frequency')
 
 
-end
+% end
