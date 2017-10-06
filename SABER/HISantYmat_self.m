@@ -14,8 +14,8 @@ function [ Ys_ant,Ys_sub ] = HISantYmat_self(w_ant, h_ant, L_ant,eps1, w_sub, h_
 % w_sub = 1.12;
 % h_sub = 0.04;
 % L_sub = 1.12;
-% eps1 = 1;
-% eps2 = 2.2;
+eps1 = 1;
+eps2 = 2.2;
 % freq = 300e6;
 
 k0 = 2*pi*freq/(3e8);
