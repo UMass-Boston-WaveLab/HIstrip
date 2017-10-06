@@ -92,15 +92,15 @@ C = ABCDt(2,1,ii);
 D = ABCDt(2,2,ii);
 
 
-% Coupled Addmittance Matricies P and Q - Right and Left respectivley 
+% Coupled Addmittance Matricies P and Q - Right and Left respectively 
 
 Pi(:,:,ii) = Yeq_saber(Y(:,:,ii), A, B, C, D);
-P= Y4toABCD4(Pi);
+P= Y4toABCD4(Pi(:,:,ii));
 
 Qi(:,:,ii) = Yeq(Y(:,:,ii), A, B, C, D);
 Q = Y4toABCD4(Qi);
 
-Qii(:,:,ii) = 1\Q;
+Qii(:,:,ii) = 1\Q;  %this could be an issue - let's use the identity for reciprocal networks instead
 
 
 %Cascade of 4x4 unit cells for left and right of source voltage. 
