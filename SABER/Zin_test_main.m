@@ -5,7 +5,7 @@
 clc
 clear all;
 
-%sf = .05; %scale factor from 300Mhz to 6Ghz
+%sf = .05; %scale factor from 300Mhz to 6Ghz,,, ==Lamda
 sf = 1; 
 w_ant = 0.01*sf; %depends on kind of antenna placed on top of HIS
 h_ant = 0.02*sf; %antenna height above substrate
@@ -45,29 +45,29 @@ startpos = 0;
    % I1b = sym ('I1b');
    % I2b = sym ('I2b');
 
-% %% Cascaded ABCD Matrix equations
-% sep_12=4;
-% sep_13=4.5;
-% sep_14=8.5;
-% sep_23=.5;
-% sep_24=4.5;
-% sep_34=4;
+%% Cascaded ABCD Matrix equations
+sep_12=4;
+sep_13=4.5;
+sep_14=8.5;
+sep_23=.5;
+sep_24=4.5;
+sep_34=4;
+slot_1_x=.5;
+slot_2_x=4;
+slot_3_x=.5;
+slot_4_x=4;
+%% 
+
+% sep_12=0.05;
+% sep_13=.1;
+% sep_14=.15;
+% sep_23=0.05;
+% sep_24=.1;
+% sep_34=0.05;
 % slot_1_x=4;
 % slot_2_x=.5;
 % slot_3_x=.5;
 % slot_4_x=4;
-%% 
-
-sep_12=0.5;
-sep_13=1;
-sep_14=1.5;
-sep_23=0.5;
-sep_24=1;
-sep_34=0.5;
-slot_1_x=4;
-slot_2_x=.5;
-slot_3_x=.5;
-slot_4_x=4;
 %% 
 
 
@@ -90,11 +90,12 @@ D = ABCDt(2,2,ii);
 
 % Coupled Addmittance Matricies P and Q - Right and Left respectivley 
 
-Pi(:,:,ii) = Yeq(Y(ii), A, B, C, D);
+Pi(:,:,ii) = Yeq_saber(Y(:,:,ii), A, B, C, D);
 P(:,:,ii) = Y4toABCD4(Pi);
 
 Qi(:,:,ii) = Yeq(Y(ii), A, B, C, D);
 Q = Y4toABCD4(Qi);
+
 Qii(:,:,ii) = 1\Q;
 
 
