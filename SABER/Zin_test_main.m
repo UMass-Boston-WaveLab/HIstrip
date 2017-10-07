@@ -100,8 +100,8 @@ P= Y4toABCD4(Pi(:,:,ii));
 Qi(:,:,ii) = Yeq(Y(:,:,ii), A, B, C, D);
 Q = Y4toABCD4(Qi);
 
-Qii(:,:,ii) = 1\Q;  %this could be an issue - let's use the identity for reciprocal networks instead
-
+Qii(:,:,ii) = Q;  %I think this is the right thing to do here.
+%may need to use identity for reverse connection of reciprocal matrices.
 
 %Cascade of 4x4 unit cells for left and right of source voltage. 
 MTL_R(:,:,ii) = UnitCells_antR(f(ii), w_ant, w2, h_ant, H_sub, rad, eps1, eps2, g, L_ant, startpos, L_sub, W_sub, viaflag);
