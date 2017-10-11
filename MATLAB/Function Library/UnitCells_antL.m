@@ -1,4 +1,4 @@
-function [ antL ] = UnitCells_antL(f, w_ant, w2, h_ant, H_sub, rad, eps1,eps2, g, L_ant, startpos, ~, ~, viaflag)
+function [ antL ] = UnitCells_antL(f,a, w_ant, w2, h_ant, H_sub, rad, eps1,eps2, g, L_ant, startpos, ~, ~, viaflag)
 
 
 %% Uses multiconductor ABCD unit cell model to create 4x4 ABCD matrix for
@@ -25,7 +25,7 @@ deltaL = microstripdeltaL(w_ant, h_ant, eps1);
 
 for ii = 1:length(f)
     Zu(ii) = JHWslotZ(h_ant, w_ant, f(ii), eps1 );  %seriously compare options for Y here
-    [ABCD] = multicond_unitcell(f,  w_ant, w2+g, h_ant+H_sub, H_sub, rad, eps1, eps2, f(ii), viaflag);
+    [ABCD] = multicond_unitcell(a,  w_ant, w2+g, h_ant+H_sub, H_sub, rad, eps1, eps2, f(ii), viaflag);
     
     %number of whole unit cells
     ncells = floor((L_ant-startpos)/(w2+g));
