@@ -6,7 +6,7 @@ clc
 clear all;
 
 %sf = .05; %scale factor from 300Mhz to 6Ghz,,, ==Lamda
-sf = 1; 
+sf = 1/10; 
 w_ant = 0.01*sf; %depends on kind of antenna placed on top of HIS
 w1=w_ant;
 h_ant = 0.02*sf; %antenna height above substrate
@@ -27,7 +27,7 @@ freq = 300e6;
 
 
 %f = 2e9:250e6:10e9; %f vector sweep for 6ghz
-f = 3e9:100e6:6.5e9;
+f = 1e9:2000e6:6.5e9;
 omega = 2*pi*f;
 
 %% Constants
@@ -95,17 +95,17 @@ D = ABCDt(2,2,ii);
 % Coupled Addmittance Matricies P and Q - Right and Left respectively 
 
 Pi(:,:,ii) = Yeq_saber(Y(:,:,ii), A, B, C, D);
-P= Y4toABCD4(Pi(:,:,ii));
+P(:,:,ii)= Y4toABCD4(Pi(:,:,ii));
 
 Qi(:,:,ii) = Yeq(Y(:,:,ii), A, B, C, D);
-Q = Y4toABCD4(Qi);
+Q(:,:,ii) = Y4toABCD4(Qi);
 
-Qii(:,:,ii) = Q;  %I think this is the right thing to do here.
+% Qii(:,:,ii) = Q;  %I think this is the right thing to do here.
 %may need to use identity for reverse connection of reciprocal matrices.
 
 %Cascade of 4x4 unit cells for left and right of source voltage. 
-MTL_R(:,:,ii) = UnitCells_antR(f(ii), w_ant, w2, h_ant, H_sub, rad, eps1, eps2, g, L_ant, startpos, L_sub, W_sub, viaflag);
-MTL_L(:,:,ii) = UnitCells_antL(f(ii), w_ant, w2, h_ant, H_sub, rad, eps1, eps2, g, L_ant, startpos, L_sub, W_sub, viaflag);
+MTL_R(:,:,ii) = UnitCells_antR(f(ii),a, w_ant, w2, h_ant, H_sub, rad, eps1, eps2, g, L_ant, startpos, L_sub, W_sub, viaflag);
+MTL_L(:,:,ii) = UnitCells_antL(f(ii),a, w_ant, w2, h_ant, H_sub, rad, eps1, eps2, g, L_ant, startpos, L_sub, W_sub, viaflag);
 MTL_Li(:,:,ii) = 1\(MTL_L(:,:,ii));
 
 
@@ -161,7 +161,13 @@ end
 %% Zin Geometric Parametric sweep
 
     %still need to write this code.
-     
+ figure; 
+plot(f*1e-9, real(Zd), f*1e-9, imag(Zd),'linewidth',2)
+xlabel('Frequency [GHz]')
+ylabel('Zin')
+legend({'R';'X'})
+grid on
+set(gca,'fontsize',14)    
 
 % end
  
