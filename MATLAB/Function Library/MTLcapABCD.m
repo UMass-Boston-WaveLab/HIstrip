@@ -7,20 +7,20 @@ function [ Lprod, Rprod ] = MTLcapABCD( h1, h2, w1, w2, eps1, eps2, gap, freq)
         omega = 2*pi*freq;
         
         %can add radiative loss from gap
-        a = 1/(j*omega*Cgap*2+2*real(vpa(harringtonslotY(vpa(freq),gap,w2))));
+        a1 = 1/(j*omega*Cgap*2+2*real((harringtonslotY((freq),gap,w2))));
 %        a = 1/(j*vpa(omega)*Cgap*2);
         b = j*omega*Cp;
         c = j*omega*Cptop;
 
 Lprod = [1 0 0 0; 
-         -a*c (a*b+a*c+1) 0 a;
+         -a1*c (a1*b+a1*c+1) 0 a1;
          c -c 1 0;
          -c b+c 0 1];
      
 Rprod = [1 0 0 0;
-         0 1 0 a;
-         c -c 1 -a*c;
-         -c b+c 0 a*b+a*c+1];
+         0 1 0 a1;
+         c -c 1 -a1*c;
+         -c b+c 0 a1*b+a1*c+1];
 
 end
 
