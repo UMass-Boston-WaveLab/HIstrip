@@ -4,6 +4,7 @@ function [ Cs, Cp ] = microstripGapCap2( w,h,eps2,g, f )
 
 lambda = 3e8/f;
 omega = 2*pi*f;
+% g = 0.02;
 u = w/h;
 [Z, ~, ~, epseff] = microstrip(w,h,eps2);
 Y = 1/Z;
