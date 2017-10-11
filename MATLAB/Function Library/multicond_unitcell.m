@@ -1,6 +1,7 @@
 function [ ABCD ] = multicond_unitcell( a, w1, w2, h1, h2, via_rad, eps1, eps2, freq, viaflag)
 %MULTICOND_UNITCELL result is the 4x4 ABCD matrix of the HIstrip unit cell
 %using the "multiconductor TL" formulation
+% a =.14;
 gap = a-w2;
 
 
@@ -25,7 +26,7 @@ end
 %I am dealing with T and gameig properly here - see MTL book by Faria
 MTL = ustripMTLABCD(w1, h1,w2, h2, eps1, eps2, freq, a/2);
 
-ABCD = Lprod*vpa(MTL)*Lmat*vpa(MTL)*Rprod;
+ABCD = Lprod*(MTL)*Lmat*(MTL)*Rprod;
 
 end
 
