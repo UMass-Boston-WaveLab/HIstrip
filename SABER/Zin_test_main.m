@@ -11,7 +11,7 @@ w_ant = 0.01*sf; %depends on kind of antenna placed on top of HIS
 w1=w_ant;
 h_ant = 0.02*sf; %antenna height above substrate
 h2=h_ant;
-L_ant = .48*sf;  %based on length of dipole at 6ghz which is .48lamba
+
 
 H_sub = 0.04*sf; %ground to patch distance
 h1=H_sub;
@@ -21,11 +21,10 @@ w2 = .12*sf;     %patch width
 rad = .005*sf;   %via radius
 g = 0.02*sf;     %patch spacing
 gap=g;
-a =.14*sf;       %edge to edge patch length
-len =.14*sf;     %length of microstrip ((a) for MTL section) segment above patches 
+a =w2+g;       %unit cell size
 freq = 300e6;
 
-
+L_ant = 4*a;  %based on length of dipole at 6ghz which is .48lamba
 %f = 2e9:250e6:10e9; %f vector sweep for 6ghz
 f = 1e9:500e6:6.5e9;
 omega = 2*pi*f;
@@ -100,17 +99,10 @@ D = ABCDt(2,2,ii);
 Pi(:,:,ii) = Yeq_saber(Y(:,:,ii), A, B, C, D);
 P(:,:,ii)= Y4toABCD4(Pi(:,:,ii));
 
-Qi(:,:,ii) = Yeq(Y(:,:,ii), A, B, C, D);
-Q(:,:,ii) = Y4toABCD4(Qi);
-
-% Qii(:,:,ii) = Q;  %I think this is the right thing to do here.
-%may need to use identity for reverse connection of reciprocal matrices.
-
 %Cascade of 4x4 unit cells for left and right of source voltage. 
-MTL_R(:,:,ii) = UnitCells_antR(f(ii),a, w_ant, w2, h_ant, H_sub, rad, eps1, eps2, g, L_ant, startpos, L_sub, W_sub, viaflag);
-MTL_L(:,:,ii) = UnitCells_antL(f(ii),a, w_ant, w2, h_ant, H_sub, rad, eps1, eps2, g, L_ant, startpos, L_sub, W_sub, viaflag);
-MTL_Li(:,:,ii) = 1\(MTL_L(:,:,ii));
-
+unitcell=multicond_unitcell(a,  w_ant, w2+g, h_ant+H_sub, H_sub, rad, eps1, eps2, f(ii), viaflag);
+MTL_R(:,:,ii) = unitcell^floor(0.5*L_ant/a);
+MTL_L(:,:,ii) = MTL_R(:,:,ii);
 
 %Total cascaded ABCD matrix
 %ABCDz(:,:,ii) = MTL_R(:,:,ii)*MTL_Li(:,:,ii)

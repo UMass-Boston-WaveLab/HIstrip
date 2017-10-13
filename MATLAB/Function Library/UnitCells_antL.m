@@ -24,7 +24,7 @@ deltaL = microstripdeltaL(w_ant, h_ant, eps1);
 %deltaL=0;
 
 for ii = 1:length(f)
-    Zu(ii) = JHWslotZ(h_ant, w_ant, f(ii), eps1 );  %seriously compare options for Y here
+
     [ABCD] = multicond_unitcell(a,  w_ant, w2+g, h_ant+H_sub, H_sub, rad, eps1, eps2, f(ii), viaflag);
     
     %number of whole unit cells
