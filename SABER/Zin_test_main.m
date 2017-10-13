@@ -27,7 +27,7 @@ freq = 300e6;
 
 
 %f = 2e9:250e6:10e9; %f vector sweep for 6ghz
-f = 1e9:2000e6:6.5e9;
+f = 1e9:500e6:6.5e9;
 omega = 2*pi*f;
 
 %% Constants
@@ -80,8 +80,11 @@ slot_4_x=4;
 for ii = 1:length(f)
 
 %  Y(:,:,ii)= HIS_admittance_saber_test(sep_12, sep_13, sep_14, sep_23, sep_24, sep_34, slot_1_x, slot_2_x, slot_3_x, slot_4_x, f(ii));
+   % freq is design frequency
+   % f is simulation frequency
    
- Y(:,:,ii) = HIS_admittance_saber_main(sep_12, sep_13, sep_14, sep_23, sep_24, sep_34, slot_1_x, slot_2_x, slot_3_x, slot_4_x, f(ii),w_ant, h_ant, L_ant,eps1, W_sub, H_sub, L_sub,eps2, freq) ;  
+ Y(:,:,ii) = HIS_admittance_saber_main(sep_12, sep_13, sep_14, sep_23, sep_24, sep_34, slot_1_x, slot_2_x, slot_3_x, slot_4_x, f(ii),...
+     w_ant, h_ant, L_ant,eps1, W_sub, H_sub, L_sub,eps2, freq) ;  
 % Y(:,:,ii) = HISantYmat_SS(f(ii), w_ant, w2, h_ant, H_sub, rad, eps1, eps2, g, L_ant, startpos, L_sub, W_sub, viaflag);
 ABCDt(:,:,ii) = HISlayerABCD(w2, g, H_sub, rad, eps2, f(ii), viaflag, eps1, mu0, eps0, L_sub, w_ant);
 
