@@ -1,7 +1,13 @@
-function [ Lprod, Rprod ] = MTLcapABCD( h1, h2, w1, w2, eps1, eps2, gap, freq)
-%MTLcapABCD Makes ABCD matrix for pi-network of capacitors in MTL unit cell
+function [ Csmathalf, Cpmat, Cptopmat ] = MTLcapABCD( h1, h2, w1, w2, eps1, eps2, gap, freq)
+%MTLcapABCD Makes ABCD matrix for pi-network of capacitors in MTL unit
+%cell. Csmathalf represents half the series capacitor (split in half
+%because that's the boundary of the unit cell). Cpmat represents one of the
+%shunt capacitors from the middle layer to ground.  Cptopmat represents
+%shunt capacitors from the middle to upper layer (which may not need to be
+%included - needs testing).
 
-        [Cgap,Cp] = microstripGapCap2(w2,h2,eps2,gap, freq);
+        %[Cgap,Cp, Cptop] = microstripGapCap(eps2,gap,h2, w1, w2);
+        [Cgap, Cp] = microstripGapCap2(w2, h2,eps2,gap, freq);
         [~,Cptop] = microstripGapCap2(w1,h1-h2,eps1,gap, freq);
         
         omega = 2*pi*freq;
@@ -12,15 +18,19 @@ function [ Lprod, Rprod ] = MTLcapABCD( h1, h2, w1, w2, eps1, eps2, gap, freq)
         b = j*omega*Cp;
         c = j*omega*Cptop;
 
-Lprod = [1 0 0 0; 
-         -a1*c (a1*b+a1*c+1) 0 a1;
-         c -c 1 0;
-         -c b+c 0 1];
-     
-Rprod = [1 0 0 0;
-         0 1 0 a1;
-         c -c 1 -a1*c;
-         -c b+c 0 a1*b+a1*c+1];
+Csmathalf=[1 0 0 0;
+            0 1 0 a1;
+            0 0 1 0;
+            0 0 0 1];
+Cpmat = [1 0 0 0;
+        0 1 0 0;
+        0 0 1 0;
+        0 b 0 1];
+    
+Cptopmat = [1 0 0 0;
+            0 1 0 0;
+            c (-c) 1 0;
+            -c c 0 1];
 
 end
 

@@ -9,12 +9,10 @@ clear all;
 sf = 1/10; 
 w_ant = 0.01*sf; %depends on kind of antenna placed on top of HIS
 w1=w_ant;
-h_ant = 0.02*sf; %antenna height above substrate
-h2=h_ant;
-
-
 H_sub = 0.04*sf; %ground to patch distance
-h1=H_sub;
+h_ant = 0.02*sf; %antenna height above substrate
+
+
 L_sub = 1.12*sf;
 W_sub = 1.12*sf;
 w2 = .12*sf;     %patch width
@@ -36,7 +34,7 @@ mu0 = pi*4e-7;
 eps0 = 8.854e-12;
 viaflag = 1;
 E = eye(4);
-startpos = 0;
+
 
 %% Symbolic Variables
 
@@ -94,13 +92,12 @@ C = ABCDt(2,1,ii);
 D = ABCDt(2,2,ii);
 
 
-% Coupled Addmittance Matricies P and Q - Right and Left respectively 
-
+% Coupled Admittance Matrix P 
 Pi(:,:,ii) = Yeq_saber(Y(:,:,ii), A, B, C, D);
 P(:,:,ii)= Y4toABCD4(Pi(:,:,ii));
 
 %Cascade of 4x4 unit cells for left and right of source voltage. 
-unitcell=multicond_unitcell(a,  w_ant, w2+g, h_ant+H_sub, H_sub, rad, eps1, eps2, f(ii), viaflag);
+unitcell=multicond_unitcell(a,  w_ant, w2, h_ant+H_sub, H_sub, rad, eps1, eps2, f(ii), viaflag);
 MTL_R(:,:,ii) = unitcell^floor(0.5*L_ant/a);
 MTL_L(:,:,ii) = MTL_R(:,:,ii);
 
