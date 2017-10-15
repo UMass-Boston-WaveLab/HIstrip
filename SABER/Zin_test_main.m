@@ -12,17 +12,15 @@ w1=w_ant;
 H_sub = 0.04*sf; %ground to patch distance
 h_ant = 0.02*sf; %antenna height above substrate
 
-
-L_sub = 1.12*sf;
-W_sub = 1.12*sf;
 w2 = .12*sf;     %patch width
 rad = .005*sf;   %via radius
 g = 0.02*sf;     %patch spacing
 gap=g;
 a =w2+g;       %unit cell size
-freq = 300e6;
 
-L_ant = 4*a;  %based on length of dipole at 6ghz which is .48lamba
+L_sub = 16*a;
+w_sub = 16*a;
+L_ant = 4*a;  %for now, must be integer number of unit cells
 %f = 2e9:250e6:10e9; %f vector sweep for 6ghz
 f = 1e9:500e6:6.5e9;
 omega = 2*pi*f;
@@ -46,17 +44,17 @@ E = eye(4);
    % I1b = sym ('I1b');
    % I2b = sym ('I2b');
 
-%% Cascaded ABCD Matrix equations
-sep_12=4;
-sep_13=4.5;
-sep_14=8.5;
-sep_23=.5;
-sep_24=4.5;
-sep_34=4;
-slot_1_x=.5;
-slot_2_x=4;
-slot_3_x=.5;
-slot_4_x=4;
+%% slot spacing description
+sep_12=L_sub/2-L_ant/2;
+sep_13=L_sub/2+L_ant/2;
+sep_14=L_sub;
+sep_23=L_ant;
+sep_24=L_sub/2+L_ant/2;
+sep_34=L_sub/2-L_ant/2;
+slot_1_x=w_ant;
+slot_2_x=w_sub;
+slot_3_x=w_ant;
+slot_4_x=w_sub;
 %% 
 
 % sep_12=0.05;
@@ -72,7 +70,7 @@ slot_4_x=4;
 %% 
 
 
-
+ABCDt = HISlayerABCD(w2, g, H_sub, rad, eps2, f, viaflag, eps1, L_sub, w_ant);
 
 for ii = 1:length(f)
 
@@ -81,9 +79,9 @@ for ii = 1:length(f)
    % f is simulation frequency
    
  Y(:,:,ii) = HIS_admittance_saber_main(sep_12, sep_13, sep_14, sep_23, sep_24, sep_34, slot_1_x, slot_2_x, slot_3_x, slot_4_x, f(ii),...
-     w_ant, h_ant, L_ant,eps1, W_sub, H_sub, L_sub,eps2, freq) ;  
+     w_ant, h_ant, L_ant,eps1, w_sub, H_sub, L_sub,eps2, f(ii));  
 % Y(:,:,ii) = HISantYmat_SS(f(ii), w_ant, w2, h_ant, H_sub, rad, eps1, eps2, g, L_ant, startpos, L_sub, W_sub, viaflag);
-ABCDt(:,:,ii) = HISlayerABCD(w2, g, H_sub, rad, eps2, f(ii), viaflag, eps1, mu0, eps0, L_sub, w_ant);
+
 
 % Components of 2x2 Transmission matrix through the HIS.
 A = ABCDt(1,1,ii);
@@ -136,7 +134,7 @@ Zt(:,:,ii) = ABCD4toZ(ABCDz);
 %% Solution for Zin - dipole
 
 %Zd(ii,:,:) = Z11 - Z13 + Z31 - Z33 + (1-Z32-Z34)*((Z21+Z43-Z23-Z41)/(Z24+Z42-Z22-Z44))
-Zd(ii,:,:) = Z11 - Z13 + Z31 - Z33 + (Z21-Z23-Z41+Z43)/(Z42-Z44-Z22+Z24)-(Z32-Z34)*((Z21-Z23-Z41+Z43)/(Z42-Z44-Z22+Z24))
+Zd(ii,:,:) = Z11 - Z13 + Z31 - Z33 + (Z21-Z23-Z41+Z43)/(Z42-Z44-Z22+Z24)-(Z32-Z34)*((Z21-Z23-Z41+Z43)/(Z42-Z44-Z22+Z24));
 
 %% Solution for Zin - Patch
 

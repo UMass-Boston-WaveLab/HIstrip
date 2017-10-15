@@ -22,12 +22,12 @@ function [Y_12, Y_13, Y_14, Y_23, Y_24, Y_34] = HIS_admittance_saber(sep_12, sep
 
 
 %% Mutual admitance
-Y_12 = AdmittanceAcrossEntireSlot_matrix_mod_saber(slot_2_x, slot_1_x, sep_12, frequency)
-Y_13 = AdmittanceAcrossEntireSlot_matrix_mod_saber(slot_1_x, slot_3_x, sep_13, frequency)
-Y_14 = AdmittanceAcrossEntireSlot_matrix_mod_saber(slot_4_x, slot_1_x, sep_14, frequency)
-Y_23 = AdmittanceAcrossEntireSlot_matrix_mod_saber(slot_2_x, slot_3_x, sep_23, frequency)
-Y_24 = AdmittanceAcrossEntireSlot_matrix_mod_saber(slot_2_x, slot_4_x, sep_24, frequency)
-Y_34 = AdmittanceAcrossEntireSlot_matrix_mod_saber(slot_3_x, slot_4_x, sep_34, frequency)
+Y_12 = AdmittanceAcrossEntireSlot_matrix_mod_saber(slot_2_x, slot_1_x, sep_12, frequency);
+Y_13 = AdmittanceAcrossEntireSlot_matrix_mod_saber(slot_1_x, slot_3_x, sep_13, frequency);
+Y_14 = AdmittanceAcrossEntireSlot_matrix_mod_saber(slot_4_x, slot_1_x, sep_14, frequency);
+Y_23 = AdmittanceAcrossEntireSlot_matrix_mod_saber(slot_2_x, slot_3_x, sep_23, frequency);
+Y_24 = AdmittanceAcrossEntireSlot_matrix_mod_saber(slot_2_x, slot_4_x, sep_24, frequency);
+Y_34 = AdmittanceAcrossEntireSlot_matrix_mod_saber(slot_3_x, slot_4_x, sep_34, frequency);
 
 
 %% 
