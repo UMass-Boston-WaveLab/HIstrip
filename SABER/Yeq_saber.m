@@ -22,6 +22,6 @@ YvC = [0 0 0 0; 0 C 0 0; 0 0 0 0; 0 0 0 C];
 Yv = Yp*YvAD + YvC;
  
 % %Equivilant addmitance matrix Yi^-1*Yv
-Ys = Yix*Yv
+Ys = Yix*Yv;
 
 end
