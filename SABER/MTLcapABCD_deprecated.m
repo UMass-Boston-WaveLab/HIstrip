@@ -1,4 +1,4 @@
-function [ Cmat, Cpmat, Cptopmat ] = MTLcapABCD( h1, h2, w1, w2, eps1, eps2, g, f)
+function [ Cmat, Cpmat, Cptopmat ] = MTLcapABCD_deprecated( h1, h2, w1, w2, eps1, eps2, g, f)
 %computes ABCD matricies of mutual capacitence matricies 
 %3-output ABCD
 

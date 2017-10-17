@@ -1,4 +1,4 @@
-function [ABCDt] = HISlayerABCD(w2, g, h_sub, rad, eps2, f, viaflag, eps1, L_sub, w_ant)
+function [ABCDt] = HISlayerABCD(w2, g, h_sub, rad, eps2, f, viaflag, eps1, L_sub, L_ant)
 %HISlayerABCD outputs a 2 x 2 x length(f) array of ABCD matrix vs.
 %frequency.  Assumes the whole width of the substrate is involved in TEM
 %mode.
@@ -7,15 +7,16 @@ mu0=4*pi*10^-7;
 eps0=8.854*10^-12;
 
 Lvia = viaL(h_sub, rad);
-L_ant = w_ant;
 
 %Z0= sqrt(mu0/eps0)*h/(wsub*sqrt(epsr)); %characteristic Z for parallel plate WG TEM mode
 Z0 = microstripZ0_pozar(w2,h_sub,eps2);
 
-[Cs,Cp1,Cp2] = microstripgapcap(eps2,g, h_sub, w2);
+
 eff = epseff(w2,h_sub,eps2);
 
 for ii = 1:length(f)
+    [Cs,Cp] = microstripGapCap2(w2, h_sub, eps2, g, f(ii));
+    
     omega = 2*pi*f(ii);
     beta = omega*sqrt(mu0*eps0*eff);
     if viaflag
@@ -24,12 +25,12 @@ for ii = 1:length(f)
         ABCDL=eye(2);
     end
     
-    ABCDCg = [1 1/((1i*omega*2*Cs)); 0 1]; %consider adding real part here to include rad loss
-    ABCDCp1 = [1 0; 1i*omega*Cp1 1];
-    ABCDCp2 = [1 0; 1i*omega*Cp2 1];
+    ABCDCg = [1 1/(1i*omega*Cs*2+real(harringtonslotY(f(ii), g, w2/2))); 0 1]; %adding real part here to include rad loss
+    ABCDCp = [1 0; 1i*omega*Cp 1];
+
     
-    ABCDgaphalf1=ABCDCg*ABCDCp1;
-    ABCDgaphalf2=ABCDCp2*ABCDCg;
+    ABCDgaphalf1=ABCDCg*ABCDCp;
+    ABCDgaphalf2=ABCDCp*ABCDCg;
     
 
     ABCDline = [cos(beta*w2/2) 1i*Z0*sin(beta*w2/2); 1i*sin(beta*w2/2)/Z0 cos(beta*w2/2)];

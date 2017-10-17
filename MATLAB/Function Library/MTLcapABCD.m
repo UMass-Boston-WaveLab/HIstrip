@@ -13,7 +13,7 @@ function [ Csmathalf, Cpmat, Cptopmat ] = MTLcapABCD( h1, h2, w1, w2, eps1, eps2
         omega = 2*pi*freq;
         
         %can add radiative loss from gap
-        a1 = 1/(j*omega*Cgap*2+2*real((harringtonslotY((freq),gap,w2))));
+        a1 = 1/(j*omega*Cgap*2+2*real((harringtonslotY((freq),gap/2,w2))));
 %        a = 1/(j*vpa(omega)*Cgap*2);
         b = j*omega*Cp;
         c = j*omega*Cptop;

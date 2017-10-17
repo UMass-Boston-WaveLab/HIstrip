@@ -6,7 +6,7 @@ clc
 clear all;
 
 %sf = .05; %scale factor from 300Mhz to 6Ghz,,, ==Lamda
-sf = 1/10; 
+sf = 1; 
 w_ant = 0.01*sf; %depends on kind of antenna placed on top of HIS
 w1=w_ant;
 H_sub = 0.04*sf; %ground to patch distance
@@ -22,7 +22,8 @@ L_sub = 16*a;
 w_sub = 16*a;
 L_ant = 4*a;  %for now, must be integer number of unit cells
 %f = 2e9:250e6:10e9; %f vector sweep for 6ghz
-f = 1e9:500e6:6.5e9;
+%f = 1e9:500e6:6.5e9;
+f=(100:50:600)*10^6;
 omega = 2*pi*f;
 
 %% Constants
@@ -70,7 +71,7 @@ slot_4_x=w_sub;
 %% 
 
 
-ABCDt = HISlayerABCD(w2, g, H_sub, rad, eps2, f, viaflag, eps1, L_sub, w_ant);
+ABCDt = HISlayerABCD(w2, g, H_sub, rad, eps2, f, viaflag, eps1, L_sub, L_ant);
 
 for ii = 1:length(f)
 
