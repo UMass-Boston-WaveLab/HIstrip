@@ -30,10 +30,16 @@ gameig = [sqrt(gamsq(1,1)) 0; 0 sqrt(gamsq(2,2))];
 
 Zw = Gam\Z; %symmetric 
 Yw = Y/Gam; %symmetric
-
-MTL = [T*[cosh(gameig(1,1)*len/2) 0; 0 cosh(gameig(2,2)*len/2)]/T,...
-        (T*sinh(gameig*len/2)/T)*Zw; Yw*T*sinh(gameig*len/2)/T, ...
-        Yw*T*[cosh(gameig(1,1)*len/2) 0; 0 cosh(gameig(2,2)*len/2)]/T*Zw];
+% 
+% MTL = vpa([T*[cosh(gameig(1,1)*len) 0; 0 cosh(gameig(2,2)*len)]/T,...
+%         (T*sinh(gameig*len)/T)*Zw; Yw*T*sinh(gameig*len)/T, ...
+%         Yw*T*[cosh(gameig(1,1)*len) 0; 0 cosh(gameig(2,2)*len)]/T*Zw]);
    
 
+MTL = vpa([T*[cosh(gameig(1,1)*len) 0; 0 cosh(gameig(2,2)*len)]/T,...
+        (T\sinh(gameig*len)*T)*Zw; Yw*T*sinh(gameig*len)/T, ...
+        T\[cosh(gameig(1,1)*len) 0; 0 cosh(gameig(2,2)*len)]*T]);
+    %rearranged because: diagonal matrices commute during multiplication
+    %even if others don't.
+    %and because the current modal-to-terminal conversion matrix is inv(T)
 end
