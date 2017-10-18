@@ -19,7 +19,7 @@ for ii = 1:N
     %calculate input impedance to this unit cell when terminated by Z,
     %which contains either the load impedance or the input impedance to the
     %previous unit cell.
-    Z = (C*Z+D)\(A*Z+B);
+    Z = (A*Z+B)/(C*Z+D);
 end
 Zin = Z;
 

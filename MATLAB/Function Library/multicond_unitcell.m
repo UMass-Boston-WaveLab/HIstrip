@@ -1,7 +1,7 @@
 function [ ABCD ] = multicond_unitcell( a, w1, w2, h1, h2, via_rad, eps1, eps2, freq, viaflag)
 %MULTICOND_UNITCELL result is the 4x4 ABCD matrix of the HIstrip unit cell
 %using the "multiconductor TL" formulation
-% a =.14;
+
 gap = a-w2;
 
 
