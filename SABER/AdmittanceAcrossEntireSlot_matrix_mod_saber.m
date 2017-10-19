@@ -22,7 +22,7 @@ k = 2*pi;
 
 
 %% 
-slot_1_y_dist=.01;
+slot_1_y_dist=.01/lambda;
 
 slot_2_y_dist=slot_1_y_dist;
 %% 
