@@ -23,7 +23,7 @@ w_sub = 16*a;
 L_ant = 4*a;  %for now, must be integer number of unit cells
 %f = 2e9:250e6:10e9; %f vector sweep for 6ghz
 %f = 1e9:500e6:6.5e9;
-f=(100:50:600)*10^6;
+f=(100:5:600)*10^6;
 omega = 2*pi*f;
 
 %% Constants
@@ -71,7 +71,7 @@ slot_4_x=w_sub;
 %% 
 
 
-[ABCDt1, ~, ~, ~] = HISlayerABCD(w2, g, H_sub, rad, eps2, f, viaflag, eps1, L_sub, L_ant);
+[ABCD, ABCDgaphalf1,ABCDline,ABCDL] = HISlayerABCD(w2, g, H_sub, rad, eps2, f, viaflag, eps1, L_sub, L_ant);
 botn = floor((L_sub-L_ant)/(2*w2+g))-1;
 for ii = 1:length(f)
 
@@ -83,32 +83,28 @@ for ii = 1:length(f)
      w_ant, h_ant, L_ant,eps1, w_sub, H_sub, L_sub,eps2, f(ii));  
 % Y(:,:,ii) = HISantYmat_SS(f(ii), w_ant, w2, h_ant, H_sub, rad, eps1, eps2, g, L_ant, startpos, L_sub, W_sub, viaflag);
 
-ABCDt = ABCDt1(:,:,ii)^botn;
+%HIS is terminated by admittance of HIS-edge slots.
+ZL = 1/Y(2,2,ii);
+ZR = 1/Y(4,4,ii);
+
+ZLtemp = unitcellMultiply(ZL, ABCDgaphalf1(:,:,ii)*ABCDline(:,:,ii)*ABCDL(:,:,ii)*ABCDline(:,:,ii), 1);
+ZinL = unitcellMultiply(ZLtemp, ABCD(:,:,ii), botn);
+
+ZRtemp = unitcellMultiply(ZR, ABCDgaphalf1(:,:,ii)*ABCDline(:,:,ii)*ABCDL(:,:,ii)*ABCDline(:,:,ii), 1);
+ZinR = unitcellMultiply(ZRtemp, ABCD(:,:,ii), botn);
 
 
-% Components of 2x2 Transmission matrix through the HIS.
-A = ABCDt(1,1,ii);
-B = ABCDt(1,2,ii);
-C = ABCDt(2,1,ii);
-D = ABCDt(2,2,ii);
-
-
-% Coupled Admittance Matrix P 
-Pi(:,:,ii) = Yeq_saber(Y(:,:,ii), A, B, C, D);
-P(:,:,ii)= Y4toABCD4(Pi(:,:,ii));
+%% BUHHHH
 
 %Cascade of 4x4 unit cells for left and right of source voltage. 
 unitcell=multicond_unitcell(a,  w_ant, w2, h_ant+H_sub, H_sub, rad, eps1, eps2, f(ii), viaflag);
-MTL_R(:,:,ii) = unitcell^floor(0.5*L_ant/a);
-MTL_L(:,:,ii) = MTL_R(:,:,ii);
 
-%Total cascaded ABCD matrix
-%ABCDz(:,:,ii) = MTL_R(:,:,ii)*MTL_Li(:,:,ii)
-ABCDz(:,:,ii) = MTL_R(:,:,ii).*P(:,:,ii).*MTL_L(:,:,ii);
+Zmat_R = unitcellMultiply([1/squeeze(Y(1,1,ii)) 0; 0 ZinR], unitcell, floor(0.5*L_ant/a));
+Zmat_L = unitcellMultiply([1/squeeze(Y(1,1,ii)) 0; 0 ZinL], unitcell, floor(0.5*L_ant/a));
+
 
 %Convert total ABCD to Z matrix for solutions for the input impedance
-Zt(:,:,ii) = ABCD4toZ(ABCDz);
-
+Zt(:,:,ii) = [Zmat_R zeros(2); zeros(2) Zmat_L];
 
 
 %% Components of Z matrix
