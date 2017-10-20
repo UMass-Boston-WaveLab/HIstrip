@@ -8,7 +8,7 @@ clear all;
 %sf = .05; %scale factor from 300Mhz to 6Ghz,,, ==Lamda
 
 sf = 1; 
-w_ant = 0.5*sf; %depends on kind of antenna placed on top of HIS
+w_ant = 0.01*sf; %depends on kind of antenna placed on top of HIS
 w1=w_ant;
 H_sub = 0.04*sf; %ground to patch distance
 h_ant = 0.02*sf; %antenna height above substrate
@@ -24,7 +24,7 @@ w_sub = 16*a;
 L_ant = 4*a;  %for now, must be integer number of unit cells
 %f = 2e9:250e6:10e9; %f vector sweep for 6ghz
 %f = 1e9:500e6:6.5e9;
-f=(100:5:600)*10^6/sf;
+f=(100:.5:600)*10^6/sf;
 omega = 2*pi*f;
 %% Constants
 eps1 = 1;
@@ -45,6 +45,15 @@ E = eye(4);
    % I1b = sym ('I1b');
    % I2b = sym ('I2b');
 
+% % % |<--------Lsub----------->|
+% % % |                         | 
+% % % |        |<-Lant>|        |
+% % % |        |       |        |
+% % % |        |       |        |
+% % % |        2       3        | 
+% % % |                         |
+% % % |                         | 
+% % % 1                         4           
 %% slot spacing description
 sep_12=L_sub/2-L_ant/2;
 sep_13=L_sub/2+L_ant/2;
@@ -76,8 +85,7 @@ botn = floor((L_sub-L_ant)/(2*w2+g))-1;
 for ii = 1:length(f)
 
 %  Y(:,:,ii)= HIS_admittance_saber_test(sep_12, sep_13, sep_14, sep_23, sep_24, sep_34, slot_1_x, slot_2_x, slot_3_x, slot_4_x, f(ii));
-   % freq is design frequency
-   % f is simulation frequency
+   
    
  Y(:,:,ii) = HIS_admittance_saber_main(sep_12, sep_13, sep_14, sep_23, sep_24, sep_34, slot_1_x, slot_2_x, slot_3_x, slot_4_x, f(ii),...
      w_ant, h_ant, L_ant,eps1, w_sub, H_sub, L_sub,eps2, f(ii));  
