@@ -110,38 +110,43 @@ unitcell=multicond_unitcell(a,  w_ant, w2, h_ant+H_sub, H_sub, rad, eps1, eps2, 
 Zmat_R = unitcellMultiply([1/squeeze(Y(1,1,ii)) 0; 0 ZinR], unitcell, floor(0.5*L_ant/a));
 Zmat_L = unitcellMultiply([1/squeeze(Y(1,1,ii)) 0; 0 ZinL], unitcell, floor(0.5*L_ant/a));
 
-
-%Convert total ABCD to Z matrix for solutions for the input impedance
-Zt(:,:,ii) = [Zmat_R zeros(2); zeros(2) Zmat_L];
-
-
-%% Components of Z matrix
-
-    Z11 = Zt(1,1,ii);
-    Z12 = Zt(1,2,ii);
-    Z13 = Zt(1,3,ii);
-    Z14 = Zt(1,4,ii);
-
-    Z21 = Zt(2,1,ii);
-    Z22 = Zt(2,2,ii);
-    Z23 = Zt(2,3,ii);
-    Z24 = Zt(2,4,ii);
-
-    Z31 = Zt(3,1,ii);
-    Z32 = Zt(3,2,ii);
-    Z33 = Zt(3,3,ii);
-    Z34 = Zt(3,4,ii);
-
-    Z41 = Zt(4,1,ii);
-    Z42 = Zt(4,2,ii);
-    Z43 = Zt(4,3,ii);
-    Z44 = Zt(4,4,ii);
+% 
+% %Convert total ABCD to Z matrix for solutions for the input impedance
+% Zt(:,:,ii) = [Zmat_R zeros(2); zeros(2) Zmat_L];
+% 
+% 
+% %% Components of Z matrix
+% 
+%     Z11 = Zt(1,1,ii);
+%     Z12 = Zt(1,2,ii);
+%     Z13 = Zt(1,3,ii);
+%     Z14 = Zt(1,4,ii);
+% 
+%     Z21 = Zt(2,1,ii);
+%     Z22 = Zt(2,2,ii);
+%     Z23 = Zt(2,3,ii);
+%     Z24 = Zt(2,4,ii);
+% 
+%     Z31 = Zt(3,1,ii);
+%     Z32 = Zt(3,2,ii);
+%     Z33 = Zt(3,3,ii);
+%     Z34 = Zt(3,4,ii);
+% 
+%     Z41 = Zt(4,1,ii);
+%     Z42 = Zt(4,2,ii);
+%     Z43 = Zt(4,3,ii);
+%     Z44 = Zt(4,4,ii);
  
     
 %% Solution for Zin - dipole
 
 %Zd(ii,:,:) = Z11 - Z13 + Z31 - Z33 + (1-Z32-Z34)*((Z21+Z43-Z23-Z41)/(Z24+Z42-Z22-Z44))
-Zd(ii,:,:) = Z11 - Z13 + Z31 - Z33 + (Z21-Z23-Z41+Z43)/(Z42-Z44-Z22+Z24)-(Z32-Z34)*((Z21-Z23-Z41+Z43)/(Z42-Z44-Z22+Z24));
+%Zd(ii,:,:) = Z11 - Z13 + Z31 - Z33 + (Z21-Z23-Z41+Z43)/(Z42-Z44-Z22+Z24)-(Z32-Z34)*((Z21-Z23-Z41+Z43)/(Z42-Z44-Z22+Z24));
+
+
+Z = Zmat_R+Zmat_L;
+    Zd(ii) = Z(1,1)-Z(1,2)*Z(2,1)/Z(2,2);
+
 
 %% Solution for Zin - Patch
 
