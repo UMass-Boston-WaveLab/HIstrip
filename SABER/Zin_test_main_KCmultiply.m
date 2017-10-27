@@ -96,7 +96,7 @@ for ii = 1:length(f)
 % Y(:,:,ii) = HISantYmat_SS(f(ii), w_ant, w2, h_ant, H_sub, rad, eps1, eps2, g, L_ant, startpos, L_sub, W_sub, viaflag);
 
 %HIS is terminated by admittance of HIS-edge slots.
-ZL = 1/Y(2,2,ii);
+ZL = 1/Y(1,1,ii);
 ZR = 1/Y(4,4,ii);
 
 ZLtemp = unitcellMultiply(ZL, ABCDgaphalf1(:,:,ii)*ABCDline(:,:,ii)*ABCDL(:,:,ii)*ABCDline(:,:,ii), 1);
@@ -111,8 +111,8 @@ ZinR = unitcellMultiply(ZRtemp, ABCD(:,:,ii), botn);
 %Cascade of 4x4 unit cells for left and right of source voltage. 
 unitcell=multicond_unitcell(a,  w_ant, w2, h_ant+H_sub, H_sub, rad, eps1, eps2, f(ii), viaflag);
 
-Zmat_R = unitcellMultiply([1/squeeze(Y(1,1,ii)) 0; 0 ZinR], unitcell, floor(0.5*L_ant/a));
-Zmat_L = unitcellMultiply([1/squeeze(Y(1,1,ii)) 0; 0 ZinL], unitcell, floor(0.5*L_ant/a));
+Zmat_R = unitcellMultiply([1/squeeze(Y(2,2,ii)) 0; 0 ZinR], unitcell, floor(0.5*L_ant/a));
+Zmat_L = unitcellMultiply([1/squeeze(Y(3,3,ii)) 0; 0 ZinL], unitcell, floor(0.5*L_ant/a));
 
 % 
 % %Convert total ABCD to Z matrix for solutions for the input impedance
