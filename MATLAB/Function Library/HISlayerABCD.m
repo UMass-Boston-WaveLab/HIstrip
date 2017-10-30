@@ -1,4 +1,4 @@
-function [ABCD, ABCDgaphalf1,ABCDline,ABCDL] = HISlayerABCD(w2, g, h_sub, rad, eps2, f, viaflag, eps1, L_sub, L_ant)
+function [ABCD, ABCDgaphalf1,ABCDline,ABCDL] = HISlayerABCD(w2, g, h_sub, rad, eps2, f, viaflag, eps1, L_ant)
 %HISlayerABCD outputs a 2 x 2 x length(f) array of ABCD matrix vs.
 %frequency.  Assumes the whole width of the substrate is involved in TEM
 %mode.

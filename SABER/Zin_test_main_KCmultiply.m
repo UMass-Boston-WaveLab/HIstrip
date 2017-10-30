@@ -85,7 +85,7 @@ slot_4_x=w_sub;
 
 
 [ABCD, ABCDgaphalf1,ABCDline,ABCDL] = HISlayerABCD(w2, g, H_sub, rad, eps2, f, viaflag, eps1, L_sub, L_ant);
-botn = floor((L_sub-L_ant)/(2*w2+g))-1;
+botn = floor((L_sub-L_ant)/(2*a));
 for ii = 1:length(f)
 
 %  Y(:,:,ii)= HIS_admittance_saber_test(sep_12, sep_13, sep_14, sep_23, sep_24, sep_34, slot_1_x, slot_2_x, slot_3_x, slot_4_x, f(ii));
@@ -100,53 +100,29 @@ ZL = 1/Y(1,1,ii);
 ZR = 1/Y(4,4,ii);
 
 ZLtemp = unitcellMultiply(ZL, ABCDgaphalf1(:,:,ii)*ABCDline(:,:,ii)*ABCDL(:,:,ii)*ABCDline(:,:,ii), 1);
-ZinL = unitcellMultiply(ZLtemp, ABCD(:,:,ii), botn);
+ZinL_l = unitcellMultiply(ZLtemp, ABCD(:,:,ii), botn);
 
 ZRtemp = unitcellMultiply(ZR, ABCDgaphalf1(:,:,ii)*ABCDline(:,:,ii)*ABCDL(:,:,ii)*ABCDline(:,:,ii), 1);
-ZinR = unitcellMultiply(ZRtemp, ABCD(:,:,ii), botn);
+ZinR_l = unitcellMultiply(ZRtemp, ABCD(:,:,ii), botn);
 
-
-%% BUHHHH
 
 %Cascade of 4x4 unit cells for left and right of source voltage. 
 unitcell=multicond_unitcell(a,  w_ant, w2, h_ant+H_sub, H_sub, rad, eps1, eps2, f(ii), viaflag);
 
-Zmat_R = unitcellMultiply([1/squeeze(Y(2,2,ii)) 0; 0 ZinR], unitcell, floor(0.5*L_ant/a));
-Zmat_L = unitcellMultiply([1/squeeze(Y(3,3,ii)) 0; 0 ZinL], unitcell, floor(0.5*L_ant/a));
+ZLR=1/squeeze(Y(2,2,ii));
+ZLL=1/squeeze(Y(3,3,ii));
 
-% 
-% %Convert total ABCD to Z matrix for solutions for the input impedance
-% Zt(:,:,ii) = [Zmat_R zeros(2); zeros(2) Zmat_L];
-% 
-% 
-% %% Components of Z matrix
-% 
-%     Z11 = Zt(1,1,ii);
-%     Z12 = Zt(1,2,ii);
-%     Z13 = Zt(1,3,ii);
-%     Z14 = Zt(1,4,ii);
-% 
-%     Z21 = Zt(2,1,ii);
-%     Z22 = Zt(2,2,ii);
-%     Z23 = Zt(2,3,ii);
-%     Z24 = Zt(2,4,ii);
-% 
-%     Z31 = Zt(3,1,ii);
-%     Z32 = Zt(3,2,ii);
-%     Z33 = Zt(3,3,ii);
-%     Z34 = Zt(3,4,ii);
-% 
-%     Z41 = Zt(4,1,ii);
-%     Z42 = Zt(4,2,ii);
-%     Z43 = Zt(4,3,ii);
-%     Z44 = Zt(4,4,ii);
- 
-    
+ZinR_mid = partialcells([ZLR 0; 0 ZinR_l], L_ant, a, w1, w2, h1, h2, rad, eps1, eps2, f(ii), viaflag);
+
+%% propagate through the whole MTL unit cells to find Zin for left and right halves
+Zmat_R = unitcellMultiply(ZinR_mid, unitcell, N);
+Zmat_L = unitcellMultiply(ZinL_mid, unitcell, N);
+
+
+
+
+
 %% Solution for Zin - dipole
-
-%Zd(ii,:,:) = Z11 - Z13 + Z31 - Z33 + (1-Z32-Z34)*((Z21+Z43-Z23-Z41)/(Z24+Z42-Z22-Z44))
-%Zd(ii,:,:) = Z11 - Z13 + Z31 - Z33 + (Z21-Z23-Z41+Z43)/(Z42-Z44-Z22+Z24)-(Z32-Z34)*((Z21-Z23-Z41+Z43)/(Z42-Z44-Z22+Z24));
-
 
 Z = Zmat_R+Zmat_L;
     Zd(ii) = Z(1,1)-Z(1,2)*Z(2,1)/Z(2,2);
