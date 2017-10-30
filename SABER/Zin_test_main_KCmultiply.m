@@ -84,8 +84,8 @@ slot_4_x=w_sub;
 %% 
 
 
-[ABCD, ABCDgaphalf1,ABCDline,ABCDL] = HISlayerABCD(w2, g, H_sub, rad, eps2, f, viaflag, eps1, L_sub, L_ant);
-botn = floor((L_sub-L_ant)/(2*a));
+[ABCD, ABCDgaphalf1,ABCDline,ABCDL,~] = HISlayerABCD(w2, g, H_sub, rad, eps2, f, viaflag, eps1);
+botn = floor((L_sub-L_ant)/(2*a))-1;
 for ii = 1:length(f)
 
 %  Y(:,:,ii)= HIS_admittance_saber_test(sep_12, sep_13, sep_14, sep_23, sep_24, sep_34, slot_1_x, slot_2_x, slot_3_x, slot_4_x, f(ii));
@@ -112,8 +112,9 @@ unitcell=multicond_unitcell(a,  w_ant, w2, h_ant+H_sub, H_sub, rad, eps1, eps2, 
 ZLR=1/squeeze(Y(2,2,ii));
 ZLL=1/squeeze(Y(3,3,ii));
 
-ZinR_mid = partialcells([ZLR 0; 0 ZinR_l], L_ant, a, w1, w2, h1, h2, rad, eps1, eps2, f(ii), viaflag);
-
+ZinR_mid = partialcells([ZLR 0; 0 ZinR_l], L_ant, a, w1, w2, H_sub+h_ant, H_sub, rad, eps1, eps2, f(ii), viaflag);
+ZinL_mid = partialcells([ZLL 0; 0 ZinL_l], L_ant, a, w1, w2, H_sub+h_ant, H_sub, rad, eps1, eps2, f(ii), viaflag);
+N=floor(0.5*L_ant/a);
 %% propagate through the whole MTL unit cells to find Zin for left and right halves
 Zmat_R = unitcellMultiply(ZinR_mid, unitcell, N);
 Zmat_L = unitcellMultiply(ZinL_mid, unitcell, N);
@@ -151,7 +152,7 @@ legend({'R';'X'})
 grid on
 set(gca,'fontsize',14)    
 xlim([0.1 0.6])
-ylim([-5000 5000])
+ylim([-400 800])
 
 
 
