@@ -20,13 +20,13 @@ elseif bot_remainder<a/2
     ABCDlseg = [cos(betab*l) 1i*Z0*sin(betab*l); 1i*sin(betab*l)/Z0 cos(betab*l)];
     temp = {ABCDlseg, ABCDgaphalf2};
 elseif bot_remainder==a/2
-    temp = {ABCDL, ABCDline, ABCDgaphalf2};
+    temp = {ABCDline, ABCDgaphalf2}; %inductance is taken care of in the MTL ABCDs
 elseif bot_remainder<a-g/2
     l=bot_remainder-a/2-g/2;
     ABCDlseg = [cos(betab*l) 1i*Z0*sin(betab*l); 1i*sin(betab*l)/Z0 cos(betab*l)];
     temp = {ABCDlseg, ABCDL, ABCDline, ABCDgaphalf2};
 else
-    temp = {ABCDgaphalf1, ABCDline, ABCDL, ABCDline, ABCDgaphalf2};
+    temp = { ABCDline, ABCDL, ABCDline, ABCDgaphalf2};
 end
 
 ZinL=ZL(2,2);
@@ -55,7 +55,7 @@ elseif remainder<a-g/2
     MTLseg = ustripMTLABCD(w1, h1,w2, h2, eps1, eps2, f, l);
     temp2={Cptopmat, Cpmat, Cgapmat, MTL, Lmat, MTLseg};
 else
-    temp2={Cptopmat, Cpmat, Cgapmat, MTL, Lmat, MTL, Cgapmat, Cpmat, Cptopmat};
+    temp2={Cptopmat, Cpmat, Cgapmat, MTL, Lmat, MTL};
 end
 
 Zin=[ZL(1,1) 0; 0 ZinL];
