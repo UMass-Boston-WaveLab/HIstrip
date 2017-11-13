@@ -20,16 +20,16 @@ Lmat = MTLviaABCD(h2, rad, f);
 MTL = ustripMTLABCD(w1, h1,w2, h2, eps1, eps2, f, w2/2);
 
 
-if remainder<g/2 
+if remainder<=g/2 %treat it as though it is equal to g/2
     %antenna layer barely extends over gap, the rest is bottom layer only
-    temp2={Cptopmat, Cpmat, Cgapmat};
+    temp2={Cgapmat, Cpmat, Cptopmat};
     temp = {ABCDline, ABCDL, ABCDline, ABCDgaphalf2};
     
 elseif remainder<a/2
     %top layer covers gap cap and part of a TL section
     l=remainder-g/2;
     MTLseg = ustripMTLABCD(w1, h1,w2, h2, eps1, eps2, f, l);
-    temp2={Cptopmat, Cpmat, Cgapmat, MTLseg};
+    temp2={Cgapmat, Cpmat, Cptopmat, MTLseg};
     
     % more TL length, L, second half of cell in bottom layer
     l2=w2/2-l;
@@ -38,22 +38,22 @@ elseif remainder<a/2
     
 elseif remainder==a/2
     %split at the inductor
-    temp2={Cptopmat, Cpmat, Cgapmat, MTL, Lmat};
+    temp2={Cgapmat, Cpmat, Cptopmat, MTL, Lmat};
     temp = {ABCDline, ABCDgaphalf2};
     
 elseif remainder<a-g/2
     %top layer covers half a unit cell plus part of a TL section
     l=remainder-a/2-g/2;
     MTLseg = ustripMTLABCD(w1, h1,w2, h2, eps1, eps2, f, l);
-    temp2={Cptopmat, Cpmat, Cgapmat, MTL, Lmat, MTLseg};
+    temp2={Cgapmat, Cpmat, Cptopmat, MTL, Lmat, MTLseg};
     
     %the rest of the TL section, gap cap
-    l2=w2/2-l;
+    l2=a/2-l;
     ABCDlseg = [cos(betab*l2) 1i*Z0*sin(betab*l2); 1i*sin(betab*l2)/Z0 cos(betab*l2)];
     temp = {ABCDlseg, ABCDgaphalf2};
     
 else
-    temp2={Cptopmat, Cpmat, Cgapmat, MTL, Lmat, MTL};
+    temp2={Cgapmat, Cpmat, Cptopmat, MTL, Lmat, MTL};
     temp={ABCDgaphalf2};
 end
 
