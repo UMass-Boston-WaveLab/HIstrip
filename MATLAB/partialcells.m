@@ -30,7 +30,7 @@ else
 end
 
 ZinL=ZL(2,2);
-for ii=1:length(temp)
+for ii=length(temp):-1:1
     ZinL=unitcellMultiply(ZinL,temp{ii},1);
 end
 
@@ -59,7 +59,7 @@ else
 end
 
 Zin=[ZL(1,1) 0; 0 ZinL];
-for ii=1:length(temp2)
+for ii=length(temp2):-1:1
     Zin=unitcellMultiply(Zin,temp2{ii},1);
 end
 
