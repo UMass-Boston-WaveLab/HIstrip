@@ -48,7 +48,7 @@ elseif remainder<a-g/2
     temp2={Cgapmat, Cpmat, Cptopmat, MTL, Lmat, MTLseg};
     
     %the rest of the TL section, gap cap
-    l2=a/2-l;
+    l2=w2/2-l;
     ABCDlseg = [cos(betab*l2) 1i*Z0*sin(betab*l2); 1i*sin(betab*l2)/Z0 cos(betab*l2)];
     temp = {ABCDlseg, ABCDgaphalf2};
     

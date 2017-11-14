@@ -82,8 +82,8 @@ slot_4_x=w_sub;
 % slot_3_x=.5;
 % slot_4_x=4;
 %% 
-L_ant_eff = L_ant+microstripdeltaL(w_ant, h_ant+H_sub, eps1);
-
+%L_ant_eff = L_ant+microstripdeltaL(w_ant, h_ant, eps1);
+L_ant_eff = L_ant;
 
 [ABCD, ABCDgaphalf1,ABCDline,ABCDL,~] = HISlayerABCD(w2, g, H_sub, rad, eps2, f, viaflag, eps1);
 botn = floor((L_sub-L_ant_eff)/(2*a))-1;
