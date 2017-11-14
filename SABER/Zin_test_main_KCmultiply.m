@@ -11,7 +11,10 @@ clear all;
 %the wire diameter"
 % (see "Equivalent Strip Width for Cylindrical Wire for Mesh Reflector
 % Antennas: Experiments, Waveguide, and Plane-Wave Simulations")
-sf = 1; 
+
+sf = 1/40;%@ 12 Ghz h=1mm steven best paper H_sub = 0.04*sf;
+% sf = 1;%@ .3 Ghz h=40mm
+
 w_ant = 0.02*sf; %depends on kind of antenna placed on top of HIS
 w1=w_ant;
 H_sub = 0.04*sf; %ground to patch distance
@@ -174,6 +177,8 @@ end
 
     %still need to write this code.
  figure; 
+ hold on
+
 plot(f*1e-9, real(Zd), f*1e-9, imag(Zd),'linewidth',2)
 xlabel('Frequency [GHz]')
 ylabel('Zin')
@@ -186,6 +191,7 @@ ylim([-5000 5000])
 
 
 figure; 
+hold on
 plot(f*1e-9, 20*log10(abs(S11)), 'linewidth',2)
 xlabel('Frequency [GHz]')
 ylabel('|S_{11} (dB)')

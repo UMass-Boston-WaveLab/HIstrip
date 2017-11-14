@@ -17,7 +17,7 @@ if n_across>1
 else
     C2G=eps0*eps2*w2/h2;
 end
-
+    
 cap = [C12, -C12; -C12, C2G+C12];
 %cap = [C12+1/(1/C12+1/C2G), -C12; -C12, C2G]; %Symmetric; see MTL book for where this comes from 
 %--changed c11 value on April 24 2017 - see Paul multiconductor lines book
