@@ -84,6 +84,7 @@ slot_4_x=w_sub;
 %% 
 L_ant_eff = L_ant+microstripdeltaL(w_ant, h_ant+H_sub, eps1);
 
+
 [ABCD, ABCDgaphalf1,ABCDline,ABCDL,~] = HISlayerABCD(w2, g, H_sub, rad, eps2, f, viaflag, eps1);
 botn = floor((L_sub-L_ant_eff)/(2*a))-1;
 for ii = 1:length(f)
@@ -99,23 +100,35 @@ for ii = 1:length(f)
 ZL = 1/Y(1,1,ii);
 ZR = 1/Y(4,4,ii);
 
-ZLtemp = unitcellMultiply(ZL, ABCDgaphalf1(:,:,ii)*ABCDline(:,:,ii)*ABCDL(:,:,ii)*ABCDline(:,:,ii), 1);
+ZLtemp=ZL;
+temp={ABCDgaphalf1(:,:,ii),ABCDline(:,:,ii),ABCDL(:,:,ii),ABCDline(:,:,ii)};
+
+for jj=length(temp):-1:1
+    ZLtemp = unitcellMultiply(ZLtemp, temp{jj}, 1);
+end
 ZinL_l = unitcellMultiply(ZLtemp, ABCD(:,:,ii), botn);
 
-ZRtemp = unitcellMultiply(ZR, ABCDgaphalf1(:,:,ii)*ABCDline(:,:,ii)*ABCDL(:,:,ii)*ABCDline(:,:,ii), 1);
+ZRtemp=ZR;
+for jj=length(temp):-1:1
+    ZRtemp = unitcellMultiply(ZRtemp, temp{jj}, 1);
+end
 ZinR_l = unitcellMultiply(ZRtemp, ABCD(:,:,ii), botn);
 
 
 %Cascade of 4x4 unit cells for left and right of source voltage. 
 unitcell=multicond_unitcell(a,  w_ant, w2, h_ant+H_sub, H_sub, rad, eps1, eps2, f(ii), viaflag);
 
+%impedance of upper equivalent radiating slots
 ZLR=1/squeeze(Y(2,2,ii));
 ZLL=1/squeeze(Y(3,3,ii));
 
+N=floor(0.5*L_ant_eff/a);
+
+%% NEED IF STATEMENT HERE
 ZinR_mid = partialcells([ZLR 0; 0 ZinR_l], L_ant_eff, a, w1, w2, H_sub+h_ant, H_sub, rad, eps1, eps2, f(ii), viaflag);
 ZinL_mid = partialcells([ZLL 0; 0 ZinL_l], L_ant_eff, a, w1, w2, H_sub+h_ant, H_sub, rad, eps1, eps2, f(ii), viaflag);
-N=floor(0.5*L_ant_eff/a);
-%% propagate through the whole MTL unit cells to find Zin for left and right halves
+%%
+
 Zmat_R = unitcellMultiply(ZinR_mid, unitcell, N);
 Zmat_L = unitcellMultiply(ZinL_mid, unitcell, N);
 
