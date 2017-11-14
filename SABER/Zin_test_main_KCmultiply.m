@@ -12,7 +12,7 @@ clear all;
 % (see "Equivalent Strip Width for Cylindrical Wire for Mesh Reflector
 % Antennas: Experiments, Waveguide, and Plane-Wave Simulations")
 sf = 1; 
-w_ant = 0.01*1.89*sf; %depends on kind of antenna placed on top of HIS
+w_ant = 0.02*sf; %depends on kind of antenna placed on top of HIS
 w1=w_ant;
 H_sub = 0.04*sf; %ground to patch distance
 h_ant = 0.02*sf; %antenna height above substrate
@@ -85,6 +85,8 @@ slot_4_x=w_sub;
 
 
 [ABCD, ABCDgaphalf1,ABCDline,ABCDL] = HISlayerABCD(w2, g, H_sub, rad, eps2, f, viaflag, eps1, L_sub, L_ant);
+[ABCD_g_half ABCD_g Yg ] = microstripgap1_saber( eps2,g, H_sub, w2,f);
+
 botn = floor((L_sub-L_ant)/(2*w2+g))-1;
 for ii = 1:length(f)
 
@@ -99,10 +101,14 @@ for ii = 1:length(f)
 ZL = 1/Y(1,1,ii);
 ZR = 1/Y(4,4,ii);
 
-ZLtemp = unitcellMultiply(ZL, ABCDgaphalf1(:,:,ii)*ABCDline(:,:,ii)*ABCDL(:,:,ii)*ABCDline(:,:,ii), 1);
+% ZLtemp = unitcellMultiply(ZL, ABCDgaphalf1(:,:,ii)*ABCDline(:,:,ii)*ABCDL(:,:,ii)*ABCDline(:,:,ii), 1);
+ZLtemp = unitcellMultiply(ZL, ABCD_g_half(:,:,ii)*ABCDline(:,:,ii)*ABCDL(:,:,ii)*ABCDline(:,:,ii), 1);%saber changes
+
 ZinL = unitcellMultiply(ZLtemp, ABCD(:,:,ii), botn);
 
-ZRtemp = unitcellMultiply(ZR, ABCDgaphalf1(:,:,ii)*ABCDline(:,:,ii)*ABCDL(:,:,ii)*ABCDline(:,:,ii), 1);
+% ZRtemp = unitcellMultiply(ZR, ABCDgaphalf1(:,:,ii)*ABCDline(:,:,ii)*ABCDL(:,:,ii)*ABCDline(:,:,ii), 1);
+ZRtemp = unitcellMultiply(ZR, ABCD_g_half(:,:,ii)*ABCDline(:,:,ii)*ABCDL(:,:,ii)*ABCDline(:,:,ii), 1);%saber changes
+
 ZinR = unitcellMultiply(ZRtemp, ABCD(:,:,ii), botn);
 
 
