@@ -35,12 +35,10 @@ elseif remainder<a/2
     MTLseg = ustripMTLABCD(w1, h1,w2, h2, eps1, eps2, f, l);
     temp2={Cgapmat, Cpmat, Cptopmat, MTLseg};%KC
     
-    
     % more TL length, L, second half of cell in bottom layer
     l2=w2/2-l;
     ABCDlseg = [cos(betab*l2) 1i*Z0*sin(betab*l2); 1i*sin(betab*l2)/Z0 cos(betab*l2)];
     temp = {ABCDlseg, ABCDL, ABCDline, ABCDgaphalf2};%KC
-    
     
 elseif remainder==a/2
     %split at the inductor
