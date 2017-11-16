@@ -25,7 +25,7 @@ a =w2+g;       %unit cell size
 
 L_sub = 16*a;
 w_sub = 16*a;
-L_ant = 4*a+a-g/5; 
+L_ant = 4*a+a-g/2; 
 %f = 2e9:250e6:10e9; %f vector sweep for 6ghz
 %f = 1e9:500e6:6.5e9;
 f=(100:.5:120)*10^6/sf;
