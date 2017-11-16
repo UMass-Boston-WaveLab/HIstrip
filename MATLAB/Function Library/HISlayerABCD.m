@@ -25,7 +25,7 @@ for ii = 1:length(f)
         ABCDL(:,:,ii)=eye(2);
     end
     
-    ABCDCg = [1 1/(1i*omega*Cs*2+2*real(harringtonslotY(f(ii), g, w2))); 0 1]; %adding real part here to include rad loss
+    ABCDCg = [1 1/(1i*omega*Cs*2+real(harringtonslotY(f(ii), g, w2))); 0 1]; %adding real part here to include rad loss
     ABCDCp = [1 0; 1i*omega*Cp 1];
 
     
