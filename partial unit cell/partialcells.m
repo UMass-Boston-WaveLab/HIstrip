@@ -38,7 +38,7 @@ elseif remainder<a/2
     
     % more TL length, L, second half of cell in bottom layer
     l2=w2/2-l;
-    ABCDlseg = [cos(betab*l2) 1i*Z0*sin(betab*l2); 1i*sin(betab*l2)/Z0 cos(betab*l2)];
+    ABCDlseg = [cos(betab*l2) 1i*Z0*sin(betab*l2); 1i*sin(betab*l2)/Z0 cos(betab*l2)];% if l2<w2/2 we use ABCDlseg inteasd of ABCDline
     temp = {ABCDlseg, ABCDL, ABCDline, ABCDgaphalf2};%KC
     
     
