@@ -5,10 +5,37 @@ function [Y_matrix,Ys_ant,Ys_sub,Y_12, Y_13, Y_14, Y_23, Y_24, Y_34] = HIS_admit
 
 [ Ys_ant,Ys_sub ] = HISantYmat_self(w_ant, h_ant, L_ant,eps1, w_sub, h_sub, L_sub,eps2, freq);
 
+% % % |<--------Lsub----------->|
+% % % |                         | 
+% % % |        |<-Lant>|        |
+% % % |        |       |        |
+% % % |        |       |        |
+% % % |        2       3        | 
+% % % |                         |
+% % % |                         | 
+% % % 1                         4  
+% Y_matrix = [Ys_sub Y_12 Y_13 Y_14; %antenna arrangmet in Zin script
+%     Y_12 Ys_ant Y_23 Y_24;
+%     Y_13 Y_23 Ys_ant Y_34;
+%     Y_14 Y_24 Y_34 Ys_sub];
 
-Y_matrix = [Ys_sub Y_12 Y_13 Y_14;
-    Y_12 Ys_ant Y_23 Y_24;
-    Y_13 Y_23 Ys_ant Y_34;
-    Y_14 Y_24 Y_34 Ys_sub];
+
+
+% % %  <-------|    ----------->|              
+% % %          |                | 
+% % % |        |<     >|        |
+% % % |        |       |        |
+% % % |        |       |        |
+% % % 1        |       3        | 
+% % %          |                |
+% % %          |                | 
+% % %          2                 4  
+Y_matrix = [Ys_ant Y_12 Y_23 Y_24; %antenna arrangmet in Yeq calculation
+    Y_12 Ys_sub Y_13 Y_14;
+    Y_23 Y_12 Ys_ant Y_34;
+    Y_24 Y_14 Y_34 Ys_sub];
+
+
+
 
  end
