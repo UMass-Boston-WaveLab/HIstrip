@@ -25,7 +25,11 @@ a =w2+g;       %unit cell size
 
 L_sub = 16*a;
 w_sub = 16*a;
+<<<<<<< HEAD
 L_ant = 0.48; 
+=======
+L_ant = 4*a+a-g/2; 
+>>>>>>> origin/partial-cells
 %f = 2e9:250e6:10e9; %f vector sweep for 6ghz
 %f = 1e9:500e6:6.5e9;
 f=(100:5:600)*10^6/sf;
@@ -90,7 +94,7 @@ slot_4_x=w_sub;
 % L_ant_eff = L_ant+microstripdeltaL(w_ant, h_ant, eps1);
 
 [ABCD, ABCDgaphalf1,ABCDline,ABCDL,~] = HISlayerABCD(w2, g, H_sub, rad, eps2, f, viaflag, eps1);
-botn = floor((L_sub-L_ant_eff)/(2*a))-1;
+botn = floor((L_sub-L_ant_eff)/(2*a))-1;% Number of compelete unit cell not under antenna===HIS
 for ii = 1:length(f)
 
 %  Y(:,:,ii)= HIS_admittance_saber_test(sep_12, sep_13, sep_14, sep_23, sep_24, sep_34, slot_1_x, slot_2_x, slot_3_x, slot_4_x, f(ii));
@@ -110,9 +114,9 @@ ZLtemp=ZL;
 temp={ABCDgaphalf1(:,:,ii),ABCDline(:,:,ii),ABCDL(:,:,ii),ABCDline(:,:,ii)};
 
 for jj=length(temp):-1:1
-    ZLtemp = unitcellMultiply(ZLtemp, temp{jj}, 1);% LEFT last HIS connection fro ground side to load
+    ZLtemp = unitcellMultiply(ZLtemp, temp{jj}, 1);%  last HIS connection from ground side to load
 end
-ZinL_l = unitcellMultiply(ZLtemp, ABCD(:,:,ii), botn);% HIS from antenna edge to last HIS connection fro ground side
+ZinL_l = unitcellMultiply(ZLtemp, ABCD(:,:,ii), botn);% HIS from antenna edge to last HIS connection from ground side
 
 ZRtemp=ZR;
 for jj=length(temp):-1:1
