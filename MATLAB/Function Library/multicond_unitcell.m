@@ -26,7 +26,8 @@ end
 %I am dealing with T and gameig properly here - see MTL book by Faria
 MTL = ustripMTLABCD(w1, h1,w2, h2, eps1, eps2, freq, w2/2);
 
-ABCD = vpa(Cgapmat*Cpmat*Cptopmat*(MTL)*Lmat*(MTL)*Cptopmat*Cpmat*Cgapmat);
+% ABCD = vpa(Cgapmat*Cpmat*Cptopmat*(MTL)*Lmat*(MTL)*Cptopmat*Cpmat*Cgapmat);
+ABCD = (Cgapmat*Cpmat*Cptopmat*(MTL)*Lmat*(MTL)*Cptopmat*Cpmat*Cgapmat);
 
 end
 
