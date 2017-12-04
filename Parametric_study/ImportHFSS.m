@@ -1,0 +1,1 @@
+data = csvread('one2six2.csv',1,0);

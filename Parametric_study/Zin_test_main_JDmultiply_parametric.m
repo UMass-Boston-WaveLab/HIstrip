@@ -2,8 +2,8 @@
 %% Uses a dipole or probe fed relationship to enforce boundary conditions on
 
 %% Antenna/HIS geometries
-clc
-clear all;
+% clc
+% clear all;
 
 %sf = .05; %scale factor from 300Mhz to 6Ghz,,, ==Lamda
 % the best/hanna antenna is actually a 0.005m radius dipole
@@ -12,7 +12,7 @@ clear all;
 % (see "Equivalent Strip Width for Cylindrical Wire for Mesh Reflector
 % Antennas: Experiments, Waveguide, and Plane-Wave Simulations")
 sf = 1; 
-w_ant = 0.01*sf; %depends on kind of antenna placed on top of HIS
+w_ant = 0.01*1.89*sf; %depends on kind of antenna placed on top of HIS
 w1=w_ant;
 H_sub = 0.04*sf; %ground to patch distance
 h_ant = 0.02*sf; %antenna height above substrate
@@ -25,10 +25,12 @@ a =w2+g;       %unit cell size
 
 L_sub = 16*a;
 w_sub = 16*a;
-L_ant = 0.48; 
+for L_ant = [4*a 4*a+g/2 4*a+a/2 4*a+a-g/2 4*a+a]
+
+% L_ant = 4*a; 
 %f = 2e9:250e6:10e9; %f vector sweep for 6ghz
 %f = 1e9:500e6:6.5e9;
-f=(100:5:600)*10^6/sf;
+f=(100:.5:200)*10^6/sf;
 omega = 2*pi*f;
 L_ant_eff = L_ant;
 N=floor(0.5*L_ant_eff/a); % NUMBER OF COMPLETE UNIT CELLS UNDER ANTENNA
@@ -90,7 +92,7 @@ slot_4_x=w_sub;
 % L_ant_eff = L_ant+microstripdeltaL(w_ant, h_ant, eps1);
 
 [ABCD, ABCDgaphalf1,ABCDline,ABCDL,~] = HISlayerABCD(w2, g, H_sub, rad, eps2, f, viaflag, eps1);
-botn = floor((L_sub-L_ant_eff)/(2*a))-1;% Number of compelete unit cell not under antenna===HIS
+botn = floor((L_sub-L_ant_eff)/(2*a))-1;
 for ii = 1:length(f)
 
 %  Y(:,:,ii)= HIS_admittance_saber_test(sep_12, sep_13, sep_14, sep_23, sep_24, sep_34, slot_1_x, slot_2_x, slot_3_x, slot_4_x, f(ii));
@@ -100,19 +102,17 @@ for ii = 1:length(f)
      w_ant, h_ant, L_ant,eps1, w_sub, H_sub, L_sub,eps2, f(ii));  
 % Y(:,:,ii) = HISantYmat_SS(f(ii), w_ant, w2, h_ant, H_sub, rad, eps1, eps2, g, L_ant, startpos, L_sub, W_sub, viaflag);
 
-Z = inv(Y(:,:,ii));
-
 %HIS is terminated by admittance of HIS-edge slots.
-ZL = Z(1,1);
-ZR = Z(4,4);
+ZL = 1/Y(1,1,ii);
+ZR = 1/Y(4,4,ii);
 
 ZLtemp=ZL;
 temp={ABCDgaphalf1(:,:,ii),ABCDline(:,:,ii),ABCDL(:,:,ii),ABCDline(:,:,ii)};
 
 for jj=length(temp):-1:1
-    ZLtemp = unitcellMultiply(ZLtemp, temp{jj}, 1);%  last HIS connection from ground side to load
+    ZLtemp = unitcellMultiply(ZLtemp, temp{jj}, 1);% LEFT last HIS connection fro ground side to load
 end
-ZinL_l = unitcellMultiply(ZLtemp, ABCD(:,:,ii), botn);% HIS from antenna edge to last HIS connection from ground side
+ZinL_l = unitcellMultiply(ZLtemp, ABCD(:,:,ii), botn);% HIS from antenna edge to last HIS connection fro ground side
 
 ZRtemp=ZR;
 for jj=length(temp):-1:1
@@ -125,14 +125,14 @@ ZinR_l = unitcellMultiply(ZRtemp, ABCD(:,:,ii), botn);
 unitcell=multicond_unitcell(a,  w_ant, w2, h_ant+H_sub, H_sub, rad, eps1, eps2, f(ii), viaflag);
 
 %impedance of upper equivalent radiating slots
-ZLR=Z(2,2);
-ZLL=Z(3,3);
+ZLR=1/squeeze(Y(2,2,ii));
+ZLL=1/squeeze(Y(3,3,ii));
 
-N=floor(0.5*L_ant_eff/a); % NUMBER OF COMPLETE UNIT CELLS UNDER ANTENNA
+N=floor(0.5*L_ant_eff/a); % NUMBER OF COKPLETE UNIT CELLS UNDER ANTENNA
 
 %% NEED IF STATEMENT HERE
-ZinR_mid = partialcells([ZLR+ZinR_l ZinR_l; ZinR_l ZinR_l], L_ant_eff, a, w1, w2, H_sub+h_ant, H_sub, rad, eps1, eps2, f(ii), viaflag);
-ZinL_mid = partialcells([ZLL+ZinL_l ZinL_l; ZinL_l ZinL_l], L_ant_eff, a, w1, w2, H_sub+h_ant, H_sub, rad, eps1, eps2, f(ii), viaflag);
+ZinR_mid = partialcells([ZLR 0; 0 ZinR_l], L_ant_eff, a, w1, w2, H_sub+h_ant, H_sub, rad, eps1, eps2, f(ii), viaflag);
+ZinL_mid = partialcells([ZLL 0; 0 ZinL_l], L_ant_eff, a, w1, w2, H_sub+h_ant, H_sub, rad, eps1, eps2, f(ii), viaflag);
 %%
 
 Zmat_R = unitcellMultiply(ZinR_mid, unitcell, N);
@@ -167,23 +167,25 @@ hold on
 
 xlabel('Frequency [GHz]')
 ylabel('Zin')
-legend({'R';'X'})
+legend({'R ';'X'})
 grid on
+title ('L_ant = [4*a 4*a+g/2 4*a+a/2 4*a+a-g/2 4*a+a]');
 set(gca,'fontsize',14)    
 xlim([0.1 0.6])
 ylim([-5000 5000])
 
 
 figure(2); 
-plot(f*1e-9, 20*log10(abs(S11)), 'linewidth',1)
+plot(f*1e-9, 20*log10(abs(S11)), 'linewidth',2)
 hold on
 xlabel('Frequency [GHz]')
-ylabel('|S_{11}| (dB)')
+ylabel('|S_{11} (dB)')
 grid on
+title ('L_ant = [4*a 4*a+g/2 4*a+a/2 4*a+a-g/2 4*a+a]');
 set(gca,'fontsize',14)
 xlim([0.1 0.6])
 
 
-%     end
-% end
+    end
+
  

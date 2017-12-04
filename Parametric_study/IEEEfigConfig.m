@@ -5,6 +5,7 @@
 % For a singlepart figures labels should be in 8 to 10 points,
 % multipart figures, labels should be in 8 points.
 % Width: column width: 8.8 cm; page width: 18.1 cm.
+
 x = 0:0.01:2*pi;
 y = cos(x);
 %% width & height of the figure
