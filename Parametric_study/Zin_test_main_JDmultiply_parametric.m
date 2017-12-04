@@ -1,35 +1,28 @@
-% function [Z]  = Zin_test(f, w_ant, w2, h_ant, H_sub, rad, eps1,eps2, g, L_ant, startpos, L_sub, W_sub, viaflag)
 %% Uses a dipole or probe fed relationship to enforce boundary conditions on
 
 %% Antenna/HIS geometries
-% clc
-% clear all;
-
-%sf = .05; %scale factor from 300Mhz to 6Ghz,,, ==Lamda
 % the best/hanna antenna is actually a 0.005m radius dipole
 %"the equivalent strip width for a cylindrical wire is almost twice (~1.89)
 %the wire diameter"
 % (see "Equivalent Strip Width for Cylindrical Wire for Mesh Reflector
 % Antennas: Experiments, Waveguide, and Plane-Wave Simulations")
-sf = 1; 
+sf = 1; %sf = .05; %scale factor from 300Mhz to 6Ghz,,, ==Lamda
 w_ant = 0.01*1.89*sf; %depends on kind of antenna placed on top of HIS
-w1=w_ant;
+w1 = w_ant;
 H_sub = 0.04*sf; %ground to patch distance
 h_ant = 0.02*sf; %antenna height above substrate
 
 w2 = .12*sf;     %patch width
 rad = .005*sf;   %via radius
 g = 0.02*sf;     %patch spacing
-gap=g;
-a =w2+g;       %unit cell size
+gap = g;
+a = w2+g;        %unit cell size
 
 L_sub = 16*a;
 w_sub = 16*a;
 for L_ant = [4*a 4*a+g/2 4*a+a/2 4*a+a-g/2 4*a+a]
 
 % L_ant = 4*a; 
-%f = 2e9:250e6:10e9; %f vector sweep for 6ghz
-%f = 1e9:500e6:6.5e9;
 f=(100:.5:200)*10^6/sf;
 omega = 2*pi*f;
 L_ant_eff = L_ant;
@@ -45,17 +38,7 @@ eps0 = 8.854e-12;
 viaflag = 1;
 E = eye(4);
 
-
-%% Symbolic Variables
-
-   % Vin = sym ('Vin');
-   % Iin = sym ('Iin');
-   % Zin = sym ('Zin');
-   % V1b = sym ('V1b');
-   % V2b = sym ('V2b');
-   % I1b = sym ('I1b');
-   % I2b = sym ('I2b');
-
+%% slot spacing description
 % % % |<--------Lsub----------->|
 % % % |                         | 
 % % % |        |<-Lant>|        |
@@ -65,7 +48,7 @@ E = eye(4);
 % % % |                         |
 % % % |                         | 
 % % % 1                         4           
-%% slot spacing description
+
 sep_12=L_sub/2-L_ant/2;
 sep_13=L_sub/2+L_ant/2;
 sep_14=L_sub;
