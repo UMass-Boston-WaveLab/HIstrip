@@ -1,7 +1,7 @@
 
 %% Uses a dipole or probe fed relationship to enforce boundary conditions on
 %% Antenna/HIS geometries
-clc
+clc;
 clear all;
 %the best/hanna antenna is actually a 0.005m radius dipole
 %"the equivalent strip width for a cylindrical wire is almost twice (~1.89)
@@ -9,8 +9,16 @@ clear all;
 %(see "Equivalent Strip Width for Cylindrical Wire for Mesh Reflector
 %Antennas: Experiments, Waveguide, and Plane-Wave Simulations")
 sf = 1; %sf = .05; %scale factor from 300Mhz to 6Ghz,,, ==Lamda
-w_ant = 0.01*sf; %depends on kind of antenna placed on top of HIS
-w1 = w_ant;
+parametric_flag = 1;
+%w_ant = 0.01*sf; %depends on kind of antenna placed on top of HIS
+
+if parametric_flag == 1
+        w_ant = [0.02, 0.125, 0.25, 0.5];
+    else parametric_flag = 0;
+        w_ant = 0.02;
+end
+
+w1 = w_ant(1,1);
 H_sub = 0.04*sf; %ground to patch distance
 h_ant = 0.02*sf; %antenna height above substrate
 
@@ -49,57 +57,61 @@ E = eye(4);
 % % % |        2       3        | 
 % % % |                         |
 % % % |                         | 
-% % % 1                         4           
+% % % 1                         4 
+slot_1_x = zeros(size(w_ant));
+slot_3_x = zeros(size(w_ant));
+
+for ggg = 1:numel(w_ant)
+slot_1_x(ggg) = w_ant(1,ggg);
+slot_3_x(ggg) = w_ant(1,ggg);
+
 sep_12=L_sub/2-L_ant/2;
 sep_13=L_sub/2+L_ant/2;
 sep_14=L_sub;
 sep_23=L_ant;
 sep_24=L_sub/2+L_ant/2;
 sep_34=L_sub/2-L_ant/2;
-slot_1_x=w_ant;
 slot_2_x=w_sub;
-slot_3_x=w_ant;
 slot_4_x=w_sub;
-
 %% Components of just HIS Layer
 
 [ABCD, ABCDgaphalf1,ABCDline,ABCDL,~] = HISlayerABCD(w2, g, H_sub, rad, eps2, f, viaflag, eps1);
 botn = floor((L_sub-L_ant_eff)/(2*a))-1;% Number of compelete unit cell not under antenna===HIS
 
 for ii = 1:length(f)   
-Y(:,:,ii) = HIS_admittance_saber_main(sep_12, sep_13, sep_14, sep_23, sep_24, sep_34, slot_1_x, slot_2_x, slot_3_x, slot_4_x, f(ii),...
-     w_ant, h_ant, L_ant,eps1, w_sub, H_sub, L_sub,eps2, f(ii));  
+Y(:,:,ii,ggg) = HIS_admittance_saber_main(sep_12, sep_13, sep_14, sep_23, sep_24, sep_34, slot_1_x(ggg), slot_2_x, slot_3_x(ggg), slot_4_x, f(ii),...
+     w_ant(ggg), h_ant, L_ant,eps1, w_sub, H_sub, L_sub,eps2, f(ii));  
 
 
-Z = inv(Y(:,:,ii));
+Z = inv(Y(:,:,ii,ggg));
 
 %HIS is terminated by admittance of HIS-edge slots.
 ZL = Z(1,1);
 ZR = Z(4,4);
 
 ZLtemp=ZL;
-temp={ABCDgaphalf1(:,:,ii),ABCDline(:,:,ii),ABCDL(:,:,ii),ABCDline(:,:,ii)};
+temp = {ABCDgaphalf1(:,:,ii),ABCDline(:,:,ii),ABCDL(:,:,ii),ABCDline(:,:,ii)};
 
-for jj=length(temp):-1:1
-    ZLtemp = unitcellMultiply(ZLtemp, temp{jj}, 1);%  last HIS connection from ground side to load
+for jj = length(temp):-1:1
+    ZLtemp = unitcellMultiply(ZLtemp, temp{jj}, 1); %last HIS connection from ground side to load
 end
-ZinL_l = unitcellMultiply(ZLtemp, ABCD(:,:,ii), botn);% HIS from antenna edge to last HIS connection from ground side
+ZinL_l = unitcellMultiply(ZLtemp, ABCD(:,:,ii), botn); %HIS from antenna edge to last HIS connection from ground side
 
-ZRtemp=ZR;
-for jj=length(temp):-1:1
-    ZRtemp = unitcellMultiply(ZRtemp, temp{jj}, 1);% RIGHT
+ZRtemp = ZR;
+for jj = length(temp):-1:1
+    ZRtemp = unitcellMultiply(ZRtemp, temp{jj}, 1); %RIGHT
 end
 ZinR_l = unitcellMultiply(ZRtemp, ABCD(:,:,ii), botn);
 
 
 %Cascade of 4x4 unit cells for left and right of source voltage. 
-unitcell=multicond_unitcell(a,  w_ant, w2, h_ant+H_sub, H_sub, rad, eps1, eps2, f(ii), viaflag);
+unitcell = multicond_unitcell(a,  w_ant(ggg), w2, h_ant+H_sub, H_sub, rad, eps1, eps2, f(ii), viaflag);
 
 %impedance of upper equivalent radiating slots
-ZLR=Z(2,2);
-ZLL=Z(3,3);
+ZLR = Z(2,2);
+ZLL = Z(3,3);
 
-N=floor(0.5*L_ant_eff/a); % NUMBER OF COMPLETE UNIT CELLS UNDER ANTENNA
+N = floor(0.5*L_ant_eff/a); % NUMBER OF COMPLETE UNIT CELLS UNDER ANTENNA
 
 %% NEED IF STATEMENT HERE
 ZinR_mid = partialcells([ZLR+ZinR_l ZinR_l; ZinR_l ZinR_l], L_ant_eff, a, w1, w2, H_sub+h_ant, H_sub, rad, eps1, eps2, f(ii), viaflag);
@@ -116,24 +128,19 @@ Zmat_L = unitcellMultiply(ZinL_mid, unitcell, N);
 %% Solution for Zin - dipole
 
 Z = Zmat_R+Zmat_L;
-    Zd(ii) = Z(1,1)-Z(1,2)*Z(2,1)/Z(2,2);
-S11(ii) = (Zd(ii)-50)/(Zd(ii)+50);
+    Zd(ii,ggg) = Z(1,1)-Z(1,2)*Z(2,1)/Z(2,2);
+S11(ii,ggg) = (Zd(ii,ggg)-50)/(Zd(ii,ggg)+50);
+
 %% Solution for Zin - Patch
+    %Zp = X/(X*(Y21+Y23+Y31+Y33) - (Y12+Y14-Y32-Y34)*(Y21+Y23-Y43-Y41))
 
-                %%Patch Term Simplification    
-                %X = Y22 + Y24 + Y42 + Y44;
-
-                % Solution for Zin - Probe
-                %Zp = X/(X*(Y21+Y23+Y31+Y33) - (Y12+Y14-Y32-Y34)*(Y21+Y23-Y43-Y41))
-
-end 
-
+    end 
+end
 
 %% Zin Geometric Parametric sweep
 
     %still need to write this code.
- 
-% figure(1); 
+% figure; 
 % plot(f*1e-9, real(Zd), f*1e-9, imag(Zd),'linewidth',2)
 % hold on
 % xlabel('Frequency [GHz]')
@@ -202,13 +209,13 @@ set(0,'defaultLegendOrientation','vertical');
 
 
 figure(1) 
-plot(f*1e-9, (abs(S11)))
-hold on
-plot(f*1e-9, data(:,2))
-hold off
+plot(f*1e-9, 20*log10(abs(S11)))
+%hold on
+%plot(f*1e-9, data(:,2))
+%hold off
 xlabel('Frequency [GHz]')
-ylabel('|S_{11}|')
-legend('HIStrip Model','Full-Wave Solution')
+ylabel('|S11_{dB}|')
+legend('w_ant{0.02}','w_ant{0.125}','w_ant{0.25}','w_ant{0.5}')
 
 
  

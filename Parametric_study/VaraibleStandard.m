@@ -24,7 +24,8 @@ sfflag = 0; %read above for setting sfflag
 parametric_flag = 0; %set for parametric sweep
 
 %% Frequency Components
-f = 3e9:100e6:6.5e9;
+f0 = 300e6; %design frequency
+f = 100e6:5:600e6;
 omega = 2*pi.*f;
 lambda0 = c./f; %freespace wavelength
 lambda = c./(f.*sqrt(eps2)); %wavelength in material
@@ -34,12 +35,16 @@ k = 2*pi./lambda;
 if sfflag == 1 %sf scales with frequency
         sf = 300e6./f;
     else sfflag = 0;
-        sf = 300e6/f(1,1);
+        sf = 300e6/f0;
 end
-
 %% Geometry
     %% Antenna
-w_ant = 0.01*sf; %depends on kind of antenna placed on top of HIS
+if parametric_flag == 1
+        w_ant = [0.02, 0.125, 0.25, 0.5];
+    else parametric_flag = 0;
+        w_ant = 0.02;
+end
+%w_ant = 0.02*sf; %depends on kind of antenna placed on top of HIS
 h_ant = 0.02*sf; %antenna height above substrate
 L_ant = .48*sf;  %based on length of dipole at 6ghz which is .48lamba
     %% HIS 
@@ -51,3 +56,4 @@ rad = .005*sf;   %via radius
 g = 0.02*sf;     %patch spacing
 a =.14*sf;       %edge to edge patch length
 len =.14*sf;     %length of microstrip ((a) for MTL section) segment above patches 
+
