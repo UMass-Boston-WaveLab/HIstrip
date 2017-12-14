@@ -112,41 +112,47 @@ temp={ABCDgaphalf1(:,:,ii),ABCDline(:,:,ii),ABCDL(:,:,ii),ABCDline(:,:,ii)};
 for jj=length(temp):-1:1
     ZLtemp = unitcellMultiply(ZLtemp, temp{jj}, 1);%  last HIS connection from ground side to load
 end
-ZinL_l = unitcellMultiply(ZLtemp, ABCD(:,:,ii), botn);% HIS from antenna edge to last HIS connection from ground side
+ZinL_l(ii) = unitcellMultiply(ZLtemp, ABCD(:,:,ii), botn);% HIS from antenna edge to last HIS connection from ground side
 
 ZRtemp=ZR;
 for jj=length(temp):-1:1
     ZRtemp = unitcellMultiply(ZRtemp, temp{jj}, 1);% RIGHT
 end
-ZinR_l = unitcellMultiply(ZRtemp, ABCD(:,:,ii), botn);
+ZinR_l(ii) = unitcellMultiply(ZRtemp, ABCD(:,:,ii), botn);
 
 
 %Cascade of 4x4 unit cells for left and right of source voltage. 
-unitcell=multicond_unitcell(a,  w_ant, w2, h_ant+H_sub, H_sub, rad, eps1, eps2, f(ii), viaflag);
+unitcell(:,:,ii)=multicond_unitcell(a,  w_ant, w2, h_ant+H_sub, H_sub, rad, eps1, eps2, f(ii), viaflag);
 
 %impedance of upper equivalent radiating slots
-ZLR=Z(2,2);
-ZLL=Z(3,3);
+ZLR(ii)=Z(2,2);
+ZLL(ii)=Z(3,3);
 
 N=floor(0.5*L_ant_eff/a); % NUMBER OF COMPLETE UNIT CELLS UNDER ANTENNA
 
 %% NEED IF STATEMENT HERE
-ZinR_mid = partialcells([ZLR+ZinR_l ZinR_l; ZinR_l ZinR_l], L_ant_eff, a, w1, w2, H_sub+h_ant, H_sub, rad, eps1, eps2, f(ii), viaflag);
-ZinL_mid = partialcells([ZLL+ZinL_l ZinL_l; ZinL_l ZinL_l], L_ant_eff, a, w1, w2, H_sub+h_ant, H_sub, rad, eps1, eps2, f(ii), viaflag);
+ZinR_mid(:,:,ii) = partialcells([ZLR(ii)+ZinR_l(ii) ZinR_l(ii); ZinR_l(ii) ZinR_l(ii)], L_ant_eff, a, w1, w2, H_sub+h_ant, H_sub, rad, eps1, eps2, f(ii), viaflag);
+ZinL_mid(:,:,ii) = partialcells([ZLL(ii)+ZinL_l ZinL_l; ZinL_l ZinL_l], L_ant_eff, a, w1, w2, H_sub+h_ant, H_sub, rad, eps1, eps2, f(ii), viaflag);
 %%
 
-Zmat_R = unitcellMultiply(ZinR_mid, unitcell, N);
-Zmat_L = unitcellMultiply(ZinL_mid, unitcell, N);
+Zmat_R(:,:,ii) = unitcellMultiply(ZinR_mid(:,:,ii), unitcell(:,:,ii), N);
+Zmat_L = unitcellMultiply(ZinL_mid(:,:,ii), unitcell(:,:,ii), N);
 
 
+MTLtemp(:,:,ii) = ustripMTLABCD(w_ant,h_ant+H_sub, w2, H_sub, eps1, eps2, f(ii), w2/2);
 
-
-
+ZRtemp = unitcellMultiply(ZinR_mid(:,:,ii), MTLtemp(:,:,ii),1);
+ZLtemp = unitcellMultiply(ZinL_mid(:,:,ii), MTLtemp(:,:,ii),1);
 %% Solution for Zin - dipole
 
-Z = Zmat_R+Zmat_L;
+Z = Zmat_R(:,:,ii)+Zmat_L;
     Zd(ii) = Z(1,1)-Z(1,2)*Z(2,1)/Z(2,2);
 S11(ii) = (Zd(ii)-50)/(Zd(ii)+50);
+
+Ztemp = ZRtemp+ZLtemp;
+Zapprox(ii) = Ztemp(1,1)-Ztemp(1,2)*Ztemp(2,1)/Ztemp(2,2);
+
+
 %% Solution for Zin - Patch
 
                 %%Patch Term Simplification    
@@ -163,25 +169,56 @@ end
     %still need to write this code.
  figure(1); 
 plot(f*1e-9, real(Zd), f*1e-9, imag(Zd),'linewidth',2)
-hold on
-
 xlabel('Frequency [GHz]')
-ylabel('Zin')
+ylabel('\Omega')
 legend({'R';'X'})
+title('HIStrip Model Calculated Input Impedance')
 grid on
 set(gca,'fontsize',14)    
 xlim([0.1 0.6])
-ylim([-5000 5000])
+ylim([-400 800])
 
 
 figure(2); 
 plot(f*1e-9, 20*log10(abs(S11)), 'linewidth',2)
-hold on
 xlabel('Frequency [GHz]')
-ylabel('|S_{11} (dB)')
+ylabel('|S_{11}| (dB)')
 grid on
 set(gca,'fontsize',14)
 xlim([0.1 0.6])
+
+figure(3);
+plot(f*1e-9, squeeze(real(Zapprox)), f*1e-9, squeeze(imag(Zapprox)),'linewidth',2)
+xlabel('Frequency [GHz]')
+ylabel('\Omega')
+title('Approximate Zin')
+legend({'R';'X'})
+grid on
+set(gca,'fontsize',14)    
+xlim([0.1 0.6])
+ylim([-400 800])
+
+figure(4); 
+plot(f*1e-9, squeeze(real(ZLR)), f*1e-9, squeeze(imag(ZLR)), f*1e-9, squeeze(real(ZinR_l)), f*1e-9, squeeze(imag(ZinR_l)),'linewidth',2)
+xlabel('Frequency [GHz]')
+ylabel('\Omega')
+title('Right half impedance matrix terms')
+legend({'R_{upper}';'X_{upper}'; 'R_{lower}';'X_{lower}'})
+grid on
+set(gca,'fontsize',14)    
+xlim([0.1 0.6])
+ylim([-400 800])
+
+figure(4); 
+plot(f*1e-9, squeeze(real(ZLR)),f*1e-9, squeeze(imag(ZLR)), f*1e-9, squeeze(real(ZinR_l)),f*1e-9, squeeze(imag(ZinR_l)),'linewidth',2)
+xlabel('Frequency [GHz]')
+ylabel('\Omega')
+title('Right half impedance matrix terms')
+%legend({'R_{upper}';'X_{upper}'; 'R_{lower}';'X_{lower}'})
+grid on
+set(gca,'fontsize',14)    
+xlim([0.1 0.6])
+ylim([-400 800])
 
 
 %     end
