@@ -114,14 +114,20 @@ MTL_R(:,:,ii) = unitcell^floor(0.5*L_ant/a);
 
 MTL_L(:,:,ii) = MTL_R(:,:,ii);
 %Total cascaded ABCD matrix
-%ABCDz(:,:,ii) = MTL_R(:,:,ii)*MTL_Li(:,:,ii)
+% ABCDz(:,:,ii) = MTL_R(:,:,ii)*MTL_L(:,:,ii);
+% ABCDz(:,:,ii) = MTL_R(:,:,ii);
+
 ABCDz(:,:,ii) = MTL_R(:,:,ii).*P(:,:,ii).*MTL_L(:,:,ii);
 
 %Convert total ABCD to Z matrix for solutions for the input impedance
 % Zt(:,:,ii) = ABCD4toZ(ABCDz);
+% abcd(:,:,ii) = ABCD4toZ(ABCDz);
+% Zt(:,:,ii) = abcd2z(ABCD4toZ(ABCDz));
+
 Zt(:,:,ii) = ABCDz(:,:,ii);
-
-
+Zt(:,:,ii)=abcd2s(Zt(:,:,ii));
+% Zt2(:,:,ii) = ABCD4toZ(Zt1(:,:,ii));
+% Zt(:,:,ii)=s2h(Zt2(:,:,ii));
 
 %% Components of Z matrix
 
@@ -149,8 +155,10 @@ Zt(:,:,ii) = ABCDz(:,:,ii);
 %% Solution for Zin - dipole
 
 %Zd(ii,:,:) = Z11 - Z13 + Z31 - Z33 + (1-Z32-Z34)*((Z21+Z43-Z23-Z41)/(Z24+Z42-Z22-Z44))
-Zd(ii,:,:) = Z11 - Z13 + Z31 - Z33 + (Z21-Z23-Z41+Z43)/(Z42-Z44-Z22+Z24)-(Z32-Z34)*((Z21-Z23-Z41+Z43)/(Z42-Z44-Z22+Z24));
+% Zd(ii,:,:) = Z11 - Z13  ;
 
+% Zd(ii,:,:) = Z11 - Z13 + Z31 - Z33 + (Z21-Z23-Z41+Z43)/(Z42-Z44-Z22+Z24)-(Z32-Z34)*((Z21-Z23-Z41+Z43)/(Z42-Z44-Z22+Z24));
+Zd(ii,:,:) = Z11;
 %% Solution for Zin - Patch
 
                 %%Patch Term Simplification    
@@ -168,6 +176,8 @@ end
     %still need to write this code.
  figure; 
 plot(f*1e-9, real(Zd), f*1e-9, imag(Zd),'linewidth',2)
+ figure; 
+plot(f*1e-9, 20*log10(abs(Zd)), 'linewidth',2)
 xlabel('Frequency [GHz]')
 ylabel('Zin')
 legend({'R';'X'})

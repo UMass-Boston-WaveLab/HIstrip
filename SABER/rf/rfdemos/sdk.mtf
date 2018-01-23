@@ -1,0 +1,3 @@
+@IFDEF arch
+derived/<ARCH>/toolbox/rf/rfdemos/[DIRS]/[FILES]
+@ENDIF arch

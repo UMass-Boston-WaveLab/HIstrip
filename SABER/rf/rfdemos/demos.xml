@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright 2003-2010 The MathWorks, Inc. -->
+<!--    -->
+<demos>
+   <name>RF</name>
+   <type>toolbox</type>
+   <icon>$toolbox/matlab/icons/matlabicon.gif</icon>
+   <description isCdata="no">
+
+<p>RF Toolbox&#8482; extends the MATLAB&#174; product with functions and a graphical user interface (GUI) 
+for designing, modeling, analyzing, and visualizing networks of radio frequency (RF) 
+components. You can use RF Toolbox software for working on wireless communications, radar,
+ and signal integrity projects.</p>
+
+</description>
+
+
+<demosection>
+      <label>RF Budget Analysis</label>
+   <demoitem>
+      <label>Superheterodyne Receiver Using RF Budget Analyzer App</label>
+      <type>M-file</type>
+      <source>SuperheterodyneReceiverExample</source>
+      <thumbnail>html/superheterodynereceiver_appimg.png</thumbnail>
+   </demoitem>
+   
+   <demoitem>
+      <label>Visualizing RF Budget Analysis Over Bandwidth</label>
+      <type>M-file</type>
+      <source>RFBudgetExample</source>
+   </demoitem>
+   
+   <demoitem>
+      <label>Finding Cascaded Gain, Noise Figure, and IP3</label>
+      <type>M-file</type>
+      <source>CascadeAnalysisExample</source>
+   </demoitem>
+</demosection>
+
+<demosection>
+      <label>RLC Network Analysis</label>
+   <demoitem>
+      <label>Bandpass Filter Response</label>
+      <type>M-file</type>
+      <source>rf_bpfDemo</source>
+   </demoitem>
+      
+   <demoitem>
+      <label>MOS Interconnect and Crosstalk</label>
+      <type>M-file</type>
+      <source>rf_interconnectDemo</source>
+   </demoitem>
+</demosection>
+
+<demosection>
+      <label>RLC Network Analysis Using RFCKT Objects</label>
+   <demoitem>
+      <label>Bandpass Filter Response Using RFCKT Objects</label>
+      <type>M-file</type>
+      <source>rf_bpfDemo_rfckt</source>
+   </demoitem>
+   
+   <demoitem>
+      <label>MOS Interconnect and Crosstalk Using RFCKT Objects</label>
+      <type>M-file</type>
+      <source>rf_interconnectDemo_rfckt</source>
+   </demoitem>
+</demosection>
+
+<demosection>
+      <label>Signal Integrity Applications</label>
+   <demoitem>
+      <label>Modeling a High-Speed Backplane (Part 1: Measured 16-Port S-Parameters to 4-Port S-Parameters)</label>
+      <type>M-file</type>
+      <source>nport_network</source>
+   </demoitem>
+
+   <demoitem>
+      <label>Modeling a High-Speed Backplane (Part 2: 4-Port S-Parameters to a Rational Function)</label>
+      <type>M-file</type>
+      <source>rational_differential</source>
+      <dependency>Communications System Toolbox</dependency>
+   </demoitem>
+
+   <demoitem>
+      <label>Modeling a High-Speed Backplane (Part 3: 4-Port S-Parameters to Differential TDR and TDT)</label>
+      <type>M-file</type>
+      <source>tdr_tdt_calculation</source>
+   </demoitem>
+
+   <demoitem>
+      <label>Modeling a High-Speed Backplane (Part 4: Rational Function to a Simulink Model)</label>
+      <type>M-file</type>
+      <source>simulink_rfmodel</source>
+      <dependency>Simulink</dependency>
+   </demoitem>
+
+   <demoitem>
+      <label>Modeling a High-Speed Backplane (Part 5: Rational Function to a Verilog-A Module)</label>
+      <type>M-file</type>
+      <source>generate_veriloga</source>
+   </demoitem>
+</demosection>
+
+<demosection>
+      <label>Using rationalfit</label>
+   <demoitem>
+      <label>Using the 'NPoles' Parameter</label>
+      <type>M-file</type>
+      <source>RationalfitNPolesExample</source>
+   </demoitem>
+   
+   <demoitem>
+      <label>Using the 'Weight' Parameter</label>
+      <type>M-file</type>
+      <source>RationalfitWeightExample</source>
+   </demoitem>
+   
+   <demoitem>
+      <label>Using the 'DelayFactor' Parameter</label>
+      <type>M-file</type>
+      <source>RationalfitDelayFactorExample</source>
+   </demoitem>
+</demosection>
+
+<demosection>
+      <label>Statistical Analysis of S-parameter Data</label>
+   <demoitem>
+      <label>Data Analysis on a Set of S-parameters for an RF Filter</label>
+      <type>M-file</type>
+      <source>SparameterStatisticalAnalysis</source>
+      <dependency>Statistics and Machine Learning Toolbox</dependency>
+      <dependency>Curve Fitting Toolbox</dependency>
+   </demoitem>
+</demosection>
+
+<demosection>
+      <label>Frequency-Domain Analyses and RF Data Visualizations</label>
+   <demoitem>
+      <label>Writing A Touchstone File</label>
+      <type>M-file</type>
+      <source>write_s2p_file</source>
+   </demoitem>
+
+   <demoitem>
+      <label>Visualizing Mixer Spurs</label>
+      <type>M-file</type>
+      <source>mixer_spurs</source>
+   </demoitem>
+   
+   <demoitem>
+      <label>Finding Free IF Bandwidths</label>
+      <type>M-file</type>
+      <source>rf_freeIFbandwidths</source>
+   </demoitem>
+
+   <demoitem>
+      <label>De-Embedding S-Parameters</label>
+      <type>M-file</type>
+      <source>de_embed_sparams</source>
+   </demoitem>
+
+   <demoitem>
+      <label>Bisecting S-Parameters of Cascaded Probes</label>
+      <type>M-file</type>
+      <source>BisectSParametersExample</source>
+   </demoitem>
+</demosection>
+
+<demosection>
+      <label>Impedance Matching</label>
+   <demoitem>
+      <label>Designing Matching Networks (Part 1: Networks with an LNA and Lumped Elements)</label>
+      <type>M-file</type>
+      <source>lna_match</source>
+   </demoitem>
+
+   <demoitem>
+      <label>Designing Matching Networks (Part 2: Single Stub Transmission Lines)</label>
+      <type>M-file</type>
+      <source>imped_match</source>
+   </demoitem>
+
+   <demoitem>
+      <label>Designing Broadband Matching Networks (Part 1: Antenna)</label>
+      <type>M-file</type>
+      <source>broadband_match_antenna</source>
+   </demoitem>
+
+   <demoitem>
+      <label>Designing Broadband Matching Networks (Part 2: Amplifier)</label>
+      <type>M-file</type>
+      <source>broadband_match_amplifier</source>
+   </demoitem>
+</demosection>
+
+<demosection>
+      <label>RF Objects</label>
+   <demoitem>
+      <label>RF Circuit Objects</label>
+      <type>M-file</type>
+      <source>ckt_obj</source>
+   </demoitem>
+
+   <demoitem>
+      <label>RF Data Objects</label>
+      <type>M-file</type>
+      <source>data_obj</source>
+   </demoitem>
+</demosection>
+
+</demos>
