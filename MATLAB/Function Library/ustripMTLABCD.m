@@ -26,12 +26,12 @@ Gam = sqrtm(Z*Y);
 %get gamma^2 because if you do the eigenvalues of sqrtm(Z*Y) you have a
 %root ambiguity
 
-gameig = sqrt(gamsq);
+gameig = sqrt(diag(gamsq));
 
 Zw = Gam\Z; %symmetric 
 Yw = Y/Gam; %symmetric
 
-MTL = [T*diag(cosh(gameig*len))/T, (T*sinh(gameig*len)/T)*Zw; 
-        Yw*T*sinh(gameig*len)/T, Yw*T*diag(cosh(gameig*len))/T*Zw];
+MTL = [T*diag(cosh(gameig*len))/T, (T*diag(sinh(gameig*len))/T)*Zw; 
+        Yw*T*diag(sinh(gameig*len))/T, Yw*T*diag(cosh(gameig*len))/T*Zw];
 
 end
