@@ -16,6 +16,12 @@ cap = [C12, -C12; -C12, C2G+C12]; %Symmetric; see MTL book for where this comes 
 [~, C120, ~, ~] = microstrip(w1, h1-h2, 1); 
 [~, C2G0, ~, ~] = microstrip(w2, h2, 1);
 cap0 = [C120, -C120; -C120, C2G0+C120]; %symmetric
+
+%alternative option for calculating PUL capacitance - also not so hot
+%really
+% cap = SellbergMTLC([0 h1-h2; h1-h2 0],[h1 h2],[w1 w2],[0.0001 0.0001],[1 2],[eps1 eps2]);
+% cap0=SellbergMTLC([0 h1-h2; h1-h2 0],[h1 h2],[w1 w2],[0.0001 0.0001],[1 2],[1 1]);
+
 ind = mu0*eps0*inv(cap0); %symmetric
 
 Z = (j*omega*ind); %symmetric

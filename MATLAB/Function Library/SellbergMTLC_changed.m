@@ -14,12 +14,12 @@ function [ C ] = SellbergMTLC( distances, heights, widths, thicknesses, layers, 
 %
 %thicknesses provides the 1xN vector of all the conductor thicknesses.
 %
-%layers provides a 1xN vector of layer indices (1 or 2 for each conductor,
-%where 1 is the upper layer), indicating which layer the conductor is on
-%top of.
+%layers provides a 1xN vector of layer indices (1 or 2 for each conductor, 
+%where 1 is the upper layer), indicating which layer the conductor is on 
+%top of. 
 %
 %epsilons contains the relative dielectric constants of the layers.
-eps0=8.854e-12;
+
 N = length(heights);
 Lambda = zeros(size(distances));
 for ii = 1:N
@@ -27,20 +27,20 @@ for ii = 1:N
         %only fill half the matrix, then assume symmetry
         %calculate constants for effective dielectric constant for layered
         %media
-        if layers(ii)==layers(jj) || layers(ii)==1
-            %this probably doesn't do capacitance between lines on different
-            %layers exactly right.
-            if ii==jj
-                k=(log(1+4*thicknesses(ii)/widths(ii))/log(1+4*heights(ii)/widths(ii)))^0.8;
-                s=-(thicknesses(ii)/heights(ii))^0.4;
-                
-            else
-                k=log(1+5*(thicknesses(ii)*thicknesses(jj))/distances(ii,jj)^2)/log(1+5*(heights(ii)*heights(jj))/distances(ii,jj)^2);
-                s=-(thicknesses(ii)*thicknesses(jj)/(heights(ii)*heights(jj)))^0.2;
-            end
+        if layers(ii)==layers(jj) && layers(ii)==2 
+        %this probably doesn't do capacitance between lines on different
+        %layers exactly right.
+        if ii==jj
+            k=(log(1+4*thicknesses(ii)/widths(ii))/log(14*heights(ii)/widths(ii)))^0.8;
+            s=-(thicknesses(ii)/heights(ii))^0.4;
+            
+        else
+            k=log(1+5*(thicknesses(ii)*thicknesses(jj))/distances(ii,jj)^2)/log(1+5*(heights(ii)*heights(jj))/distances(ii,jj)^2);
+            s=-(thicknesses(ii)*thicknesses(jj)/(heights(ii)*heights(jj)))^0.2;
+        end
             epseq = (k*epsilons(1)^s+(1-k)*epsilons(2)^s)^(1/s);
         else
-            epseq=epsilons(layers(ii));
+            epseq=epsilons(layers(ii));  
         end
         if ii==jj
             beta =log(1.15+1.17/epseq);
@@ -58,12 +58,12 @@ for ii = 1:N
             Lambda(jj,ii) = Lambda(ii,jj);
         end
         
+        C = inv(Lambda);
+        
+        
+        
     end
 end
-
-
-C = eps0*inv(Lambda);
-
 
 end
 
