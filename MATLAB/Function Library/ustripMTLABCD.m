@@ -26,20 +26,12 @@ Gam = sqrtm(Z*Y);
 %get gamma^2 because if you do the eigenvalues of sqrtm(Z*Y) you have a
 %root ambiguity
 
-gameig = [sqrt(gamsq(1,1)) 0; 0 sqrt(gamsq(2,2))];
+gameig = sqrt(diag(gamsq));
 
 Zw = Gam\Z; %symmetric 
 Yw = Y/Gam; %symmetric
-% 
-MTL = [T*[cosh(gameig(1,1)*len) 0; 0 cosh(gameig(2,2)*len)]/T,...
-        (T*sinh(gameig*len)/T)*Zw; Yw*T*sinh(gameig*len)/T, ...
-        Yw*T*[cosh(gameig(1,1)*len) 0; 0 cosh(gameig(2,2)*len)]/T*Zw];
-   
-% 
-% MTL = vpa([T*[cosh(gameig(1,1)*len) 0; 0 cosh(gameig(2,2)*len)]/T,...
-%         (T\sinh(gameig*len)*T)*Zw; Yw*T*sinh(gameig*len)/T, ...
-%         T\[cosh(gameig(1,1)*len) 0; 0 cosh(gameig(2,2)*len)]*T]);
-    %rearranged because: diagonal matrices commute during multiplication
-    %even if others don't.
-    %and because the current modal-to-terminal conversion matrix is inv(T)
+
+MTL = [T*diag(cosh(gameig*len))/T, (T*diag(sinh(gameig*len))/T)*Zw; 
+        Yw*T*diag(sinh(gameig*len))/T, Yw*T*diag(cosh(gameig*len))/T*Zw];
+
 end
