@@ -25,7 +25,7 @@ end
 %is not diagonal as intended, the off-axis elements will be 1
 %I am dealing with T and gameig properly here - see MTL book by Faria
 
-MTL = ustripMTLABCD(w1, h1,w2, h2, eps1, eps2, freq, w2/2);
+MTL = ustripMTLABCD(w1, h1, w2, h2, eps1, eps2, freq, w2/2);
 
 ABCD = vpa(Cgapmat*Cpmat*Cptopmat*(MTL)*Lmat*(MTL)*Cptopmat*Cpmat*Cgapmat);
 

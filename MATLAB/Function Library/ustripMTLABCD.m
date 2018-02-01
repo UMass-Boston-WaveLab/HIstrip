@@ -14,12 +14,12 @@ omega = 2*pi*f;
 cap = [C12, -C12; -C12, C2G+C12]; %Symmetric; see MTL book for where this comes from
 
 [~, C120, ~, ~] = microstrip(w1, h1-h2, 1); 
-[~, C2G0, ~, ~] = microstrip(w2, h2, 1);
+[~, C2G0, ~, ~] = microstrip(w2, h2, eps2);
 cap0 = [C120, -C120; -C120, C2G0+C120]; %symmetric
 ind = mu0*eps0*inv(cap0); %symmetric
 
-Z = (j*omega*ind); %symmetric
-Y = (j*omega*cap); %symmetric
+Z = (1i*omega*ind); %symmetric
+Y = (1i*omega*cap); %symmetric
 Gam = sqrtm(Z*Y);
 
 [T,gamsq]=eig(Z*Y); %Z*Y not necessarily symmetric
@@ -30,7 +30,7 @@ gameig = [sqrt(gamsq(1,1)) 0; 0 sqrt(gamsq(2,2))];
 
 Zw = Gam\Z; %symmetric 
 Yw = Y/Gam; %symmetric
-% 
+
 MTL = vpa([T*[cosh(gameig(1,1)*len) 0; 0 cosh(gameig(2,2)*len)]/T,...
         (T*sinh(gameig*len)/T)*Zw; Yw*T*sinh(gameig*len)/T, ...
         Yw*T*[cosh(gameig(1,1)*len) 0; 0 cosh(gameig(2,2)*len)]/T*Zw]);

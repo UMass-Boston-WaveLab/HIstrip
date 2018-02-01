@@ -3,6 +3,10 @@
 %% Antenna/HIS geometries
 clc;
 clear all;
+
+%% To Do
+%% s11 to hfss
+%%
 %the best/hanna antenna is actually a 0.005m radius dipole
 %"the equivalent strip width for a cylindrical wire is almost twice (~1.89)
 %the wire diameter"
@@ -13,7 +17,7 @@ parametric_flag = 1;
 %w_ant = 0.01*sf; %depends on kind of antenna placed on top of HIS
 
 if parametric_flag == 1
-        w_ant = [0.02, 0.125, 0.25, 0.5];
+        w_ant = [0.02, 0.2, 0.3, 0.5];
     else parametric_flag = 0;
         w_ant = 0.02;
 end
@@ -32,8 +36,12 @@ L_sub = 16*a;
 w_sub = 16*a;
 L_ant = 0.48; 
 
-data = csvread('one2six2.csv',1,0); %simulation data from HFSS
-f = (100:5:600)*10^6/sf;
+dataS11 = csvread('MagS11one2six2.csv',1,0); %simulation data from HFSS
+dataAntW = csvread('ParaAntW.csv',1,0); %simulation data from HFSS
+dataPatchW = csvread('ParaPatchW.csv',1,0); %simulation data from HFSS
+
+%f = (100:.5:600)*10^6/sf;
+f = (250:2:450)*10^6/sf;
 omega = 2*pi*f;
 L_ant_eff = L_ant;
 N = floor(0.5*L_ant_eff/a); % NUMBER OF COMPLETE UNIT CELLS UNDER ANTENNA
@@ -121,15 +129,12 @@ ZinL_mid = partialcells([ZLL+ZinL_l ZinL_l; ZinL_l ZinL_l], L_ant_eff, a, w1, w2
 Zmat_R = unitcellMultiply(ZinR_mid, unitcell, N);
 Zmat_L = unitcellMultiply(ZinL_mid, unitcell, N);
 
-
-
-
-
 %% Solution for Zin - dipole
 
 Z = Zmat_R+Zmat_L;
     Zd(ii,ggg) = Z(1,1)-Z(1,2)*Z(2,1)/Z(2,2);
 S11(ii,ggg) = (Zd(ii,ggg)-50)/(Zd(ii,ggg)+50);
+S11 = abs(S11);
 
 %% Solution for Zin - Patch
     %Zp = X/(X*(Y21+Y23+Y31+Y33) - (Y12+Y14-Y32-Y34)*(Y21+Y23-Y43-Y41))
@@ -209,13 +214,34 @@ set(0,'defaultLegendOrientation','vertical');
 
 
 figure(1) 
-plot(f*1e-9, 20*log10(abs(S11)))
-%hold on
-%plot(f*1e-9, data(:,2))
-%hold off
-xlabel('Frequency [GHz]')
-ylabel('|S11_{dB}|')
-legend('w_ant{0.02}','w_ant{0.125}','w_ant{0.25}','w_ant{0.5}')
+plot(dataAntW(:,1),dataAntW(:,2))
+hold on 
+plot(dataAntW(:,1),dataAntW(:,3))
+plot(dataAntW(:,1),dataAntW(:,4))
+plot(dataAntW(:,1),dataAntW(:,5))
+hold off
+
+figure(2)
+plot(f*1e-9, 10*log10(S11(:,1)))
+% hold on
+% plot(f*1e-9, 10*log10(S11(:,2)))
+% plot(f*1e-9, 10*log10(S11(:,3)))
+% plot(f*1e-9, 10*log10(S11(:,4)))
+% hold off
+G = {'w_{0.02}','w_{0.2}','w_{0.3}','w_{0.5}','w_{0.02}','w_{0.2}','w_{0.3}','w_{0.5}'};
+figure(3)
+plot(f*1e-9,dataAntW(:,2))
+hold on 
+plot(f*1e-9,dataAntW(:,3))
+plot(f*1e-9,dataAntW(:,4))
+plot(f*1e-9,dataAntW(:,5))
+plot(f*1e-9, 20*log10(S11(:,1)))
+plot(f*1e-9, 20*log10(S11(:,2)))
+plot(f*1e-9, 20*log10(S11(:,3)))
+plot(f*1e-9, 20*log10(S11(:,4)))
+hold off
+columnlegend(2,G)
+%'w_{0.02}','w_{0.2}','w_{0.3}','w_{0.5}','w_{0.02}','w_{0.2}','w_{0.3}','w_{0.5}'
 
 
  

@@ -28,7 +28,8 @@ w_sub = 16*a;
 L_ant = 0.48; 
 %f = 2e9:250e6:10e9; %f vector sweep for 6ghz
 %f = 1e9:500e6:6.5e9;
-f=(100:5:600)*10^6/sf;
+%f=(100:.5:600)*10^6/sf;
+f = (250:2:450)*10^6/sf;
 omega = 2*pi*f;
 L_ant_eff = L_ant;
 N=floor(0.5*L_ant_eff/a); % NUMBER OF COMPLETE UNIT CELLS UNDER ANTENNA
@@ -173,9 +174,19 @@ set(gca,'fontsize',14)
 xlim([0.1 0.6])
 ylim([-5000 5000])
 
+data = csvread('one2six2.csv',1,0); %simulation data from HFSS
+deltaS = [data(:,2) abs(S11(:))];
 
 figure(2); 
-plot(f*1e-9, 20*log10(abs(S11)), 'linewidth',1)
+plot(f*1e-9, 10*log10(abs(S11)), 'linewidth',1)
+xlabel('Frequency [GHz]')
+ylabel('|S_{11}| (dB)')
+grid on
+set(gca,'fontsize',14)
+xlim([0.1 0.6])
+
+figure(3); 
+plot(f*1e-9, abs(data(:,2)), 'linewidth',1)
 hold on
 xlabel('Frequency [GHz]')
 ylabel('|S_{11}| (dB)')
@@ -183,7 +194,12 @@ grid on
 set(gca,'fontsize',14)
 xlim([0.1 0.6])
 
+figure(4); 
+plot(f*1e-9, abs(data(:,2)-abs(S11(:))))
+xlabel('Frequency [GHz]')
+ylabel('\Delta|S_{11}| ')
+grid on
+set(gca,'fontsize',14)
+xlim([0.1 0.6])
 
-%     end
-% end
- 
+

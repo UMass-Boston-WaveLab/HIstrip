@@ -1,11 +1,10 @@
-function [ABCD, ABCDgaphalf1,ABCDline,ABCDL,ABCDgaphalf2] = HISlayerABCD(w2, g, h_sub, rad, eps2, f, viaflag, eps1)
+function [ABCD, ABCDgaphalf1,ABCDline,ABCDL,ABCDgaphalf2] = HISlayerABCD(w2, g, h_sub, rad, eps2, f, viaflag, ~)
 %HISlayerABCD outputs a 2 x 2 x length(f) array of ABCD matrix vs.
 %frequency.  Assumes the whole width of the substrate is involved in TEM
 %mode.
-
-mu0=4*pi*10^-7;
-eps0=8.854*10^-12;
-a=w2+g;
+a = w2+g;
+mu0 = 4*pi*10^-7;
+eps0 = 8.854*10^-12;
 Lvia = viaL(h_sub, rad);
 
 %Z0= sqrt(mu0/eps0)*h/(wsub*sqrt(epsr)); %characteristic Z for parallel plate WG TEM mode
@@ -39,7 +38,7 @@ for ii = 1:length(f)
  %   botn = floor((L_sub-L_ant)/(2*w2+g))-1; %Number of HISlayer Cells %include prefix - 1/2 the antenna?
     
 %    ABCDt(:,:,ii) = (ABCD^botn)*ABCDgaphalf1*ABCDline*ABCDL*ABCDline;
-end
+
       
   
 end
