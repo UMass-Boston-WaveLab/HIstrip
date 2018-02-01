@@ -14,19 +14,19 @@ unitcell = multicond_unitcell(a, w1, w2, h1, h2, via_rad, eps1, eps2, f, 1); %us
 
 %UC=unitcell^(n/2-1);
 
-MTL = ustripMTLABCD(w1, h1, w2, h2, eps1, eps2, f, a/2);
-[Lprod, ~] = MTLcapABCD(h1, h2, w1, w2, eps1, eps2, (a-w2), f);
+MTL = ustripMTLABCD(w1, h1, w2, h2, eps1, eps2, f, w2/2);
+[Cshalf, Cp, ~] = MTLcapABCD(h1, h2, w1, w2, eps1, eps2, (a-w2), f);
 Lmat = MTLviaABCD(h2, via_rad, f);
 
 %MTLhalf=UC*Lprod*MTL*Lmat*MTL; %second unit cell is terminated so there's no gap capacitance there
 
 %two-step determination of Zleft and Zright using multiplier to avoid
 %poorly conditioned matrices when unitcell is raised to a power.
-Zleft = terminate_ABCD4(Lprod*MTL*Lmat*MTL, ZL_left);
-Zleft = unitcellMultiply(Zleft, unitcell, n/2-1);
+Zleft = terminate_ABCD4(Cshalf*Cp*MTL*Lmat*MTL, ZL_left);
+Zleft = unitcellMultiply(Zleft, unitcell, (n/2)-1);
 
-Zright = terminate_ABCD4(Lprod*MTL*Lmat*MTL, ZL_right);
-Zright = unitcellMultiply(Zright, unitcell, n/2-1);
+Zright = terminate_ABCD4(Cshalf*Cp*MTL*Lmat*MTL, ZL_right);
+Zright = unitcellMultiply(Zright, unitcell, (n/2)-1);
 
 if feed==1 %probe feed
     %boundary conditions are that upper Vleft = Vright=V, lower Vleft =
