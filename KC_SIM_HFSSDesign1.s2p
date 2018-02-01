@@ -1,0 +1,17 @@
+! Touchstone file from project KC_SIM
+! Exported from HFSS 2017.2.0
+! Variables:
+!  $f = 300MHz
+!  $h = 0.2m
+!  $h_air = 0.16m
+!  $h_eps = 0.04m
+!  $w = 0.5m
+!  w = 0.0005m
+# GHZ S MA R 50.000000
+! Modal data exported
+! Port[1] = 1:1
+! Port[2] = 1:2
+0.3              50.7843232060301 0                150.687835147726 0                50.7843232060301 0                150.687835147726 0                
+! Gamma         !               0                8.68847155762955 0                6.29212033536715 
+! Port Impedance50.7843232060301 0                150.687835147726 0                
+
