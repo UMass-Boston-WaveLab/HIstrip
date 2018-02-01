@@ -29,11 +29,20 @@ for ii = 1:length(f)
     end
 end
 
+S = (Zin-50)./(Zin+50);
+
 figure; 
 plot(f*1e-6, real(Zin), f*1e-6, imag(Zin),'linewidth',2)
 xlabel('Frequency [MHz]')
 ylabel('\Omega')
 legend({'R';'X'})
+grid on
+set(gca,'fontsize',14)
+
+figure; 
+plot(f*1e-6, 20*log10(abs(S)),'linewidth',2)
+xlabel('Frequency [MHz]')
+ylabel('S_{11} (dB)')
 grid on
 set(gca,'fontsize',14)
 %ylim([-4000 10000])
