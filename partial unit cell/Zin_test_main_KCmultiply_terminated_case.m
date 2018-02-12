@@ -2,6 +2,7 @@
 %% Uses a dipole or probe fed relationship to enforce boundary conditions on
 
 %% Antenna/HIS geometries
+close all;
 clc
 clear all;
 
@@ -136,10 +137,10 @@ ZinR_l(ii) = unitcellMultiply(ZRtemp, ABCD(:,:,ii), botn);
 unitcell(:,:,ii)=multicond_unitcell(a,  w_ant, w2, h_ant+H_sub, H_sub, rad, eps1, eps2, f(ii), viaflag);
 
 %impedance of upper equivalent radiating slots
-ZLR(ii)=Z(2,2);
-% ZLR(ii)=0;
-ZLL(ii)=Z(3,3);
-% ZLL(ii)=0;
+% ZLR(ii)=Z(2,2);
+ZLR(ii)=0;
+% ZLL(ii)=Z(3,3);
+ZLL(ii)=0;
 N=floor(0.5*L_ant_eff/a); % NUMBER OF COMPLETE UNIT CELLS UNDER ANTENNA
 
 %% NEED IF STATEMENT HERE
@@ -157,7 +158,9 @@ ZRtemp = unitcellMultiply(ZinR_mid(:,:,ii), MTLtemp(:,:,ii),1);
 ZLtemp = unitcellMultiply(ZinL_mid(:,:,ii), MTLtemp(:,:,ii),1);
 %% Solution for Zin - dipole
 
-Z = Zmat_R(:,:,ii)+Zmat_L;
+% Z = Zmat_R(:,:,ii)+Zmat_L;
+Z = Zmat_R(:,:,ii);%new change saber
+
     Zd(ii) = Z(1,1)-Z(1,2)*Z(2,1)/Z(2,2);
 S11(ii) = (Zd(ii)-50)/(Zd(ii)+50);
 
