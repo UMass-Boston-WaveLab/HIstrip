@@ -11,16 +11,8 @@ clear all;
 %the wire diameter"
 % (see "Equivalent Strip Width for Cylindrical Wire for Mesh Reflector
 % Antennas: Experiments, Waveguide, and Plane-Wave Simulations")
-sf = 1; 
-<<<<<<< Updated upstream
-% <<<<<<< HEAD
-w_ant = 0.0189*sf; %depends on kind of antenna placed on top of HIS
-% =======
+sf = 1/20; 
 w_ant = 0.01*1.89*sf; %depends on kind of antenna placed on top of HIS
-% >>>>>>> 0d731aa100612fd3954213f7e003831151dc5ee2
-=======
-w_ant = 0.01*1.89*sf; %depends on kind of antenna placed on top of HIS
->>>>>>> Stashed changes
 w1=w_ant;
 H_sub = 0.04*sf; %ground to patch distance
 h_ant = 0.02*sf; %antenna height above substrate
