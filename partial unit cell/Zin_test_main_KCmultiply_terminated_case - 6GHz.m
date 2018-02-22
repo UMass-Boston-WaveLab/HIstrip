@@ -12,7 +12,7 @@ clear all;
 %the wire diameter"
 % (see "Equivalent Strip Width for Cylindrical Wire for Mesh Reflector
 % Antennas: Experiments, Waveguide, and Plane-Wave Simulations")
-sf = 1; 
+sf = 1/20; 
 % <<<<<<< HEAD
 w_ant = 0.0189*sf; %depends on kind of antenna placed on top of HIS
 % =======
@@ -39,7 +39,7 @@ L_ant = 0.48;
 % >>>>>>> 0d731aa100612fd3954213f7e003831151dc5ee2
 %f = 2e9:250e6:10e9; %f vector sweep for 6ghz
 %f = 1e9:500e6:6.5e9;
-f=(100:5:600)*10^6/sf;
+f=(100:1:600)*10^6/sf;
 omega = 2*pi*f;
 L_ant_eff = L_ant;
 N=floor(0.5*L_ant_eff/a); % NUMBER OF COMPLETE UNIT CELLS UNDER ANTENNA
@@ -114,10 +114,10 @@ for ii = 1:length(f)
 Z = inv(Y(:,:,ii));
 
 %HIS is terminated by admittance of HIS-edge slots.
-% ZL = Z(1,1);
-ZL=0;
-% ZR = Z(4,4);
-ZR=0;
+ZL = Z(1,1);
+% ZL=0;
+ZR = Z(4,4);
+% ZR=0;
 ZLtemp=ZL;
 temp={ABCDgaphalf1(:,:,ii),ABCDline(:,:,ii),ABCDL(:,:,ii),ABCDline(:,:,ii)};
 
@@ -137,10 +137,10 @@ ZinR_l(ii) = unitcellMultiply(ZRtemp, ABCD(:,:,ii), botn);
 unitcell(:,:,ii)=multicond_unitcell(a,  w_ant, w2, h_ant+H_sub, H_sub, rad, eps1, eps2, f(ii), viaflag);
 
 %impedance of upper equivalent radiating slots
-% ZLR(ii)=Z(2,2);
-ZLR(ii)=0;
-% ZLL(ii)=Z(3,3);
-ZLL(ii)=0;
+ZLR(ii)=Z(2,2);
+% ZLR(ii)=0;
+ZLL(ii)=Z(3,3);
+% ZLL(ii)=0;
 N=floor(0.5*L_ant_eff/a); % NUMBER OF COMPLETE UNIT CELLS UNDER ANTENNA
 
 %% NEED IF STATEMENT HERE
@@ -190,7 +190,7 @@ legend({'R';'X'})
 title('HIStrip Model Calculated Input Impedance')
 grid on
 set(gca,'fontsize',14)    
-xlim([0.1 0.6])
+xlim([0.1/sf 0.6/sf])
 ylim([-400 800])
 
 
@@ -200,7 +200,7 @@ xlabel('Frequency [GHz]')
 ylabel('|S_{11}| (dB)')
 grid on
 set(gca,'fontsize',14)
-xlim([0.1 0.6])
+xlim([0.1/sf 0.6/sf])
 
 figure(3);
 plot(f*1e-9, squeeze(real(Zapprox)), f*1e-9, squeeze(imag(Zapprox)),'linewidth',2)
@@ -210,7 +210,7 @@ title('Approximate Zin')
 legend({'R';'X'})
 grid on
 set(gca,'fontsize',14)    
-xlim([0.1 0.6])
+xlim([0.1/sf 0.6/sf])
 ylim([-400 800])
 
 figure(4); 
@@ -221,7 +221,7 @@ title('Right half impedance matrix terms')
 legend({'R_{upper}';'X_{upper}'; 'R_{lower}';'X_{lower}'})
 grid on
 set(gca,'fontsize',14)    
-xlim([0.1 0.6])
+xlim([0.1/sf 0.6/sf])
 ylim([-400 800])
 
 figure(4); 
@@ -232,7 +232,7 @@ title('Right half impedance matrix terms')
 %legend({'R_{upper}';'X_{upper}'; 'R_{lower}';'X_{lower}'})
 grid on
 set(gca,'fontsize',14)    
-xlim([0.1 0.6])
+xlim([0.1/sf 0.6/sf])
 ylim([-400 800])
 
 
