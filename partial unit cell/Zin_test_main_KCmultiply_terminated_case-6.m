@@ -1,4 +1,4 @@
-% function [Z]  = Zin_test(f, w_ant, w2, h_ant, H_sub, rad, eps1,eps2, g, L_ant, startpos, L_sub, W_sub, viaflag)
+% % function [Z]  = Zin_test(f, w_ant, w2, h_ant, H_sub, rad, eps1,eps2, g, L_ant, startpos, L_sub, W_sub, viaflag)
 %% Uses a dipole or probe fed relationship to enforce boundary conditions on
 
 %% Antenna/HIS geometries
@@ -158,8 +158,8 @@ ZRtemp = unitcellMultiply(ZinR_mid(:,:,ii), MTLtemp(:,:,ii),1);
 ZLtemp = unitcellMultiply(ZinL_mid(:,:,ii), MTLtemp(:,:,ii),1);
 %% Solution for Zin - dipole
 
-% Z = Zmat_R(:,:,ii)+Zmat_L;
-Z = Zmat_R(:,:,ii);%new change saber
+Z = Zmat_R(:,:,ii)+Zmat_L;
+% Z = Zmat_R(:,:,ii);%new change saber
 
     Zd(ii) = Z(1,1)-Z(1,2)*Z(2,1)/Z(2,2);
 S11(ii) = (Zd(ii)-50)/(Zd(ii)+50);
