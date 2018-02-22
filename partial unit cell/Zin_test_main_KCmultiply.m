@@ -152,19 +152,11 @@ ZinL_mid(:,:,ii) = partialcells([ZLL(ii)+ZinL_l ZinL_l; ZinL_l ZinL_l], L_ant_ef
 Zmat_R(:,:,ii) = unitcellMultiply(ZinR_mid(:,:,ii), unitcell(:,:,ii), N);
 Zmat_L = unitcellMultiply(ZinL_mid(:,:,ii), unitcell(:,:,ii), N);
 
-
-MTLtemp(:,:,ii) = ustripMTLABCD(w_ant,h_ant+H_sub, w2, H_sub, eps1, eps2, f(ii), w2/2);
-
-ZRtemp = unitcellMultiply(ZinR_mid(:,:,ii), MTLtemp(:,:,ii),1);
-ZLtemp = unitcellMultiply(ZinL_mid(:,:,ii), MTLtemp(:,:,ii),1);
 %% Solution for Zin - dipole
 
 Z = Zmat_R(:,:,ii)+Zmat_L;
     Zd(ii) = Z(1,1)-Z(1,2)*Z(2,1)/Z(2,2);
 S11(ii) = (Zd(ii)-50)/(Zd(ii)+50);
-
-Ztemp = ZRtemp+ZLtemp;
-Zapprox(ii) = Ztemp(1,1)-Ztemp(1,2)*Ztemp(2,1)/Ztemp(2,2);
 
 
 %% Solution for Zin - Patch
@@ -200,39 +192,6 @@ ylabel('|S_{11}| (dB)')
 grid on
 set(gca,'fontsize',14)
 xlim([0.1 0.6])
-
-figure(3);
-plot(f*1e-9, squeeze(real(Zapprox)), f*1e-9, squeeze(imag(Zapprox)),'linewidth',2)
-xlabel('Frequency [GHz]')
-ylabel('\Omega')
-title('Approximate Zin')
-legend({'R';'X'})
-grid on
-set(gca,'fontsize',14)    
-xlim([0.1 0.6])
-ylim([-400 800])
-
-figure(4); 
-plot(f*1e-9, squeeze(real(ZLR)), f*1e-9, squeeze(imag(ZLR)), f*1e-9, squeeze(real(ZinR_l)), f*1e-9, squeeze(imag(ZinR_l)),'linewidth',2)
-xlabel('Frequency [GHz]')
-ylabel('\Omega')
-title('Right half impedance matrix terms')
-legend({'R_{upper}';'X_{upper}'; 'R_{lower}';'X_{lower}'})
-grid on
-set(gca,'fontsize',14)    
-xlim([0.1 0.6])
-ylim([-400 800])
-
-figure(4); 
-plot(f*1e-9, squeeze(real(ZLR)),f*1e-9, squeeze(imag(ZLR)), f*1e-9, squeeze(real(ZinR_l)),f*1e-9, squeeze(imag(ZinR_l)),'linewidth',2)
-xlabel('Frequency [GHz]')
-ylabel('\Omega')
-title('Right half impedance matrix terms')
-%legend({'R_{upper}';'X_{upper}'; 'R_{lower}';'X_{lower}'})
-grid on
-set(gca,'fontsize',14)    
-xlim([0.1 0.6])
-ylim([-400 800])
 
 
 %     end
