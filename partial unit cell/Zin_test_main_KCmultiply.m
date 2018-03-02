@@ -28,9 +28,9 @@ w_sub = 1*a;
 % <<<<<<< HEAD
 % w_sub = 2*a;
 
-L_ant = 0.48; 
+L_ant = 0.48*sf; 
 % =======
-L_ant = 0.54; 
+ 
 % >>>>>>> 0d731aa100612fd3954213f7e003831151dc5ee2
 %f = 2e9:250e6:10e9; %f vector sweep for 6ghz
 %f = 1e9:500e6:6.5e9;
@@ -173,8 +173,8 @@ legend({'R';'X'})
 title('HIStrip Model Calculated Input Impedance')
 grid on
 set(gca,'fontsize',14)    
-xlim([0.1 0.6])
-ylim([-400 800])
+% xlim([0.1 0.6])
+% ylim([-400 800])
 
 
 figure(2); 
@@ -183,7 +183,7 @@ xlabel('Frequency [GHz]')
 ylabel('|S_{11}| (dB)')
 grid on
 set(gca,'fontsize',14)
-xlim([0.1 0.6])
+% xlim([0.1 0.6])
 
 
 %     end

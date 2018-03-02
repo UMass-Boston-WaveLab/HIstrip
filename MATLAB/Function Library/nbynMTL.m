@@ -1,5 +1,5 @@
 function [ ABCD ] = nbynMTL( cap, cap0, f, len )
-%NBYNMTL calculates the ABCD matrix for an n-1 terminal multiconductor
+%NBYNMTL calculates the ABCD matrix for an n+1 terminal multiconductor
 %transmission line of length L at frequency f.  The per-unit-length
 %capacitance matrix (with dielectrics), cap, is taken as an input.  The
 %per-unit-length capacitance matrix without dielectrics, cap0, is also
