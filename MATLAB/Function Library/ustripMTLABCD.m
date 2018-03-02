@@ -22,22 +22,7 @@ cap0 = [C120, -C120; -C120, C2G0+C120]; %symmetric
 % cap = SellbergMTLC([0 h1-h2; h1-h2 0],[h1 h2],[w1 w2],[0.0001 0.0001],[1 2],[eps1 eps2]);
 % cap0=SellbergMTLC([0 h1-h2; h1-h2 0],[h1 h2],[w1 w2],[0.0001 0.0001],[1 2],[1 1]);
 
-ind = mu0*eps0*inv(cap0); %symmetric
 
-Z = (j*omega*ind); %symmetric
-Y = (j*omega*cap); %symmetric
-Gam = sqrtm(Z*Y);
-
-[T,gamsq]=eig(Z*Y); %Z*Y not necessarily symmetric
-%get gamma^2 because if you do the eigenvalues of sqrtm(Z*Y) you have a
-%root ambiguity
-
-gameig = sqrt(diag(gamsq));
-
-Zw = Gam\Z; %symmetric 
-Yw = Y/Gam; %symmetric
-
-MTL = [T*diag(cosh(gameig*len))/T, (T*diag(sinh(gameig*len))/T)*Zw; 
-        Yw*T*diag(sinh(gameig*len))/T, Yw*T*diag(cosh(gameig*len))/T*Zw];
+MTL = nbynMTL(cap, cap0, f, len);
 
 end
