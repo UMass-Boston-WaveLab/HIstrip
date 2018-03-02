@@ -23,7 +23,7 @@ gameig = sqrt(diag(gamsq));
 Zw = Gam\Z; %symmetric 
 Yw = Y/Gam; %symmetric
 
-MTL = [T*diag(cosh(gameig*len))/T, (T*diag(sinh(gameig*len))/T)*Zw; 
+ABCD = [T*diag(cosh(gameig*len))/T, (T*diag(sinh(gameig*len))/T)*Zw; 
         Yw*T*diag(sinh(gameig*len))/T, Yw*T*diag(cosh(gameig*len))/T*Zw];
 
 
