@@ -1,4 +1,4 @@
-function [seriesChalf, shuntC] = nbyncapABCD(h1, h2, w1, w2, eps1, eps2, gap, N, freq)
+function [seriesChalf, shuntC] = nbyncapABCD(h2, w2, eps2, gap, N, freq)
 %NBYNCAPABCD calculates the nxn generalized abcd matrix for simultaneous
 %gaps in multiple parallel microstrip lines (or a gap in multiple
 %microstrip-like conductors of a multiconductor transmission line). this
