@@ -7,7 +7,8 @@ function [seriesChalf, shuntC] = nbyncapABCD(h1, h2, w1, w2, eps1, eps2, gap, N,
 %two epsilon values are needed.  We assume all the lines except the upper
 %line have a gap at the same longitudinal location, and the gaps are all
 %the same width. N is the number of non-ground lines (it is an N+1
-%conductor MTL).
+%conductor MTL, where the +1 is ground).  The name of this function is a
+%little incorrect because technically the output ABCD matrix is 2N by 2N.
 %it may or may not be necessary to account for a shunt capacitance between
 %the top line and the middle layer, as well.  But even if it is, this 
 %microstrip gap capacitance model doesn't support it.  And my best guess at
