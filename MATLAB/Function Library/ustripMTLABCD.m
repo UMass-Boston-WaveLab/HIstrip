@@ -10,6 +10,9 @@ omega = 2*pi*f;
 
 [~, C12, L12, ~] = microstrip(w1, h1-h2, eps1); %I'm using microstrip per-unit-length capacitance values here
 [Z2, C2G, L2G, epseff2] = microstrip(w2, h2, eps2);
+% HFSS model results
+C12=28e-12;
+C2G=430e-12;
 
 cap = [C12, -C12; -C12, C2G+C12]; %Symmetric; see MTL book for where this comes from
 
