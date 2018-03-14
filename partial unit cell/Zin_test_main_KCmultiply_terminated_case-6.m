@@ -35,7 +35,7 @@ w_sub = 1*a;
 
 % L_ant = 0.48; 
 % =======
-L_ant = 0.48; 
+L_ant = 0.48*a; 
 % >>>>>>> 0d731aa100612fd3954213f7e003831151dc5ee2
 %f = 2e9:250e6:10e9; %f vector sweep for 6ghz
 %f = 1e9:500e6:6.5e9;
@@ -114,10 +114,10 @@ for ii = 1:length(f)
 Z = inv(Y(:,:,ii));
 
 %HIS is terminated by admittance of HIS-edge slots.
-ZL = Z(1,1);
-% ZL=0;
-ZR = Z(4,4);
-% ZR=0;
+% ZL = Z(1,1);
+ZL=0;
+% ZR = Z(4,4);
+ZR=0;
 ZLtemp=ZL;
 temp={ABCDgaphalf1(:,:,ii),ABCDline(:,:,ii),ABCDL(:,:,ii),ABCDline(:,:,ii)};
 
@@ -137,10 +137,10 @@ ZinR_l(ii) = unitcellMultiply(ZRtemp, ABCD(:,:,ii), botn);
 unitcell(:,:,ii)=multicond_unitcell(a,  w_ant, w2, h_ant+H_sub, H_sub, rad, eps1, eps2, f(ii), viaflag);
 
 %impedance of upper equivalent radiating slots
-ZLR(ii)=Z(2,2);
-% ZLR(ii)=0;
-ZLL(ii)=Z(3,3);
-% ZLL(ii)=0;
+% ZLR(ii)=Z(2,2);
+ZLR(ii)=0;
+% ZLL(ii)=Z(3,3);
+ZLL(ii)=0;
 N=floor(0.5*L_ant_eff/a); % NUMBER OF COMPLETE UNIT CELLS UNDER ANTENNA
 
 %% NEED IF STATEMENT HERE
