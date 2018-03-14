@@ -20,7 +20,6 @@ h_ant = 0.02*sf; %antenna height above substrate
 w2 = .12*sf;     %patch width
 rad = .005*sf;   %via radius
 g = 0.02*sf;     %patch spacing
-gap=g;
 a =w2+g;       %unit cell size
 
 L_sub = 8*a;
@@ -102,11 +101,11 @@ for ii = 1:length(f)
 %  Y(:,:,ii)= HIS_admittance_saber_test(sep_12, sep_13, sep_14, sep_23, sep_24, sep_34, slot_1_x, slot_2_x, slot_3_x, slot_4_x, f(ii));
    
    
- Y(:,:,ii) = HIS_admittance_saber_main(sep_12, sep_13, sep_14, sep_23, sep_24, sep_34, slot_1_x, slot_2_x, slot_3_x, slot_4_x, f(ii),...
+Y(:,:) = HIS_admittance_saber_main(sep_12, sep_13, sep_14, sep_23, sep_24, sep_34, slot_1_x, slot_2_x, slot_3_x, slot_4_x, f(ii),...
      w_ant, h_ant, L_ant,eps1, w_sub, H_sub, L_sub,eps2, f(ii));  
 % Y(:,:,ii) = HISantYmat_SS(f(ii), w_ant, w2, h_ant, H_sub, rad, eps1, eps2, g, L_ant, startpos, L_sub, W_sub, viaflag);
 
-Z = inv(Y(:,:,ii));
+Z = inv(Y);
 
 %HIS is terminated by admittance of HIS-edge slots.
 ZL = Z(1,1);
