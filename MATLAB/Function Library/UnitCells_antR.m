@@ -1,4 +1,4 @@
-function [ antR ] = UnitCells_antR(f, w_ant, w2, h_ant, H_sub, rad, eps1,eps2, g, L_ant, startpos, ~, ~, viaflag)
+function [ antR ] = UnitCells_antR(f,a, w_ant, w2, h_ant, H_sub, rad, eps1,eps2, g, L_ant, startpos, ~, ~, viaflag)
 
 
 %Uses multiconductor ABCD unit cell model to create 4x4 ABCD matrix for
@@ -25,7 +25,7 @@ deltaL = microstripdeltaL(w_ant, h_ant, eps1);
 
 for ii = 1:length(f)
     Zu(ii) = JHWslotZ(h_ant, w_ant, f(ii), eps1 );  %seriously compare options for Y here
-    [ABCD] = multicond_unitcell(f,  w_ant, w2+g, h_ant+H_sub, H_sub, rad, eps1, eps2, f(ii), viaflag);
+    [ABCD] = multicond_unitcell(a,  w_ant, w2+g, h_ant+H_sub, H_sub, rad, eps1, eps2, f(ii), viaflag);
     
     %number of whole unit cells
     ncells = floor((L_ant-startpos)/(w2+g));
@@ -43,7 +43,10 @@ for ii = 1:length(f)
         elseif startpos<(w2+g)/2
             %just some electrical length and half the pi network
             
-           [Cmat, Cpmat, Cptopmat] = MTLcapABCD(h_ant+H_sub, H_sub, w_ant, w2, eps1, eps2, g, f(ii));
+%            [Cmat, Cpmat, Cptopmat] = MTLcapABCD(h_ant+H_sub, H_sub, w_ant, w2, eps1, eps2, g, f(ii));
+           [Cmat, Cpmat] = MTLcapABCD(h_ant+H_sub, H_sub, w_ant, w2, eps1, eps2, g, f(ii));
+           [Cptopmat, ~] = MTLcapABCD(h_ant+H_sub, H_sub, w_ant, w2, eps1, eps2, g, f(ii));
+           
            short_MTL = ustripMTLABCD(w_ant, h_ant+H_sub,w2, H_sub, eps1, eps2, freq, startpos-g/2);
            prefix = short_MTL*Cptopmat*Cpmat*Cmat;
            
@@ -51,8 +54,10 @@ for ii = 1:length(f)
         	%electrical length, via inductance, electrical length, half the
         	%pi network.
             
-            [Cmat, Cpmat, Cptopmat] = MTLcapABCD(h_ant+H_sub, H_sub, w_ant, w2, eps1, eps2, g, f(ii));
-            
+%            [Cmat, Cpmat, Cptopmat] = MTLcapABCD(h_ant+H_sub, H_sub, w_ant, w2, eps1, eps2, g, f(ii));
+           [Cmat, Cpmat] = MTLcapABCD(h_ant+H_sub, H_sub, w_ant, w2, eps1, eps2, g, f(ii));
+           [Cptopmat, ~] = MTLcapABCD(h_ant+H_sub, H_sub, w_ant, w2, eps1, eps2, g, f(ii));
+           
             short_MTL2 = ustripMTLABCD(w_ant, h_ant+H_sub,w2, H_sub, eps1, eps2, freq, w2/2);
             if viaflag
                 Lmat = MTLviaABCD(H_sub, rad, f(ii));
@@ -77,7 +82,10 @@ for ii = 1:length(f)
         elseif postlen<(w2+g)/2 && postlen>=g/2
             
             %half the pi network plus electrical length
-            [Cmat, Cpmat, Cptopmat] = MTLcapABCD(h_ant+H_sub, H_sub, w_ant, w2, eps1, eps2, g, f(ii));
+%            [Cmat, Cpmat, Cptopmat] = MTLcapABCD(h_ant+H_sub, H_sub, w_ant, w2, eps1, eps2, g, f(ii));
+           [Cmat, Cpmat] = MTLcapABCD(h_ant+H_sub, H_sub, w_ant, w2, eps1, eps2, g, f(ii));
+           [Cptopmat, ~] = MTLcapABCD(h_ant+H_sub, H_sub, w_ant, w2, eps1, eps2, g, f(ii));
+           
             short_MTL = ustripMTLABCD(w_ant, h_ant+H_sub,w2, H_sub, eps1, eps2, f(ii), postlen-g/2);
             postfix = Cmat*Cpmat*Cptopmat*short_MTL;
             
@@ -85,8 +93,10 @@ for ii = 1:length(f)
         	%half the pi network, electrical length, via inductance, 
             %electrical length.
             
-            [Cmat, Cpmat, Cptopmat] = MTLcapABCD(h_ant+H_sub, H_sub, w_ant, w2, eps1, eps2, g, f(ii));
-            
+%            [Cmat, Cpmat, Cptopmat] = MTLcapABCD(h_ant+H_sub, H_sub, w_ant, w2, eps1, eps2, g, f(ii));
+           [Cmat, Cpmat] = MTLcapABCD(h_ant+H_sub, H_sub, w_ant, w2, eps1, eps2, g, f(ii));
+           [Cptopmat, ~] = MTLcapABCD(h_ant+H_sub, H_sub, w_ant, w2, eps1, eps2, g, f(ii));
+           
             short_MTL2 = ustripMTLABCD(w_ant,h_ant+H_sub,w2, H_sub, eps1, eps2, f(ii), w2/2);
             if viaflag
                 Lmat = MTLviaABCD(H_sub, rad, 2*pi*f(ii));

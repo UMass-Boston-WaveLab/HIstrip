@@ -1,6 +1,34 @@
 function [Z]  = Zin(f, w_ant, w2, h_ant, h_sub, rad, eps1,eps2, g, L_ant, startpos, L_sub, w_sub, viaflag)
 %% Uses a dipole or probe fed relationship to enforce boundary conditions on
 
+%% 
+sf = 1; 
+w_ant = 0.01*sf; %depends on kind of antenna placed on top of HIS
+h_ant = 0.02*sf; %antenna height above substrate
+L_ant = .48*sf;  %based on length of dipole at 6ghz which is .48lamba
+
+h_sub = 0.04*sf; %ground to patch distance
+L_sub = 1.12*sf;
+w_sub = 1.12*sf;
+w2 = .12*sf;     %patch width
+rad = .005*sf;   %via radius
+g = 0.02*sf;     %patch spacing
+a =.14*sf;       %edge to edge patch length
+len =.14*sf;     %length of microstrip ((a) for MTL section) segment above patches 
+
+%f = 2e9:250e6:10e9; %f vector sweep for 6ghz
+f = 3e9:100e6:6.5e9;
+omega = 2*pi*f;
+
+eps1 = 1;
+eps2 = 2.2;
+mu0 = pi*4e-7;
+eps0 = 8.854e-12;
+viaflag = 1;
+E = eye(4);
+startpos = 0;
+
+
 omega = 2*pi*f;
 
 %% Constants

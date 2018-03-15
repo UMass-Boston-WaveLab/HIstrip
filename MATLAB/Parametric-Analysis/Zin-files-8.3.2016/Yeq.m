@@ -20,14 +20,14 @@ Yx = [1 -1 0 0; 0 1 0 0; 0 0 1 -1; 0 0 0 1];
 Yp = Y*Yx;
 
 % slot current admittance relations
-YiAD = [1 0 0 0; 0 D 0 0; 0 0 1 0; 0 0 0 -A];
+YiAD = [1 0 0 0; 0 A 0 0; 0 0 1 0; 0 0 0 -D];
 YiB = [0 0 0 0; 0 -B 0 0 ; 0 0 0 0; 0 0 0 B];
 Yi = (YiAD - Yp*YiB);
 Yix = inv(Yi);
 
 % % Voltage current addmitance relations
-YvAD = [1 0 0 0; 0 A 0 0; 0 0 1 0; 0 0 0 D];
-YvC = [0 0 0 0; 0 C 0 0; 0 0 0 0; 0 0 0 C];
+YvAD = [1 0 0 0; 0 -D 0 0; 0 0 1 0; 0 0 0 A];
+YvC = [0 0 0 0; 0 C 0 0; 0 0 0 0; 0 0 0 -C];
 Yv = Yp*YvAD + YvC;
  
 % %Equivilant addmitance matrix Yi^-1*Yv

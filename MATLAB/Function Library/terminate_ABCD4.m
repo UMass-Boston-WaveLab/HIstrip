@@ -7,7 +7,7 @@ C = ABCD4(3:4, 1:2);
 D = ABCD4(3:4, 3:4);
 
 
-Z = vpa((A*ZL+B))/vpa((C*ZL+D));
+Z = (A*ZL+B)/(C*ZL+D);
 
 
 end

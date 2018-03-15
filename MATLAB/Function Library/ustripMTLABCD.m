@@ -14,29 +14,26 @@ omega = 2*pi*f;
 C12=28e-12;
 C2G=430e-12;
 
+C12=29e-12*sf;
+C2G=117e-12*sf;
+
 cap = [C12, -C12; -C12, C2G+C12]; %Symmetric; see MTL book for where this comes from
+% HFSS model results
 
 [~, C120, ~, ~] = microstrip(w1, h1-h2, 1); 
 [~, C2G0, ~, ~] = microstrip(w2, h2, 1);
+
+C120=29e-12*sf;
+C2G0=75e-12*sf;
+
 cap0 = [C120, -C120; -C120, C2G0+C120]; %symmetric
-ind = mu0*eps0*inv(cap0); %symmetric
 
-Z = (j*omega*ind); %symmetric
-Y = (j*omega*cap); %symmetric
-Gam = sqrtm(Z*Y);
+%alternative option for calculating PUL capacitance - also not so hot
+%really
+% cap = SellbergMTLC([0 h1-h2; h1-h2 0],[h1 h2],[w1 w2],[0.0001 0.0001],[1 2],[eps1 eps2]);
+% cap0=SellbergMTLC([0 h1-h2; h1-h2 0],[h1 h2],[w1 w2],[0.0001 0.0001],[1 2],[1 1]);
 
-[T,gamsq]=eig(Z*Y); %Z*Y not necessarily symmetric
-%get gamma^2 because if you do the eigenvalues of sqrtm(Z*Y) you have a
-%root ambiguity
 
-gameig = [sqrt(gamsq(1,1)) 0; 0 sqrt(gamsq(2,2))];
-
-Zw = Gam\Z; %symmetric 
-Yw = Y/Gam; %symmetric
-
-MTL = [T*[cosh(gameig(1,1)*len/2) 0; 0 cosh(gameig(2,2)*len/2)]/T,...
-        (T*sinh(gameig*len/2)/T)*Zw; Yw*T*sinh(gameig*len/2)/T, ...
-        Yw*T*[cosh(gameig(1,1)*len/2) 0; 0 cosh(gameig(2,2)*len/2)]/T*Zw];
-   
+MTL = nbynMTL(cap, cap0, f, len);
 
 end

@@ -1,8 +1,8 @@
-function [eff ] = epseff( w,h2,epsr )
+function [eff ] = epseff( w,h,epsr )
 %EPSEFF calculates effective dielectric constant using expression due to
 %Hammerstad and Jensen.
 
-u=w/h2;
+u=w/h;
 
 a=1+(1/49)*log((u^4+(u/52)^2)/(u^4+0.432))+(1/18.7)*log(1+(u/18.1)^3);
 
