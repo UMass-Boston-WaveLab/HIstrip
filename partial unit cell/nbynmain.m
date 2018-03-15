@@ -41,30 +41,10 @@ M=size(cap,1);  %minimum 2 - total number of non-GND conductors in multiconducto
                 % this is up to the user - don't have to include all the HIS rows if
                 % only some are important to the results.
 
-%% slot spacing description
 
-% % % |<--------Lsub----------->|
-% % % |                         | 
-% % % |        |<-Lant>|        |
-% % % |        |       |        |
-% % % |        |       |        |
-% % % |        2       3        | 
-% % % |                         |
-% % % |                         | 
-% % % 1                         4           
-sep_12=L_sub/2-L_ant/2;
-sep_13=L_sub/2+L_ant/2;
-sep_14=L_sub;
-sep_23=L_ant;
-sep_24=L_sub/2+L_ant/2;
-sep_34=L_sub/2-L_ant/2;
-slot_1_x=w_ant;
-slot_2_x=w_slot;
-slot_3_x=w_ant;
-slot_4_x=w_slot;
 
 %% input impedance calculation steps
 for ii = 1:length(f)
-    Zin(ii)=nbynHIStripZin(sep_12, sep_13, sep_14, sep_23, sep_24, sep_34, slot_1_x, slot_2_x, slot_3_x, slot_4_x, w_ant, h_ant, L_ant,eps1, w2, h_sub, L_sub, eps2, a, g, rad, cap, cap0, HIScap, HIScap0, f(ii))
+    Zin(ii)=nbynHIStripZin(w_ant, h_ant, L_ant,eps1, w2, h_sub, L_sub, eps2, a, g, rad, cap, cap0, HIScap, HIScap0, f(ii));
 end
 %% make plots
