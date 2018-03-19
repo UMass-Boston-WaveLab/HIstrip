@@ -11,8 +11,9 @@ omega = 2*pi*f;
 [~, C12, L12, ~] = microstrip(w1, h1-h2, eps1); %I'm using microstrip per-unit-length capacitance values here
 [Z2, C2G, L2G, epseff2] = microstrip(w2, h2, eps2);
 
-C12=29e-12*sf;
-C2G=117e-12*sf;
+% C12=29e-12*sf;
+% C12=29e-12;
+% C2G=117e-12;
 
 cap = [C12, -C12; -C12, C2G+C12]; %Symmetric; see MTL book for where this comes from
 % HFSS model results
@@ -20,8 +21,8 @@ cap = [C12, -C12; -C12, C2G+C12]; %Symmetric; see MTL book for where this comes 
 [~, C120, ~, ~] = microstrip(w1, h1-h2, 1); 
 [~, C2G0, ~, ~] = microstrip(w2, h2, 1);
 
-C120=29e-12*sf;
-C2G0=75e-12*sf;
+% C120=29e-12;
+% C2G0=75e-12;
 
 cap0 = [C120, -C120; -C120, C2G0+C120]; %symmetric
 
@@ -32,5 +33,5 @@ cap0 = [C120, -C120; -C120, C2G0+C120]; %symmetric
 
 
 MTL = nbynMTL(cap, cap0, f, len);
-
+% plot(f*1e-9, real(Zw), f*1e-9, imag(Zw),'linewidth',2);
 end

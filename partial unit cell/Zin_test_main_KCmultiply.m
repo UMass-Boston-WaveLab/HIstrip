@@ -2,6 +2,7 @@
 %% Uses a dipole or probe fed relationship to enforce boundary conditions on
 
 %% Antenna/HIS geometries
+close all;
 clc
 clear all;
 
@@ -129,6 +130,8 @@ ZinR_l(ii) = unitcellMultiply(ZRtemp, ABCD(:,:,ii), botn);
 
 %Cascade of 4x4 unit cells for left and right of source voltage. 
 unitcell(:,:,ii)=multicond_unitcell(a,  w_ant, w2, h_ant+H_sub, H_sub, rad, eps1, eps2, f(ii), viaflag);
+
+
 
 %impedance of upper equivalent radiating slots
 ZLR(ii)=Z(2,2);

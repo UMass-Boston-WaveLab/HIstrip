@@ -29,3 +29,4 @@ ABCD = [T*diag(cosh(gameig*len))/T, (T*diag(sinh(gameig*len))/T)*Zw;
 
 end
 
+
