@@ -88,11 +88,6 @@ slot_2_x=w_sub;
 slot_3_x=w_ant;
 slot_4_x=w_sub;
 
-
-
-
-
-
 mu0 = pi*4e-7;
 eps0=8.854e-12;
 omega = 2*pi*f;
@@ -104,10 +99,20 @@ omega = 2*pi*f;
 [~, C12, L12, ~] = microstrip(w1, h1-h2, eps1); %I'm using microstrip per-unit-length capacitance values here
 [Z2, C2G, L2G, epseff2] = microstrip(w2, h2, eps2);
 
+C12=29.03e-12;
+C2G=117.57e-12;
+
 cap = [C12, -C12; -C12, C2G+C12]; %Symmetric; see MTL book for where this comes from
+
+
+
 
 [~, C120, ~, ~] = microstrip(w1, h1-h2, 1); 
 [~, C2G0, ~, ~] = microstrip(w2, h2, 1);
+
+C120=29.18e-12;
+C2G0=75.18e-12;
+
 
 cap0 = [C120, -C120; -C120, C2G0+C120]; %symmetric
 
@@ -123,7 +128,7 @@ legend('C120','C2G0','C120+C2G0');
 % ylim([-400 800])
 
 
-cap0 = [C120, -C120; -C120, C2G0+C120]; %symmetric
+% cap0 = [C120, -C120; -C120, C2G0+C120]; %symmetric
 
 %alternative option for calculating PUL capacitance - also not so hot
 %really
@@ -167,9 +172,10 @@ plot(f*1e-9, Zw11,'linewidth',2);
 hold on
 plot(f*1e-9, Zw12,'linewidth',2);
 hold on
-plot(f*1e-9, Zw22,'linewidth',2);
+plot(f*1e-9, Zw22,'linewidth',3);
 legend('Z11','Z12','Z22');
-
+xlabel('Frequency [GHz]')
+ylabel('Z0')
 
 % figure(1); 
 % hold on
