@@ -1,4 +1,4 @@
-function [ MTL ] = ustripMTLABCD( w1, h1, w2, h2, eps1, eps2, f, len)
+function [ MTL, cap, cap0 ] = ustripMTLABCD( w1, h1, w2, h2, eps1, eps2, f, len)
 
 mu0 = pi*4e-7;
 eps0=8.854e-12;
