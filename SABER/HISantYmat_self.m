@@ -1,4 +1,4 @@
-function [ Ys_ant,Ys_sub ] = HISantYmat_self(w_ant, h_ant, L_ant,eps1, w_sub, h_sub, L_sub, eps2, freq)
+function [ Ys_ant,Ys_sub ] = HISantYmat_self(w_ant, h_ant, L_ant,eps1, w_sub, h_sub, L_sub,eps2, freq)
 %HISANTYMAT computes 4x4 mutual admittance matrix of equivalent radiating 
 % slots at ends of antenna and edges of substrate.
 %   Assumes antenna is centered on substrate so dist between same-side ant

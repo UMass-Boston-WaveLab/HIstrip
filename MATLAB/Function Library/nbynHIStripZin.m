@@ -39,7 +39,7 @@ viaflag = 1;
 
 %% Assemble equivalent slot termination
     Y(:,:) = HIS_admittance_saber_main(sep_12, sep_13, sep_14, sep_23, sep_24, sep_34, slot_1_x, slot_2_x, slot_3_x, slot_4_x, f,...
-                w2, h1, L_ant,eps1, h2, L_sub,eps2);  
+                w2, h1, L_ant,eps1, w_slot, h2, L_sub,eps2);  
  
     Z=inv(Y);
     
