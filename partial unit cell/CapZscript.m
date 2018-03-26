@@ -98,31 +98,31 @@ omega = 2*pi*f;
 
 [~, C12, L12, ~] = microstrip(w1, h1-h2, eps1); %I'm using microstrip per-unit-length capacitance values here
 [Z2, C2G, L2G, epseff2] = microstrip(w2, h2, eps2);
-
+c11=33.39e-12;
 C12=29.03e-12;
 C2G=117.57e-12;
 
-cap = [C12, -C12; -C12, C2G+C12]; %Symmetric; see MTL book for where this comes from
+cap = [c11+C12, -C12; -C12, C2G+C12]; %Symmetric; see MTL book for where this comes from
 
 
 
 
 [~, C120, ~, ~] = microstrip(w1, h1-h2, 1); 
 [~, C2G0, ~, ~] = microstrip(w2, h2, 1);
-
+C110=33.25e-12;
 C120=29.18e-12;
 C2G0=75.18e-12;
 
 
-cap0 = [C120, -C120; -C120, C2G0+C120]; %symmetric
+cap0 = [C110+C120, -C120; -C120, C2G0+C120]; %symmetric
 
  figure(1); 
-plot(f*1e-9, f*1e-9*abs(C120)./(f*1e-9*10^(-12)),'linewidth',2);
+plot(f*1e-9, f*1e-9*abs(C110+C120)./(f*1e-9*10^(-12)),'linewidth',2);
 hold on
 plot(f*1e-9, f*1e-9*abs(C2G0)./(f*1e-9*10^(-12)),'linewidth',2);
 hold on
 plot(f*1e-9, f*1e-9*abs(C120+C2G0)./(f*1e-9*10^(-12)),'linewidth',2);
-legend('C120','C2G0','C120+C2G0');
+legend('C110+C120','C2G0','C120+C2G0');
 
 
 % ylim([-400 800])
