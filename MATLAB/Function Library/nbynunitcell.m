@@ -11,7 +11,7 @@ else
     Lmat = eye(2*N);
 end
 
-[Cseries, Cshunt] = nbyncapABCD(h2, w2, eps2, gap, N, f);
+[Cseries, Cshunt] = nbyncapABCD(h2, w2, eps2, gap, N, f,1);
 
 MTL = nbynMTL(cap, cap0, f, a/2);
 

@@ -39,7 +39,7 @@ viaflag = 1;
 
 %% Assemble equivalent slot termination
     Y(:,:) = HIS_admittance_saber_main(sep_12, sep_13, sep_14, sep_23, sep_24, sep_34, slot_1_x, slot_2_x, slot_3_x, slot_4_x, f,...
-                w2, h1, L_ant,eps1, w_slot, h2, L_sub,eps2);  
+                w1, h1, L_ant,eps1, w2, h2, L_sub,eps2,f);  
  
     Z=inv(Y);
     
@@ -48,12 +48,12 @@ viaflag = 1;
     
     %% Assemble unit slice ABCD and covered partial cell ABCDs
     if viaflag
-        Lmat = nbynviaABCD(h2, via_rad, f, N);
+        Lmat = nbynviaABCD(h2, via_rad, f, N, 1);
     else
         Lmat = eye(2*N);
     end
     
-    [Cseries, Cshunt] = nbyncapABCD(h2, w2, eps2, gap, N, f);
+    [Cseries, Cshunt] = nbyncapABCD(h2, w2, eps2, gap, N, f,1);
     
     unitslice=nbynunitcell(cap, cap0, a, w2, h2, via_rad, eps2, f, N, viaflag);   
     

@@ -12,6 +12,9 @@ rad = .005*sf;   %via radius
 g = 0.02*sf;     %patch spacing
 a=w2+g;       %unit cell size
 
+eps1 = 1;
+eps2 = 2.2;
+
 L_sub = 8*a;
 w_slot = a; %each HIS row is terminated by an equivalent radiating slot, so slot width is width of one row
 L_ant = 0.48*sf; 
@@ -21,8 +24,7 @@ L_ant_eff = L_ant+microstripdeltaL(w_ant, h_ant, eps1);
 N=floor(0.5*L_ant_eff/a); % NUMBER OF COMPLETE UNIT CELLS UNDER ANTENNA HALF
 remainder = 0.5*L_ant_eff-N*a; %partial unit cell distance under antenna
 botn = floor((L_sub-L_ant_eff)/(2*a))-1; % Number of compelete unit cell not under antenna===HIS
-eps1 = 1;
-eps2 = 2.2;
+
 
 %% Constants
 mu0 = pi*4e-7;
@@ -31,10 +33,10 @@ viaflag = 1;
 E = eye(4);
 
 %% load/enter per unit length capacitance matrices here
-cap=[];
-cap0=[];
-HIScap=[];  %if we calculate the cap matrix with and without the top line 
-HIScap0=[]; %and the HIS-related rows don't change, we may not need these 
+cap=(1e-12)*[33 -29; -29 117];
+cap0=(1e-12)*[33 -29; -29 75];
+HIScap=117e-12;  %if we calculate the cap matrix with and without the top line 
+HIScap0=75e-12; %and the HIS-related rows don't change, we may not need these 
             %to be calculated separately.
 
 M=size(cap,1);  %minimum 2 - total number of non-GND conductors in multiconductor line including antenna layer
