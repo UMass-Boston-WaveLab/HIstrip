@@ -25,7 +25,7 @@ HISlinehalfcell = nbynMTL(HIScap, HIScap0, f, a/2);
 coveredlinehalfcell = nbynMTL(cap, cap0, f, a/2);
 
 
-temp={Cseries, Cshunt,MTLline, Lvia, MTLline, Cshunt, Cseries};
+temp={Cseries, Cshunt,coveredlinehalfcell, Lvia, coveredlinehalfcell, Cshunt, Cseries};
 %this one can be done separately because nothing changes about the command
 %depending on line length
 if Lb>=gap/2

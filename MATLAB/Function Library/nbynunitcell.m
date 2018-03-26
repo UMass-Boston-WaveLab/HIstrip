@@ -6,7 +6,7 @@ function [ ABCD ] = nbynunitcell( cap, cap0,  a, w2, h2, via_rad, eps2, f, N, vi
 gap = a-w2;
 
 if viaflag
-    Lmat = nbynviaABCD(h2, via_rad, f, N);
+    Lmat = nbynviaABCD(h2, via_rad, f, N, 1);
 else
     Lmat = eye(2*N);
 end

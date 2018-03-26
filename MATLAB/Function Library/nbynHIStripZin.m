@@ -33,7 +33,7 @@ L_ant_eff = L_ant+microstripdeltaL(w1, h1, eps1);
 N=floor(0.5*L_ant_eff/a); % NUMBER OF COMPLETE UNIT CELLS UNDER ANTENNA HALF
 remainder = 0.5*L_ant_eff-N*a; %partial unit cell distance under antenna
 botn = floor((L_sub-L_ant_eff)/(2*a))-1; % Number of compelete unit cell not under antenna===HIS
-
+M = size(cap0,2);
 %% Constants
 viaflag = 1;
 
@@ -44,18 +44,18 @@ viaflag = 1;
     Z=inv(Y);
     
     %% Assemble bare HIS ABCDs
-    [ABCD, ABCDgaphalfsp,ABCDline,ABCDL,ABCDgaphalfps]=nbynHISABCD(HIScap, HIScap0, a, g, h2, rad, viaflag, f);
+    [ABCD, ABCDgaphalfsp,ABCDline,ABCDL,ABCDgaphalfps]=nbynHISABCD(HIScap, HIScap0, eps2, a, g, h2, rad, viaflag, f);
     
     %% Assemble unit slice ABCD and covered partial cell ABCDs
     if viaflag
-        Lmat = nbynviaABCD(h2, via_rad, f, N, 1);
+        Lmat = nbynviaABCD(h2, rad, f, M, 1);
     else
         Lmat = eye(2*N);
     end
     
-    [Cseries, Cshunt] = nbyncapABCD(h2, w2, eps2, gap, N, f,1);
+    [Cseries, Cshunt] = nbyncapABCD(h2, w2, eps2, g, M, f,1);
     
-    unitslice=nbynunitcell(cap, cap0, a, w2, h2, via_rad, eps2, f, N, viaflag);   
+    unitslice=nbynunitcell(cap, cap0, a, w2, h2, rad, eps2, f, M, viaflag);   
     
     %% calculate input impedance of HIS-only section
     %HIS is terminated by admittance of HIS-edge slots. We ignore mutual
@@ -63,12 +63,13 @@ viaflag = 1;
     %we needed to include mutual coupling, the Y matrix would have to
     %include all the slots.
     
-    ZLtemp=Z(1,1)*eye(N);
-    ZRtemp=Z(4,4)*eye(N);
+    ZLtemp=Z(1,1)*eye(M-1);
+    ZRtemp=Z(4,4)*eye(M-1);
     
     temp={ABCDgaphalfsp,ABCDline,ABCDL,ABCDline};
     
     for jj=length(temp):-1:1
+        %This ZLtemp needs to be M-1 by M-1
         ZLtemp = unitcellMultiply(ZLtemp, temp{jj}, 1);%  last HIS connection from ground side to load
     end
     ZinL_HIS = unitcellMultiply(ZLtemp, ABCD, botn);% HIS from antenna edge to last HIS connection from ground side
@@ -76,12 +77,12 @@ viaflag = 1;
     for jj=length(temp):-1:1
         ZRtemp = unitcellMultiply(ZRtemp, temp{jj}, 1);% RIGHT
     end
-    ZinR_HIS = unitcellMultiply(ZRtemp, ABCD(:,:,ii), botn);
+    ZinR_HIS = unitcellMultiply(ZRtemp, ABCD, botn);
     
     %% deal with partial unit cells
     
-    ZinR = nbynpartialcells(ZinR_HIS, Z(3,3), cap, cap0, HIScap, HIScap0, f(ii), a, gap, remainder, Lvia, Cseries, Cshunt, ABCDL, ABCDgaphalfsp, ABCDgaphalfps);
-    ZinL = nbynpartialcells(ZinL_HIS, Z(2,2), cap, cap0, HIScap, HIScap0, f(ii), a, gap, remainder, Lvia, Cseries, Cshunt, ABCDL, ABCDgaphalfsp, ABCDgaphalfps);
+    ZinR = nbynpartialcells(ZinR_HIS, Z(3,3), cap, cap0, HIScap, HIScap0, f, a, g, remainder, Lmat, Cseries, Cshunt, ABCDL, ABCDgaphalfsp, ABCDgaphalfps);
+    ZinL = nbynpartialcells(ZinL_HIS, Z(2,2), cap, cap0, HIScap, HIScap0, f, a, g, remainder, Lmat, Cseries, Cshunt, ABCDL, ABCDgaphalfsp, ABCDgaphalfps);
     %% calculate input impedance of covered section
     ZinR = unitcellMultiply(ZinR, unitslice, N);
     ZinL = unitcellMultiply(ZinL, unitslice, N);
