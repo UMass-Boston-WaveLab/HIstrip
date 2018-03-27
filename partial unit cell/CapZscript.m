@@ -98,11 +98,11 @@ omega = 2*pi*f;
 
 [~, C12, L12, ~] = microstrip(w1, h1-h2, eps1); %I'm using microstrip per-unit-length capacitance values here
 [Z2, C2G, L2G, epseff2] = microstrip(w2, h2, eps2);
-c11=33.39e-12;
+C11=33.39e-12;
 C12=29.03e-12;
 C2G=117.57e-12;
 
-cap = [c11+C12, -C12; -C12, C2G+C12]; %Symmetric; see MTL book for where this comes from
+cap = [C11, -C12; -C12, C2G]; %Symmetric; see MTL book for where this comes from
 
 
 
@@ -114,17 +114,23 @@ C120=29.18e-12;
 C2G0=75.18e-12;
 
 
-cap0 = [C110+C120, -C120; -C120, C2G0+C120]; %symmetric
+cap0 = [C110, -C120; -C120, C2G0]; %symmetric
 
  figure(1); 
-plot(f*1e-9, f*1e-9*abs(C110+C120)./(f*1e-9*10^(-12)),'linewidth',2);
+plot(f*1e-9, f*1e-9*abs(C110)./(f*1e-9*10^(-12)),'linewidth',2);
 hold on
 plot(f*1e-9, f*1e-9*abs(C2G0)./(f*1e-9*10^(-12)),'linewidth',2);
 hold on
-plot(f*1e-9, f*1e-9*abs(C120+C2G0)./(f*1e-9*10^(-12)),'linewidth',2);
-legend('C110+C120','C2G0','C120+C2G0');
+plot(f*1e-9, f*1e-9*abs(C2G0)./(f*1e-9*10^(-12)),'linewidth',2);
+legend('C110','C2G0','C120');
 
-
+ figure(2); 
+plot(f*1e-9, f*1e-9*abs(C11)./(f*1e-9*10^(-12)),'linewidth',2);
+hold on
+plot(f*1e-9, f*1e-9*abs(C2G)./(f*1e-9*10^(-12)),'linewidth',2);
+hold on
+plot(f*1e-9, f*1e-9*abs(C2G)./(f*1e-9*10^(-12)),'linewidth',2);
+legend('C11','C2G','C12');
 % ylim([-400 800])
 
 
@@ -167,7 +173,7 @@ Zw22(1,ii)=Zw(2,2);
 
 
 end
-figure(2);
+figure(3);
 plot(f*1e-9, Zw11,'linewidth',2);
 hold on
 plot(f*1e-9, Zw12,'linewidth',2);
