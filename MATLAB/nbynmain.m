@@ -1,8 +1,9 @@
+close all;
 clc
 clear all;
 %% DEFINE PARAMETERS
 
-sf = 1/20; %scale factor
+sf = 1/1; %scale factor
 w_ant = 0.01*1.89*sf; %depends on kind of antenna placed on top of HIS
 w1=w_ant;
 h_sub = 0.04*sf; %ground to patch distance
@@ -33,11 +34,36 @@ viaflag = 1;
 E = eye(4);
 
 %% load/enter per unit length capacitance matrices here
-cap=(1e-12)*[33 -29; -29 117];
-cap0=(1e-12)*[33 -29; -29 75];
-HIScap=117e-12;  %if we calculate the cap matrix with and without the top line 
-HIScap0=75e-12; %and the HIS-related rows don't change, we may not need these 
-            %to be calculated separately.
+
+% DATA FROM HFSS
+% cap=(1e-12)*[33 -29; -29 117];
+% cap0=(1e-12)*[33 -29; -29 75];
+% HIScap=117e-12;  %if we calculate the cap matrix with and without the top line 
+% HIScap0=75e-12; %and the HIS-related rows don't change, we may not need these 
+%             %to be calculated separately.
+
+% DATA FROM OUR CAP CALCULATOR
+% cap=(1e-12)*[29 -29; -29 117];% 1 row
+% cap0=(1e-12)*[27 -27; -27 74];% 1row
+% HIScap=117e-12;  % 1 row if we calculate the cap matrix with and without the top line 
+% HIScap0=75e-12; % 1row and the HIS-related rows don't change, we may not need these 
+%             %to be calculated separately.
+            
+cap=(1e-12)*[33.33 28.42 1.73 0.38 0.22;...
+             28.42 124.65 14.80 0.6 0.34; ...
+             1.73 14.80 103.02 16.08 0.98; ...
+             0.38 0.60 16.08 102.87 16.41; ...
+             0.22 0.34 0.98 16.41 91.08];
+HIScap=[cap(2,2) cap(3,3) cap(4,4) cap(5,5)];            
+
+cap0=(1e-12)*[33.30 28.54 1.75 0.39 0.24;...
+             28.54 81.38 11.47 0.64 0.38; ...
+             1.75 11.47 59.85 12.72 1.02; ...
+             0.39 0.64 12.72 59.72 13.09; ...
+             0.24 0.38 1.02 13.09 54.24];
+HIScap0=[cap0(2,2) cap0(3,3) cap0(4,4) cap0(5,5)];   
+
+
 
 M=size(cap,1);  %minimum 2 - total number of non-GND conductors in multiconductor line including antenna layer
                 % this is up to the user - don't have to include all the HIS rows if
@@ -47,6 +73,27 @@ M=size(cap,1);  %minimum 2 - total number of non-GND conductors in multiconducto
 
 %% input impedance calculation steps
 for ii = 1:length(f)
+    
     Zin(ii)=nbynHIStripZin(w_ant, h_ant, L_ant,eps1, w2, h_sub, L_sub, eps2, a, g, rad, cap, cap0, HIScap, HIScap0, f(ii));
+    S11(ii) = (Zin(ii)-50)/(Zin(ii)+50);
 end
 %% make plots
+ figure; 
+plot(f*1e-9, real(Zin), f*1e-9, imag(Zin),'linewidth',2)
+xlabel('Frequency [GHz]')
+ylabel('Zin')
+legend({'R';'X'})
+grid on
+set(gca,'fontsize',14)    
+% xlim([0.1 0.6])
+% ylim([-400 800])
+
+
+
+figure; 
+plot(f*1e-9, 20*log10(abs(S11)), 'linewidth',2)
+xlabel('Frequency [GHz]')
+ylabel('|S_{11} (dB)')
+grid on
+set(gca,'fontsize',14)
+% xlim([0.1 0.6])
