@@ -43,13 +43,13 @@ E = eye(4);
 %             %to be calculated separately.
 
 % DATA FROM OUR CAP CALCULATOR
-<<<<<<< HEAD
+
 cap=(1e-12)*[29 -29; -29 117];
 cap0=(1e-12)*[27 -27; -27 74];
 HIScap=117e-12;  %if we calculate the cap matrix with and without the top line 
 HIScap0=75e-12; %and the HIS-related rows don't change, we may not need these 
             %to be calculated separately.
-=======
+
 % cap=(1e-12)*[29 -29; -29 117];% 1 row
 % cap0=(1e-12)*[27 -27; -27 74];% 1row
 % HIScap=117e-12;  % 1 row if we calculate the cap matrix with and without the top line 
@@ -61,29 +61,27 @@ cap=(1e-12)*[33.33 28.42 1.73 0.38 0.22;...
              1.73 14.80 103.02 16.08 0.98; ...
              0.38 0.60 16.08 102.87 16.41; ...
              0.22 0.34 0.98 16.41 91.08];
-HIScap=[cap(2,2) cap(3,3) cap(4,4) cap(5,5)];            
+HIScap=cap(2:end, 2:end);            
 
 cap0=(1e-12)*[33.30 28.54 1.75 0.39 0.24;...
              28.54 81.38 11.47 0.64 0.38; ...
              1.75 11.47 59.85 12.72 1.02; ...
              0.39 0.64 12.72 59.72 13.09; ...
              0.24 0.38 1.02 13.09 54.24];
-HIScap0=[cap0(2,2) cap0(3,3) cap0(4,4) cap0(5,5)];   
+HIScap0=cap0(2:end, 2:end);  
 
-
->>>>>>> 0c6e25044a3cf1f453beb8255d28abcf4e6d5614
 
 
 M=size(cap,1);  %minimum 2 - total number of non-GND conductors in multiconductor line including antenna layer
                 % this is up to the user - don't have to include all the HIS rows if
                 % only some are important to the results.
-
+midHISindex=2; %the index of the MTL conductor that is below the antenna.  If even geometry, this can be a 1x2 vector.  If very wide top conductor, this can be a 1xn vector.
 
 
 %% input impedance calculation steps
 for ii = 1:length(f)
     
-    Zin(ii)=nbynHIStripZin(w_ant, h_ant, L_ant,eps1, w2, h_sub, L_sub, eps2, a, g, rad, cap, cap0, HIScap, HIScap0, f(ii));
+    Zin(ii)=nbynHIStripZin(w_ant, h_ant, L_ant,eps1, w2, h_sub, L_sub, eps2, a, g, rad, cap, cap0, HIScap, HIScap0, f(ii), midHISindex);
     S11(ii) = (Zin(ii)-50)/(Zin(ii)+50);
 end
 %% make plots
