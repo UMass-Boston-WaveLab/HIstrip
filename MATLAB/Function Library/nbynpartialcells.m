@@ -1,4 +1,4 @@
-function [ Zin ] = nbynpartialcells(ZLb, ZLu, cap, cap0, HIScap, HIScap0, f, a, gap, Lu, Lvia, Cseries, Cshunt, HISLvia, HISgaphalfsp, HISgaphalfps)
+function [ Zin ] = nbynpartialcells(ZLb, ZLu, zluindex, cap, cap0, HIScap, HIScap0, f, a, gap, Lu, Lvia, Cseries, Cshunt, HISLvia, HISgaphalfsp, HISgaphalfps)
 %NBYNPARTIALCELLS calculates the input impedance looking into a HIS unit
 %cell (or slice if n>2) that is partially covered by the upper (antenna)
 %layer.
@@ -57,9 +57,17 @@ elseif Lb>(a-gap/2)
     ZLb = unitcellMultiply(ZLb, HISgaphalfsp, 1);
     temp={};
 end
-
-Zin = [ZLu zeros([size(ZLu,1),size(ZLb,2)]);
-       zeros([size(ZLu,1),size(ZLb,2)]).' ZLb];
+%ZLu is going to be connected to at
+%least one of the HIS layer MTL lines, not to GND directly.  The way to do
+%it is to specify an index to put ZLu in.  If even configuration, 2ZLu
+%should be put in two different elemnt spaces
+Zin = [ zeros([size(ZLu,1),size(ZLb,2)+size(ZLu,2)]);
+       zeros([size(ZLb,1),size(ZLu,2)]) ZLb];
+for ii=1:length(zluindex)  %this will break if ZLu isn't scalar but I don't know why it wouldn't be.
+    Zin(1,zluindex(ii)) = length(zluindex)*ZLu;
+    Zin(zluindex(ii),1) = length(zluindex)*ZLu;
+end
+   
 for jj=length(temp):-1:1
     Zin = unitcellMultiply(Zin, temp{jj}, 1);
 end

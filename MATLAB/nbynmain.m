@@ -43,6 +43,7 @@ E = eye(4);
 %             %to be calculated separately.
 
 % DATA FROM OUR CAP CALCULATOR
+<<<<<<< HEAD
 % <<<<<<< HEAD
 % cap=(1e-12)*[29 -29; -29 117];
 % cap0=(1e-12)*[27 -27; -27 74];
@@ -50,6 +51,15 @@ E = eye(4);
 % HIScap0=75e-12; %and the HIS-related rows don't change, we may not need these 
 %             %to be calculated separately.
 % =======
+=======
+
+cap=(1e-12)*[29 -29; -29 117];
+cap0=(1e-12)*[27 -27; -27 74];
+HIScap=117e-12;  %if we calculate the cap matrix with and without the top line 
+HIScap0=75e-12; %and the HIS-related rows don't change, we may not need these 
+            %to be calculated separately.
+
+>>>>>>> 37f130a5a6551ce4c44710cc13c54cce1d8d2d8d
 % cap=(1e-12)*[29 -29; -29 117];% 1 row
 % cap0=(1e-12)*[27 -27; -27 74];% 1row
 % HIScap=117e-12;  % 1 row if we calculate the cap matrix with and without the top line 
@@ -60,6 +70,7 @@ cap=(1e-12)*[33.33 28.42 1.73 0.38 0.22;...
              28.42 124.65 14.80 0.6 0.34; ...
              1.73 14.80 103.02 16.08 0.98; ...
              0.38 0.60 16.08 102.87 16.41; ...
+<<<<<<< HEAD
              0.22 0.34 0.98 16.41 91.08]; %7ROW
 % cap=cap(1:2, 1:2);%1ROW
 % cap=cap(1:3, 1:3); %3ROW
@@ -67,6 +78,9 @@ cap=(1e-12)*[33.33 28.42 1.73 0.38 0.22;...
          
 
         
+=======
+             0.22 0.34 0.98 16.41 91.08];
+>>>>>>> 37f130a5a6551ce4c44710cc13c54cce1d8d2d8d
 HIScap=cap(2:end, 2:end);            
 
 cap0=(1e-12)*[33.30 28.54 1.75 0.39 0.24;...
@@ -74,6 +88,7 @@ cap0=(1e-12)*[33.30 28.54 1.75 0.39 0.24;...
              1.75 11.47 59.85 12.72 1.02; ...
              0.39 0.64 12.72 59.72 13.09; ...
              0.24 0.38 1.02 13.09 54.24];
+<<<<<<< HEAD
          
 %   cap0=cap0(1:2, 1:2);%1ROW
 % cap0=cap0(1:3, 1:3); %3ROW
@@ -84,17 +99,22 @@ HIScap0=cap0(2:end, 2:end);
 
 % >>>>>>> 0c6e25044a3cf1f453beb8255d28abcf4e6d5614
 
+=======
+HIScap0=cap0(2:end, 2:end);  
+
+
+>>>>>>> 37f130a5a6551ce4c44710cc13c54cce1d8d2d8d
 
 M=size(cap,1);  %minimum 2 - total number of non-GND conductors in multiconductor line including antenna layer
                 % this is up to the user - don't have to include all the HIS rows if
                 % only some are important to the results.
-
+midHISindex=2; %the index of the MTL conductor that is below the antenna.  If even geometry, this can be a 1x2 vector.  If very wide top conductor, this can be a 1xn vector.
 
 
 %% input impedance calculation steps
 for ii = 1:length(f)
     
-    Zin(ii)=nbynHIStripZin(w_ant, h_ant, L_ant,eps1, w2, h_sub, L_sub, eps2, a, g, rad, cap, cap0, HIScap, HIScap0, f(ii));
+    Zin(ii)=nbynHIStripZin(w_ant, h_ant, L_ant,eps1, w2, h_sub, L_sub, eps2, a, g, rad, cap, cap0, HIScap, HIScap0, f(ii), midHISindex);
     S11(ii) = (Zin(ii)-50)/(Zin(ii)+50);
 end
 %% make plots

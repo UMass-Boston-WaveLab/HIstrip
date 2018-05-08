@@ -1,4 +1,4 @@
-function [ Zin ] = nbynHIStripZin(w1, h1, L_ant,eps1, w2, h2, L_sub, eps2, a, g, rad, cap, cap0, HIScap, HIScap0, f)
+function [ Zin ] = nbynHIStripZin(w1, h1, L_ant,eps1, w2, h2, L_sub, eps2, a, g, rad, cap, cap0, HIScap, HIScap0, f, midHISindex)
 %NBYNHISTRIPZIN does the bulk of the work to calculate the input impedance
 %to a HIS-backed microstrip antenna.  It calls many other functions and
 %puts all the input together.  It accounts for more than one HIS row below
@@ -80,9 +80,11 @@ viaflag = 1;
     ZinR_HIS = unitcellMultiply(ZRtemp, ABCD, botn);
     
     %% deal with partial unit cells
-    
-    ZinR = nbynpartialcells(ZinR_HIS, Z(3,3), cap, cap0, HIScap, HIScap0, f, a, g, remainder, Lmat, Cseries, Cshunt, ABCDL, ABCDgaphalfsp, ABCDgaphalfps);
-    ZinL = nbynpartialcells(ZinL_HIS, Z(2,2), cap, cap0, HIScap, HIScap0, f, a, g, remainder, Lmat, Cseries, Cshunt, ABCDL, ABCDgaphalfsp, ABCDgaphalfps);
+    %I think use of Z(2,2) or Z(3,3) is a little wrong here - those are used as impedances
+    %to ground and the slot calculator finds impedance to nearby MTL
+    %conductor(s).
+    ZinR = nbynpartialcells(ZinR_HIS, Z(3,3), midHISindex, cap, cap0, HIScap, HIScap0, f, a, g, remainder, Lmat, Cseries, Cshunt, ABCDL, ABCDgaphalfsp, ABCDgaphalfps);
+    ZinL = nbynpartialcells(ZinL_HIS, Z(2,2), midHISindex, cap, cap0, HIScap, HIScap0, f, a, g, remainder, Lmat, Cseries, Cshunt, ABCDL, ABCDgaphalfsp, ABCDgaphalfps);
     %% calculate input impedance of covered section
     ZinR = unitcellMultiply(ZinR, unitslice, N);
     ZinL = unitcellMultiply(ZinL, unitslice, N);
