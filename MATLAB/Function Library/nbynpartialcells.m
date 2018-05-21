@@ -58,7 +58,10 @@ elseif Lb>(a-gap/2)
     temp={};
 end
 <<<<<<< HEAD
+<<<<<<< HEAD
 % <<<<<<< HEAD
+=======
+>>>>>>> parent of 010b3b4... Revert "fixed how antenna layer couples to HIS layer at rad slot"
 =======
 >>>>>>> parent of 010b3b4... Revert "fixed how antenna layer couples to HIS layer at rad slot"
 %ZLu is going to be connected to at
@@ -73,12 +76,16 @@ for ii=1:length(zluindex)  %this will break if ZLu isn't scalar but I don't know
     Zin(1,1)=ZLu+ZLb(zluindex, zluindex); 
 end
 <<<<<<< HEAD
+<<<<<<< HEAD
 %    
 % =======
 
 Zin = [ZLu zeros([size(ZLu,1),size(ZLb,2)]);
        zeros([size(ZLu,1),size(ZLb,2)]).' ZLb];
 % >>>>>>> parent of 37f130a... fixed how antenna layer couples to HIS layer at rad slot
+=======
+   
+>>>>>>> parent of 010b3b4... Revert "fixed how antenna layer couples to HIS layer at rad slot"
 =======
    
 >>>>>>> parent of 010b3b4... Revert "fixed how antenna layer couples to HIS layer at rad slot"

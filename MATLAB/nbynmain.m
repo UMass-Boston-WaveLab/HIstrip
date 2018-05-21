@@ -43,12 +43,15 @@ E = eye(4);
 %             %to be calculated separately.
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 % % DATA FROM OUR CAP CALCULATOR
 % <<<<<<< HEAD
 % <<<<<<< HEAD
 =======
 % DATA FROM OUR CAP CALCULATOR
 <<<<<<< HEAD
+>>>>>>> parent of 010b3b4... Revert "fixed how antenna layer couples to HIS layer at rad slot"
+=======
 >>>>>>> parent of 010b3b4... Revert "fixed how antenna layer couples to HIS layer at rad slot"
 % <<<<<<< HEAD
 % cap=(1e-12)*[29 -29; -29 117];
@@ -74,7 +77,10 @@ E = eye(4);
 % =======
 % >>>>>>> parent of 37f130a... fixed how antenna layer couples to HIS layer at rad slot
 =======
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> parent of 010b3b4... Revert "fixed how antenna layer couples to HIS layer at rad slot"
 
 cap=(1e-12)*[29 -29; -29 117];
 cap0=(1e-12)*[27 -27; -27 74];
@@ -83,6 +89,9 @@ HIScap0=75e-12; %and the HIS-related rows don't change, we may not need these
             %to be calculated separately.
 
 >>>>>>> 37f130a5a6551ce4c44710cc13c54cce1d8d2d8d
+<<<<<<< HEAD
+>>>>>>> parent of 010b3b4... Revert "fixed how antenna layer couples to HIS layer at rad slot"
+=======
 >>>>>>> parent of 010b3b4... Revert "fixed how antenna layer couples to HIS layer at rad slot"
 % cap=(1e-12)*[29 -29; -29 117];% 1 row
 % cap0=(1e-12)*[27 -27; -27 74];% 1row
@@ -115,6 +124,9 @@ HIScap=cap(2:end, 2:end);
              0.22 0.34 0.98 16.41 91.08];
 >>>>>>> 37f130a5a6551ce4c44710cc13c54cce1d8d2d8d
 HIScap=cap(2:end, 2:end);            
+<<<<<<< HEAD
+>>>>>>> parent of 010b3b4... Revert "fixed how antenna layer couples to HIS layer at rad slot"
+=======
 >>>>>>> parent of 010b3b4... Revert "fixed how antenna layer couples to HIS layer at rad slot"
 
 cap0=(1e-12)*[33.30 28.54 1.75 0.39 0.24;...
@@ -123,11 +135,14 @@ cap0=(1e-12)*[33.30 28.54 1.75 0.39 0.24;...
              0.39 0.64 12.72 59.72 13.09; ...
              0.24 0.38 1.02 13.09 54.24];
 <<<<<<< HEAD
+<<<<<<< HEAD
 % <<<<<<< HEAD
 % <<<<<<< HEAD
 %          
 =======
 <<<<<<< HEAD
+=======
+>>>>>>> parent of 010b3b4... Revert "fixed how antenna layer couples to HIS layer at rad slot"
          
 >>>>>>> parent of 010b3b4... Revert "fixed how antenna layer couples to HIS layer at rad slot"
 %   cap0=cap0(1:2, 1:2);%1ROW
@@ -144,6 +159,7 @@ HIScap0=cap0(2:end, 2:end);
 
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 % >>>>>>> 37f130a5a6551ce4c44710cc13c54cce1d8d2d8d
 % =======
 % HIScap0=[cap0(2,2) cap0(3,3) cap0(4,4) cap0(5,5)];   
@@ -152,6 +168,9 @@ HIScap0=cap0(2:end, 2:end);
 % >>>>>>> 0c6e25044a3cf1f453beb8255d28abcf4e6d5614
 % 
 % >>>>>>> parent of 37f130a... fixed how antenna layer couples to HIS layer at rad slot
+=======
+>>>>>>> 37f130a5a6551ce4c44710cc13c54cce1d8d2d8d
+>>>>>>> parent of 010b3b4... Revert "fixed how antenna layer couples to HIS layer at rad slot"
 =======
 >>>>>>> 37f130a5a6551ce4c44710cc13c54cce1d8d2d8d
 >>>>>>> parent of 010b3b4... Revert "fixed how antenna layer couples to HIS layer at rad slot"
