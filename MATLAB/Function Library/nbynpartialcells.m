@@ -65,9 +65,8 @@ end
 Zin = [ zeros([size(ZLu,1),size(ZLb,2)+size(ZLu,2)]);
        zeros([size(ZLb,1),size(ZLu,2)]) ZLb];
 for ii=1:length(zluindex)  %this will break if ZLu isn't scalar but I don't know why it wouldn't be.
-    Zin(1,zluindex(ii)) = ZLb(zluindex, zluindex);
-    Zin(zluindex(ii),1) = ZLb(zluindex, zluindex);
-    Zin(1,1)=ZLu+ZLb(zluindex, zluindex); 
+    Zin(1,zluindex(ii)) = length(zluindex)*ZLu;
+    Zin(zluindex(ii),1) = length(zluindex)*ZLu;
 end
 %    
 % =======
