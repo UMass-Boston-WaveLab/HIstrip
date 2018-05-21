@@ -1,4 +1,4 @@
-function [ Zin ] = nbynpartialcells(ZLb, ZLu, zluindex, cap, cap0, HIScap, HIScap0, f, a, gap, Lu, Lvia, Cseries, Cshunt, HISLvia, HISgaphalfsp, HISgaphalfps)
+function [ Zin ] = nbynpartialcells(ZLb, ZLu, cap, cap0, HIScap, HIScap0, f, a, gap, Lu, Lvia, Cseries, Cshunt, HISLvia, HISgaphalfsp, HISgaphalfps)
 %NBYNPARTIALCELLS calculates the input impedance looking into a HIS unit
 %cell (or slice if n>2) that is partially covered by the upper (antenna)
 %layer.
@@ -57,6 +57,7 @@ elseif Lb>(a-gap/2)
     ZLb = unitcellMultiply(ZLb, HISgaphalfsp, 1);
     temp={};
 end
+<<<<<<< HEAD
 %ZLu is going to be connected to at
 %least one of the HIS layer MTL lines, not to GND directly.  The way to do
 %it is to specify an index to put ZLu in.  If even configuration, 2ZLu
@@ -69,6 +70,11 @@ for ii=1:length(zluindex)  %this will break if ZLu isn't scalar but I don't know
     Zin(1,1)=ZLu+ZLb(zluindex, zluindex); 
 end
    
+=======
+
+Zin = [ZLu zeros([size(ZLu,1),size(ZLb,2)]);
+       zeros([size(ZLu,1),size(ZLb,2)]).' ZLb];
+>>>>>>> parent of 37f130a... fixed how antenna layer couples to HIS layer at rad slot
 for jj=length(temp):-1:1
     Zin = unitcellMultiply(Zin, temp{jj}, 1);
 end
