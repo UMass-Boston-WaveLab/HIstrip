@@ -42,9 +42,9 @@ E = eye(4);
 % HIScap0=75e-12; %and the HIS-related rows don't change, we may not need these 
 %             %to be calculated separately.
 
-% DATA FROM OUR CAP CALCULATOR
-<<<<<<< HEAD
-<<<<<<< HEAD
+% % DATA FROM OUR CAP CALCULATOR
+% <<<<<<< HEAD
+% <<<<<<< HEAD
 % <<<<<<< HEAD
 % cap=(1e-12)*[29 -29; -29 117];
 % cap0=(1e-12)*[27 -27; -27 74];
@@ -52,21 +52,21 @@ E = eye(4);
 % HIScap0=75e-12; %and the HIS-related rows don't change, we may not need these 
 %             %to be calculated separately.
 % =======
-=======
-
-=======
->>>>>>> parent of 37f130a... fixed how antenna layer couples to HIS layer at rad slot
-cap=(1e-12)*[29 -29; -29 117];
-cap0=(1e-12)*[27 -27; -27 74];
-HIScap=117e-12;  %if we calculate the cap matrix with and without the top line 
-HIScap0=75e-12; %and the HIS-related rows don't change, we may not need these 
-            %to be calculated separately.
-<<<<<<< HEAD
-
->>>>>>> 37f130a5a6551ce4c44710cc13c54cce1d8d2d8d
-=======
-=======
->>>>>>> parent of 37f130a... fixed how antenna layer couples to HIS layer at rad slot
+% =======
+% 
+% =======
+% >>>>>>> parent of 37f130a... fixed how antenna layer couples to HIS layer at rad slot
+% cap=(1e-12)*[29 -29; -29 117];
+% cap0=(1e-12)*[27 -27; -27 74];
+% HIScap=117e-12;  %if we calculate the cap matrix with and without the top line 
+% HIScap0=75e-12; %and the HIS-related rows don't change, we may not need these 
+%             %to be calculated separately.
+% <<<<<<< HEAD
+% 
+% >>>>>>> 37f130a5a6551ce4c44710cc13c54cce1d8d2d8d
+% =======
+% =======
+% >>>>>>> parent of 37f130a... fixed how antenna layer couples to HIS layer at rad slot
 % cap=(1e-12)*[29 -29; -29 117];% 1 row
 % cap0=(1e-12)*[27 -27; -27 74];% 1row
 % HIScap=117e-12;  % 1 row if we calculate the cap matrix with and without the top line 
@@ -84,23 +84,23 @@ cap=(1e-12)*[33.33 28.42 1.73 0.38 0.22;...
          
 
         
-=======
-             0.22 0.34 0.98 16.41 91.08];
-<<<<<<< HEAD
->>>>>>> 37f130a5a6551ce4c44710cc13c54cce1d8d2d8d
+% =======
+%              0.22 0.34 0.98 16.41 91.08];
+% <<<<<<< HEAD
+% >>>>>>> 37f130a5a6551ce4c44710cc13c54cce1d8d2d8d
 HIScap=cap(2:end, 2:end);            
-=======
-HIScap=[cap(2,2) cap(3,3) cap(4,4) cap(5,5)];            
->>>>>>> parent of 37f130a... fixed how antenna layer couples to HIS layer at rad slot
+% =======
+% HIScap=[cap(2,2) cap(3,3) cap(4,4) cap(5,5)];            
+% >>>>>>> parent of 37f130a... fixed how antenna layer couples to HIS layer at rad slot
 
 cap0=(1e-12)*[33.30 28.54 1.75 0.39 0.24;...
              28.54 81.38 11.47 0.64 0.38; ...
              1.75 11.47 59.85 12.72 1.02; ...
              0.39 0.64 12.72 59.72 13.09; ...
              0.24 0.38 1.02 13.09 54.24];
-<<<<<<< HEAD
-<<<<<<< HEAD
-         
+% <<<<<<< HEAD
+% <<<<<<< HEAD
+%          
 %   cap0=cap0(1:2, 1:2);%1ROW
 % cap0=cap0(1:3, 1:3); %3ROW
 % cap0=cap0(1:4, 1:4); %5ROW 
@@ -110,18 +110,18 @@ HIScap0=cap0(2:end, 2:end);
 
 % >>>>>>> 0c6e25044a3cf1f453beb8255d28abcf4e6d5614
 
-=======
+% =======
 HIScap0=cap0(2:end, 2:end);  
 
 
->>>>>>> 37f130a5a6551ce4c44710cc13c54cce1d8d2d8d
-=======
-HIScap0=[cap0(2,2) cap0(3,3) cap0(4,4) cap0(5,5)];   
+% >>>>>>> 37f130a5a6551ce4c44710cc13c54cce1d8d2d8d
+% =======
+% HIScap0=[cap0(2,2) cap0(3,3) cap0(4,4) cap0(5,5)];   
 
 
->>>>>>> 0c6e25044a3cf1f453beb8255d28abcf4e6d5614
-
->>>>>>> parent of 37f130a... fixed how antenna layer couples to HIS layer at rad slot
+% >>>>>>> 0c6e25044a3cf1f453beb8255d28abcf4e6d5614
+% 
+% >>>>>>> parent of 37f130a... fixed how antenna layer couples to HIS layer at rad slot
 
 M=size(cap,1);  %minimum 2 - total number of non-GND conductors in multiconductor line including antenna layer
                 % this is up to the user - don't have to include all the HIS rows if
