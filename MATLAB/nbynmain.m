@@ -42,25 +42,25 @@ E = eye(4);
 % HIScap0=75e-12; %and the HIS-related rows don't change, we may not need these 
 %             %to be calculated separately.
 
-<<<<<<< HEAD
-<<<<<<< HEAD
+% <<<<<<< HEAD
+% <<<<<<< HEAD
+% % % DATA FROM OUR CAP CALCULATOR
+% % <<<<<<< HEAD
+% % <<<<<<< HEAD
+% =======
 % % DATA FROM OUR CAP CALCULATOR
 % <<<<<<< HEAD
-% <<<<<<< HEAD
-=======
-% DATA FROM OUR CAP CALCULATOR
-<<<<<<< HEAD
->>>>>>> parent of 010b3b4... Revert "fixed how antenna layer couples to HIS layer at rad slot"
-=======
->>>>>>> parent of 010b3b4... Revert "fixed how antenna layer couples to HIS layer at rad slot"
-% <<<<<<< HEAD
-% cap=(1e-12)*[29 -29; -29 117];
-% cap0=(1e-12)*[27 -27; -27 74];
-% HIScap=117e-12;  %if we calculate the cap matrix with and without the top line 
-% HIScap0=75e-12; %and the HIS-related rows don't change, we may not need these 
-%             %to be calculated separately.
+% >>>>>>> parent of 010b3b4... Revert "fixed how antenna layer couples to HIS layer at rad slot"
 % =======
-<<<<<<< HEAD
+% >>>>>>> parent of 010b3b4... Revert "fixed how antenna layer couples to HIS layer at rad slot"
+% % <<<<<<< HEAD
+% % cap=(1e-12)*[29 -29; -29 117];
+% % cap0=(1e-12)*[27 -27; -27 74];
+% % HIScap=117e-12;  %if we calculate the cap matrix with and without the top line 
+% % HIScap0=75e-12; %and the HIS-related rows don't change, we may not need these 
+% %             %to be calculated separately.
+% % =======
+% <<<<<<< HEAD
 % =======
 % 
 % =======
@@ -74,25 +74,25 @@ E = eye(4);
 % 
 % >>>>>>> 37f130a5a6551ce4c44710cc13c54cce1d8d2d8d
 % =======
+% % =======
+% % >>>>>>> parent of 37f130a... fixed how antenna layer couples to HIS layer at rad slot
 % =======
-% >>>>>>> parent of 37f130a... fixed how antenna layer couples to HIS layer at rad slot
-=======
-<<<<<<< HEAD
-=======
-=======
->>>>>>> parent of 010b3b4... Revert "fixed how antenna layer couples to HIS layer at rad slot"
+% <<<<<<< HEAD
+% =======
+% =======
+% >>>>>>> parent of 010b3b4... Revert "fixed how antenna layer couples to HIS layer at rad slot"
 
 cap=(1e-12)*[29 -29; -29 117];
 cap0=(1e-12)*[27 -27; -27 74];
 HIScap=117e-12;  %if we calculate the cap matrix with and without the top line 
 HIScap0=75e-12; %and the HIS-related rows don't change, we may not need these 
             %to be calculated separately.
-
->>>>>>> 37f130a5a6551ce4c44710cc13c54cce1d8d2d8d
-<<<<<<< HEAD
->>>>>>> parent of 010b3b4... Revert "fixed how antenna layer couples to HIS layer at rad slot"
-=======
->>>>>>> parent of 010b3b4... Revert "fixed how antenna layer couples to HIS layer at rad slot"
+% 
+% >>>>>>> 37f130a5a6551ce4c44710cc13c54cce1d8d2d8d
+% <<<<<<< HEAD
+% >>>>>>> parent of 010b3b4... Revert "fixed how antenna layer couples to HIS layer at rad slot"
+% =======
+% >>>>>>> parent of 010b3b4... Revert "fixed how antenna layer couples to HIS layer at rad slot"
 % cap=(1e-12)*[29 -29; -29 117];% 1 row
 % cap0=(1e-12)*[27 -27; -27 74];% 1row
 % HIScap=117e-12;  % 1 row if we calculate the cap matrix with and without the top line 
