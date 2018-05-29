@@ -1,11 +1,10 @@
-%% To do/ Questions 
-%-Terminated case uses two inductance matricies
-%-add loss to propegation constants
-
-%% Uses a dipole or probe fed relationship to enforce boundary conditions on
 clc;
 clear all;
 close all;
+%% Outline
+% Run this code to compare HFSS data to HISTRIP Zin and S11 data
+% To save on run times use un/comment DataF - this rescales the imported
+% HFSS values to match HFSS frequency sweep
 
 %% Constants
 eps1 = 1.01;
@@ -14,7 +13,6 @@ mu0 = pi*4e-7;
 eps0 = 8.854e-12;
 viaflag = 1;
 E = eye(4);
-
 %% Structure Geometries
 % the best/hanna antenna is actually a 0.005m radius dipole
 % "the equivalent strip width for a cylindrical wire is almost twice (~1.89)
@@ -37,6 +35,7 @@ a = w2+g;        %unit cell size
 L_sub = 8*a;  
 w_sub = 8*a;
 L_ant = 0.48; 
+
 %f = (100:.5:600)*10^6/sf;
 f = (250:2:450)*10^6/sf;
 omega = 2*pi*f;
@@ -50,22 +49,17 @@ S11data = csvread('MagS11_Cu2.csv',1,0);
     S11data_f = zeros(size(f(:)));
 ZinData = csvread('MagZinCu.csv',1,0);
 S11data_NoVias = csvread('MagS11NoVias.csv',1,0); 
-
-
 % this grabs the revlvent data from HFSS based on the size of  the Model
 % for faster run times uncomment to use
-
 DataF = zeros(size(f(:)));
 DataF(1,1) = S11data(301,2);
 S11data_f(1,1) = S11data(301,1);
 nn=305;
-
 for n = 1:length(f)-1
         S11data_f(n+1,1) = S11data(nn,1)
         DataF(n+1,1) = S11data(nn,2)
  nn = nn+4
 end
-
 %% slot spacing description
 % % % |<--------Lsub----------->|
 % % % |                         | 
@@ -76,7 +70,6 @@ end
 % % % |                         |
 % % % |                         | 
 % % % 1                         4           
-
 sep_12=L_sub/2-L_ant_eff/2;
 sep_13=L_sub/2+L_ant_eff/2;
 sep_14=L_sub;
@@ -87,16 +80,13 @@ slot_1_x=w_ant;
 slot_2_x=w_sub;
 slot_3_x=w_ant;
 slot_4_x=w_sub;
-
 %% Portion of the HIS not shielded by the antenna 
 [ABCD, ABCDgaphalf1,ABCDline,ABCDL,~] = HISlayerABCD(w2, g, H_sub, rad, eps2, f, viaflag, eps1);
 botn = floor((L_sub-L_ant_eff)/(2*a))-1;% Number of compelete unit cell not under antenna===HIS
-
 % initializing matricies
 %Y = zeros(size(f));
 S11 = zeros(size(f));
 Zd = zeros(size(f));
-
 for ii = 1:length(f)
    
  Y(:,:,ii) = HIS_admittance_saber_main(sep_12, sep_13, sep_14, sep_23, sep_24, sep_34, slot_1_x, slot_2_x, slot_3_x, slot_4_x, f(ii),...
@@ -169,7 +159,6 @@ magS11 = abs(S11(:));
     % For a singlepart figures labels should be in 8 to 10 points,
     % multipart figures, labels should be in 8 points.
     % Width: column width: 8.8 cm; page width: 18.1 cm.
-
 %% width & height of the figure
 % (You need to plot a figure which has a width of (8.8*k_scaling)
 % in MATLAB, so that when you paste it into your paper, the width will be
@@ -243,7 +232,7 @@ xlim([0.1 0.6])
 
 %HFSS S11
 figure(4); 
-plot(f*1e-9, 20*log10(S11data(:,2)), 'linewidth',1)
+plot(f*1e-9, 20*log10(DataF), 'linewidth',1)
 hold on
 plot(f*1e-9, 20*log10(magS11), 'linewidth',1)
 xlabel('Frequency [GHz]')
@@ -254,7 +243,7 @@ xlim([0.1 0.6])
 
 %Delta S [HFSS - Model]
 figure(5); 
-plot(f*1e-9, abs(S11data(:,2)-magS11))
+plot(f*1e-9, abs(DataF-magS11))
 xlabel('Frequency [GHz]')
 ylabel('\Delta|S_{11}| ')
 grid on

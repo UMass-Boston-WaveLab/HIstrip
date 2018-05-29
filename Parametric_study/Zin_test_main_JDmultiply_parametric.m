@@ -26,7 +26,6 @@ w_sub = 16*a;
 for  L_ant = [0.4, 0.48, 0.56];
 
 % L_ant = 4*a; 
-
 omega = 2*pi*f;
 L_ant_eff = L_ant;
 N=floor(0.5*L_ant_eff/a); % NUMBER OF COMPLETE UNIT CELLS UNDER ANTENNA
