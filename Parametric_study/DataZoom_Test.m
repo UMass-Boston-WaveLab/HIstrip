@@ -17,9 +17,9 @@ S11_HFSS = S11data(:,2);
 f_HFSS_step = abs(S11data(2,1)-S11data(1,1));
 f_HFSS_scaled = zeros(size(f(:)));
 S11_HFSS_scaled = zeros(size(f(:)));
+S11data_NoVias = csvread('MagS11NoVias.csv',1,0); 
 %~~~~Zin~~~~~~~~~~~~
 ZinData = csvread('MagZinCu.csv',1,0);
-S11data_NoVias = csvread('MagS11NoVias.csv',1,0); 
 for ii = 1:length(f_HFSS)
    if f(1,1) == f_HFSS(ii)
        f_HFSS_scaled(1,1) = f_HFSS(ii);
