@@ -2,12 +2,13 @@
 clear all;
 close all;
 clc;
-s=1; %scale factor
-f = (100:.5:600)*10^6/s;
+s=20; %scale factor
+f = (100:1:600)*10^6*s;
 a = 0.14/s;
 w1 = 0.02/s; 
 w2 = 0.12/s;
-h2 = 0.05/s;
+%h2 = 0.05/s;
+h2 = 0.002;
 h1 = 0.02/s+h2; 
 via_rad = 0.005/s;
 eps1 = 1;
@@ -16,11 +17,11 @@ feed = 0; %1 for probe feed, 0 for diff
 
 %% Import HFSS
 %S11data = csvread('MagS11_Cu2.csv',1,0); 
-S11data1 = csvread('TermS11Via_2.csv',1,0);
-S11data2 = csvread('S11Term2.csv',1,0);
-S11data3 = csvread('S11Term3.csv',1,0);
-S11data4 = csvread('S11Term4.csv',1,0);
-Zindata1 = csvread('TermZinVia.csv',1,0);
+% S11data1 = csvread('TermS11Via_2.csv',1,0);
+% S11data2 = csvread('S11Term2.csv',1,0);
+% S11data3 = csvread('S11Term3.csv',1,0);
+% S11data4 = csvread('S11Term4.csv',1,0);
+% Zindata1 = csvread('TermZinVia.csv',1,0);
 
 %%
 
@@ -95,10 +96,10 @@ set(0,'defaultLegendBox','on');
 set(0,'defaultLegendOrientation','vertical');    
     
 figure(1); 
-plot(f*1e-6, real(Zin), f*1e-6, imag(Zin),'linewidth',1)
-hold on 
-plot(f*1e-6, Zindata1(:,2), f*1e-6, Zindata1(:,3),'linewidth',1)
-hold off
+plot(f, real(Zin), f*1e-6, imag(Zin),'linewidth',1)
+% hold on 
+% plot(f*1e-6, Zindata1(:,2), f*1e-6, Zindata1(:,3),'linewidth',1)
+%hold off
 xlabel('Frequency [MHz]')
 ylabel('\Omega')
 grid on
@@ -106,10 +107,10 @@ set(gca,'fontsize',14)
 legend({'R Model';'X Model';'R HFSS';'X HFSS'})
 
 figure(2); 
-plot(f*1e-6, 20*log10((magS11_term)))
-hold on 
-plot(f*1e-6, 20*log10(S11data1(:,2)))
-hold off
+plot(f, 20*log10((magS11_term)))
+% hold on 
+% plot(f*1e-6, 20*log10(S11data1(:,2)))
+% hold off
 xlabel('Frequency [MHz]')
 ylabel('|S_{11}|')
 legend({'Model';'HFSS'})
