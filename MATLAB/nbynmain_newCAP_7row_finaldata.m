@@ -50,8 +50,8 @@ E = eye(4);
 % HIScap=117e-12;  %if we calculate the cap matrix with and without the top line 
 % HIScap0=75e-12; %and the HIS-related rows don't change, we may not need these 
 %             %to be calculated separately.
+% % =======
 % =======
-=======
 
 cap=(1e-12)*[29 -29; -29 117];
 cap0=(1e-12)*[27 -27; -27 74];
@@ -93,11 +93,11 @@ HIScap0=cap0(2:end, 2:end);
 
 % >>>>>>> 0c6e25044a3cf1f453beb8255d28abcf4e6d5614
 
-=======
+% =======
 HIScap0=cap0(2:end, 2:end);  
 
 
->>>>>>> 37f130a5a6551ce4c44710cc13c54cce1d8d2d8d
+% >>>>>>> 37f130a5a6551ce4c44710cc13c54cce1d8d2d8d
 
 M=size(cap,1);  %minimum 2 - total number of non-GND conductors in multiconductor line including antenna layer
                 % this is up to the user - don't have to include all the HIS rows if
