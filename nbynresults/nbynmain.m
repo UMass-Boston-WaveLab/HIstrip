@@ -68,20 +68,12 @@ cap0=(1e-12)*[33.44452466	28.23279464	1.742718127	1.726828737	377.313140456686/1
 % cap0=cap0(1:4, 1:4); %3ROW
 % cap0=cap0(1:6, 1:6); %5ROW
 
-HIScap0=cap0(2:end, 2:end);
-
-
-
-% >>>>>>> 0c6e25044a3cf1f453beb8255d28abcf4e6d5614
-
 HIScap0=cap0(2:end, 2:end);  
-
-
-
 
 M=size(cap,1);  %minimum 2 - total number of non-GND conductors in multiconductor line including antenna layer
                 % this is up to the user - don't have to include all the HIS rows if
                 % only some are important to the results.
+                
 midHISindex=2; %the index of the MTL conductor that is below the antenna.  If even geometry, this can be a 1x2 vector.  If very wide top conductor, this can be a 1xn vector.
 
 Y=zeros(M);
@@ -106,28 +98,44 @@ for ii = 1:length(f)
     
     %slots along HIS edge are collinear, uniform, and "infinitesimal-ish" so
     %calculating Y is heavily simplified
-    d = a*[0 1 1 2 2 3 3; %dist btw HIS edge slots for 7x7
-           1 0 2 1 3 3 4;
-           1 2 0 3 1 4 2;
-           2 1 3 0 4 1 5;
-           2 3 1 4 0 5 1;
-           3 3 4 1 5 0 6;
-           3 4 2 5 1 6 0];
-    for jj=1:(M-1)
-        for kk=(jj+1):(M-1)
-            Y(jj+1,kk+1)=collInfMutualY(w2, w2, h2, h2, d(jj,kk), 1, f(ii));
-            Y(kk+1,jj+1)=collInfMutualY(w2, w2, h2, h2, d(jj,kk), 1, f(ii));
+    X = (L_sub-L_ant)/2;
+    d = a*[0 0 0 0 0 0 0 0;
+           0 0 1 1 2 2 3 3; %dist btw HIS edge slots for 7x7
+           0 1 0 2 1 3 3 4;
+           0 1 2 0 3 1 4 2;
+           0 2 1 3 0 4 1 5;
+           0 2 3 1 4 0 5 1;
+           0 3 3 4 1 5 0 6;
+           0 3 4 2 5 1 6 0] +... %distances from ant edge to HIS edge slots
+          [0 X sqrt(X^2+a^2) sqrt(X^2+a^2) sqrt(X^2+4*a^2) sqrt(X^2+4*a^2) sqrt(X^2+9*a^2) sqrt(X^2+9*a^2);
+           X 0 0 0 0 0 0 0;
+           sqrt(X^2+a^2) 0 0 0 0 0 0 0;
+           sqrt(X^2+a^2) 0 0 0 0 0 0 0;
+           sqrt(X^2+4*a^2) 0 0 0 0 0 0 0;
+           sqrt(X^2+4*a^2) 0 0 0 0 0 0 0;
+           sqrt(X^2+9*a^2) 0 0 0 0 0 0 0;
+           sqrt(X^2+9*a^2) 0 0 0 0 0 0 0];
+       
+       thetas = asin([0 a/sqrt(X^2+a^2) a/sqrt(X^2+a^2) 2*a/sqrt(X^2+4*a^2) 2*a/sqrt(X^2+4*a^2) 3*a/sqrt(X^2+9*a^2) 3*a/sqrt(X^2+9*a^2)]);
+                   
+    for jj=2:(M)
+        for kk=(jj+1):(M)
+            Y(jj,kk)=collInfMutualY(w2, w2, d(jj,kk), 1, f(ii));
+            Y(kk,jj)=Y(jj,kk);
         end
+        %1,jj and jj,1 elements of Y matrix are not collinear so they have to
+        %be calculated differently
+        Y(jj, 1) = infMutualY(w1, w2, d(jj, 1), thetas(jj-1), 1, f(ii));
     end
     
-    %1,jj and jj,1 elements of Y matrix are not collinear so they have to
-    %be calculated differently
+
     
-    
+
     
     Zin(ii)=nbynHIStripZin(w1, h1, L_ant,eps1, w2, h2, L_sub, eps2, a, g, rad, cap, cap0, HIScap, HIScap0, f(ii), midHISindex, Y);
     S11(ii) = (Zin(ii)-50)/(Zin(ii)+50);
 end
+
 %% make plots
  figure; 
 plot(f*1e-9, real(Zin), f*1e-9, imag(Zin),'linewidth',2)
