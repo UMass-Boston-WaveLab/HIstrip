@@ -54,13 +54,10 @@ viaflag = 1;
     unitslice=nbynunitcell(cap, cap0, a, w2, h2, rad, eps2, f, M, viaflag);   
     
     %% calculate input impedance of HIS-only section
-    %HIS is terminated by admittance of HIS-edge slots. We ignore mutual
-    %coupling because the cross terms in this matrix are really small. If
-    %we needed to include mutual coupling, the Y matrix would have to
-    %include all the slots.
+    %HIS is terminated by admittance of HIS-edge slots. 
     
-    ZLtemp=Z(1,1)*eye(M-1);     %this is cheating!
-    ZRtemp=Z(4,4)*eye(M-1);     %booooooooo
+    ZLtemp=Z(2:end,2:end);
+    ZRtemp=ZLtemp;
     
     temp={ABCDgaphalfsp,ABCDline,ABCDL,ABCDline};
     
@@ -79,8 +76,8 @@ viaflag = 1;
     %I think use of Z(2,2) or Z(3,3) is a little wrong here - those are used as impedances
     %to ground and the slot calculator finds impedance to nearby MTL
     %conductor(s).
-    ZinR = nbynpartialcells(ZinR_HIS, Z(3,3), midHISindex, cap, cap0, HIScap, HIScap0, f, a, g, remainder, Lmat, Cseries, Cshunt, ABCDL, ABCDgaphalfsp, ABCDgaphalfps);
-    ZinL = nbynpartialcells(ZinL_HIS, Z(2,2), midHISindex, cap, cap0, HIScap, HIScap0, f, a, g, remainder, Lmat, Cseries, Cshunt, ABCDL, ABCDgaphalfsp, ABCDgaphalfps);
+    ZinR = nbynpartialcells(ZinR_HIS, Z(1,1), midHISindex, cap, cap0, HIScap, HIScap0, f, a, g, remainder, Lmat, Cseries, Cshunt, ABCDL, ABCDgaphalfsp, ABCDgaphalfps);
+    ZinL = nbynpartialcells(ZinL_HIS, Z(1,1), midHISindex, cap, cap0, HIScap, HIScap0, f, a, g, remainder, Lmat, Cseries, Cshunt, ABCDL, ABCDgaphalfsp, ABCDgaphalfps);
     %% calculate input impedance of covered section
     ZinR = unitcellMultiply(ZinR, unitslice, N);
     ZinL = unitcellMultiply(ZinL, unitslice, N);

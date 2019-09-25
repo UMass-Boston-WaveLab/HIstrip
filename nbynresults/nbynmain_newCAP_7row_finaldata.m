@@ -113,10 +113,10 @@ for ii = 1:length(f)
            2 3 1 4 0 5 1;
            3 3 4 1 5 0 6;
            3 4 2 5 1 6 0];
-    for jj=1:(M-1)
-        for kk=(jj+1):(M-1)
-            Y(jj+1,kk+1)=collInfMutualY(w2, w2, h2, h2, d(jj,kk), 1, f(ii));
-            Y(kk+1,jj+1)=collInfMutualY(w2, w2, h2, h2, d(jj,kk), 1, f(ii));
+    for jj=2:M
+        for kk=(jj+1):M
+            Y(jj,kk)=collInfMutualY(w2, w2, d(jj,kk), 1, f(ii));
+            Y(kk,jj)=collInfMutualY(w2, w2, d(kk,jj), 1, f(ii));
         end
     end
     
