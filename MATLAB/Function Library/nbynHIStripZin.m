@@ -1,4 +1,4 @@
-function [ Zin ] = nbynHIStripZin(w1, h1, L_ant,eps1, w2, h2, L_sub, eps2, a, g, rad, cap, cap0, HIScap, HIScap0, f, midHISindex, Y)
+function [ Zin ] = nbynHIStripZin(w1, h1, L_ant,eps1, w2, h2, L_sub, eps2, a, g, rad, cap, cap0, HIScap, HIScap0, f, midHISindex)
 %NBYNHISTRIPZIN does the bulk of the work to calculate the input impedance
 %to a HIS-backed microstrip antenna.  It calls many other functions and
 %puts all the input together.  It accounts for more than one HIS row below
@@ -37,6 +37,10 @@ M = size(cap0,2);
 %% Constants
 viaflag = 1;
 
+%% Assemble equivalent slot termination
+    Y(:,:) = HIS_admittance_saber_main(sep_12, sep_13, sep_14, sep_23, sep_24, sep_34, slot_1_x, slot_2_x, slot_3_x, slot_4_x, f,...
+                w1, h1, L_ant,eps1, w2, h2, L_sub,eps2,f);  
+ 
     Z=inv(Y);
     
     %% Assemble bare HIS ABCDs
@@ -59,8 +63,8 @@ viaflag = 1;
     %we needed to include mutual coupling, the Y matrix would have to
     %include all the slots.
     
-    ZLtemp=Z(1,1)*eye(M-1);     %this is cheating!
-    ZRtemp=Z(4,4)*eye(M-1);     %booooooooo
+    ZLtemp=Z(1,1)*eye(M-1);
+    ZRtemp=Z(4,4)*eye(M-1);
     
     temp={ABCDgaphalfsp,ABCDline,ABCDL,ABCDline};
     
