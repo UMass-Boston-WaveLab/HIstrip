@@ -2,7 +2,7 @@ clc
 clear all
 %%%%%%%%%%%%%%%%%%%%%%%%%cst
 % 
-load ('sept25.mat');
+load ('oct1_7row.mat');
 % 
 plot(f*1e-6, real(Zin), f*1e-6, imag(Zin),'linewidth',2)
 hold on

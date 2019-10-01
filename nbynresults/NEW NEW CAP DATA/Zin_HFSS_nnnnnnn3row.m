@@ -23,6 +23,8 @@ plot(Freq,S11,':k','LineWidth',3);
 hold off
 legend('Re. Model: 3 row','Im. Model: 3 row','Re. HFSS: 3 row','Im. HFSS: 3 row');
 grid on
+set(gca, 'PlotBoxAspectRatio', [1 0.5 0.5])
+
 figure
 
 
@@ -52,6 +54,7 @@ plot(Freq,S11_h,'k',f*1e-6, S11_m, '--k','LineWidth',2);
 hold on
 
 %legend('HFSS: 3 row','Model: 3 row');
+set(gca, 'PlotBoxAspectRatio', [1 0.5 0.5])
 
 % hold on
 % x=hs1.Frequencies./10^9;
