@@ -2,7 +2,14 @@ clc
 clear all
 %%%%%%%%%%%%%%%%%%%%%%%%%cst
 % 
-load ('sept27_3row.mat');
+rows=3;
+switch rows
+    case 3
+        load ('oct1_3row.mat');
+    case 7
+        load ('oct1_7row.mat')'
+end
+
 % 
 p1=plot(f*1e-6, real(Zin), 'linewidth',2)
 hold on
@@ -10,7 +17,12 @@ p2=plot(f*1e-6, imag(Zin),':k','linewidth',2)
 p1.Color=[0.7 0.7 0.7];
 p2.Color=[0.7 0.7 0.7];
 
-hs_hfss=importdata('Zin_3row_HFSS.csv');
+switch rows
+    case 3
+        hs_hfss=importdata('Zin_3row_HFSS.csv');
+    case 7
+        hs_hfss=importdata('Zin_7row_HFSS.csv');
+end
 S1=hs_hfss.data;
 Freq = S1(:,1);
 S11=S1(:,2);%1raw
@@ -19,9 +31,11 @@ plot(Freq,S11,'k','LineWidth',3);
 hold on
 S11=S1(:,3);%1raw
 plot(Freq,S11,':k','LineWidth',3);
-
-hold off
-legend('Re. Model: 3 row','Im. Model: 3 row','Re. HFSS: 3 row','Im. HFSS: 3 row');
+switch rows
+    case 3
+        legend('Re. Model: 3 row','Im. Model: 3 row','Re. HFSS: 3 row','Im. HFSS: 3 row');
+    case 7
+end
 grid on
 set(gca, 'PlotBoxAspectRatio', [1 0.5 0.5])
 

@@ -3,7 +3,7 @@ clc
 clear all;
 %% DEFINE PARAMETERS
 
-rows=7;
+rows=3;
 sf = 1/1; %scale factor
 w1 = 0.01*1.89*sf; %depends on kind of antenna placed on top of HIS
 h2 = 0.04*sf; %ground to patch distance
@@ -19,7 +19,7 @@ eps2 = 2.2;
 L_sub = 8*a;
 w_slot = a; %each HIS row is terminated by an equivalent radiating slot, so slot width is width of one row
 L_ant = 0.48*sf; 
-f=(100:10:600)*10^6/sf;
+f=(100:5:600)*10^6/sf;
 omega = 2*pi*f;
 L_ant_eff = L_ant+microstripdeltaL(w1, h1, eps1);
 N=floor(0.5*L_ant_eff/a); % NUMBER OF COMPLETE UNIT CELLS UNDER ANTENNA HALF

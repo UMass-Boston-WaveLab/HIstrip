@@ -4,9 +4,10 @@ clear all
 % 
 load ('oct1_7row.mat');
 % 
-plot(f*1e-6, real(Zin), f*1e-6, imag(Zin),'linewidth',2)
+p1=plot(f*1e-6, real(Zin), 'linewidth',2) 
 hold on
-% 
+p2=plot(f*1e-6, imag(Zin),'linewidth',2)
+p1.Color=[0.7 0.7 0.7];
 
 hs_hfss=importdata('Zin_7row_HFSS.csv');
 S1=hs_hfss.data;
