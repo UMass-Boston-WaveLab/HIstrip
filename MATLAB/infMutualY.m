@@ -18,11 +18,11 @@ beta = 2*pi*f/c;
 %integral? it's not nothing
 
 if gnd
-    Ym = (-2*L1*L2*cos(theta)^2/(pi*d^2)) * (1+1/(j*beta*d)) * exp(-j*beta*d)+...
-        (j*beta*L1*L2*sin(theta)^2/(pi*d)) * (1+1/(j*beta*d)-1/(beta^2*d^2)) * exp(-j*beta*d);
+    Ym = (-2*L1*L2*cos(theta)^2/(pi*eta*d^2)) * (1+1/(j*beta*d)) * exp(-j*beta*d)+...
+        (j*beta*L1*L2*sin(theta)^2/(pi*eta*d)) * (1+1/(j*beta*d)-1/(beta^2*d^2)) * exp(-j*beta*d);
 else
-    Ym =  (-2*L1*L2*cos(theta)^2/(4*pi*d^2)) * (1+1/(j*beta*d)) * exp(-j*beta*d)+...
-        (j*beta*L1*L2*sin(theta)^2/(4*pi*d)) * (1+1/(j*beta*d)-1/(beta^2*d^2)) * exp(-j*beta*d);
+    Ym =  (-2*L1*L2*cos(theta)^2/(4*eta*pi*d^2)) * (1+1/(j*beta*d)) * exp(-j*beta*d)+...
+        (j*beta*L1*L2*sin(theta)^2/(4*eta*pi*d)) * (1+1/(j*beta*d)-1/(beta^2*d^2)) * exp(-j*beta*d);
     %this one has no factor of 4 bc assumed free space
 end
 

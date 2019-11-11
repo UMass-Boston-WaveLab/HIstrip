@@ -14,11 +14,11 @@ if d<(L1+L2)/2
 end
 
 if gnd
-    Ym = (-2*L1*L2/(pi*d^2)) * (1+1/(j*beta*d)) * exp(-j*beta*d);
+    Ym = (-2*L1*L2/(pi*eta*d^2)) * (1+1/(j*beta*d)) * exp(-j*beta*d);
     %factor of 4 is because of the image effect of a PEC ground plane -- is
     %this correct? should it only be a factor of 2?
 else
-    Ym = (-L1*L2/(2*pi*d^2)) * (1+1/(j*beta*d)) * exp(-j*beta*d);
+    Ym = (-L1*L2/(2*pi*eta*d^2)) * (1+1/(j*beta*d)) * exp(-j*beta*d);
     %this one has no factor of 4 bc assumed free space
 end
 
